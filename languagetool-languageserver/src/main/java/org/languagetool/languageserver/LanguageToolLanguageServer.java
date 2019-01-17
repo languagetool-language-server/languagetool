@@ -19,8 +19,8 @@ package org.languagetool.languageserver;
 import org.eclipse.lsp4j.*;
 import org.eclipse.lsp4j.services.*;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
+// import com.fasterxml.jackson.core.JsonFactory;
+// import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 
 class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware {
 
-  HashMap<String, TextDocumentItem> documents = new HashMap<String, TextDocumentItem>();
+  private HashMap<String, TextDocumentItem> documents = new HashMap<String, TextDocumentItem>();
   private LanguageClient client = null;
   @Nullable
   private Language language;
@@ -83,6 +83,7 @@ class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware 
 
   @Override
   public void exit() {
+    // Method blank in Adam's original code. No idea why.
   }
 
   @Override
@@ -241,24 +242,24 @@ class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware 
   }
 
   // From org.languagetool.server.ApiV2
-  private AnnotatedText getAnnotatedTextFromString(JsonNode data, String text) {
-    AnnotatedTextBuilder textBuilder = new AnnotatedTextBuilder().addText(text);
-    if (data.has("metaData")) {
-      JsonNode metaData = data.get("metaData");
-      Iterator<String> it = metaData.fieldNames();
-      while (it.hasNext()) {
-        String key = it.next();
-        String val = metaData.get(key).asText();
-        try {
-          AnnotatedText.MetaDataKey metaDataKey = AnnotatedText.MetaDataKey.valueOf(key);
-          textBuilder.addGlobalMetaData(metaDataKey, val);
-        } catch (IllegalArgumentException e) {
-          textBuilder.addGlobalMetaData(key, val);
-        }
-      }
-    }
-    return textBuilder.build();
-  }
+  // private AnnotatedText getAnnotatedTextFromString(JsonNode data, String text) {
+  //   AnnotatedTextBuilder textBuilder = new AnnotatedTextBuilder().addText(text);
+  //   if (data.has("metaData")) {
+  //     JsonNode metaData = data.get("metaData");
+  //     Iterator<String> it = metaData.fieldNames();
+  //     while (it.hasNext()) {
+  //       String key = it.next();
+  //       String val = metaData.get(key).asText();
+  //       try {
+  //         AnnotatedText.MetaDataKey metaDataKey = AnnotatedText.MetaDataKey.valueOf(key);
+  //         textBuilder.addGlobalMetaData(metaDataKey, val);
+  //       } catch (IllegalArgumentException e) {
+  //         textBuilder.addGlobalMetaData(key, val);
+  //       }
+  //     }
+  //   }
+  //   return textBuilder.build();
+  // }
 
   // From org.languagetool.server.ApiV2
   private AnnotatedText getAnnotatedTextFromJson(JsonNode data) {

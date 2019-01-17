@@ -29,7 +29,7 @@ import java.util.concurrent.CompletableFuture;
 class FullTextDocumentService implements TextDocumentService {
 
     @NotNull
-    HashMap<String, TextDocumentItem> documents;
+    private HashMap<String, TextDocumentItem> documents;
 
     public FullTextDocumentService(HashMap<String, TextDocumentItem> documents) {
         this.documents = documents;
@@ -144,5 +144,6 @@ class FullTextDocumentService implements TextDocumentService {
 
     @Override
     public void didSave(DidSaveTextDocumentParams params) {
+      // Method blank in Adam's original code. No idea why.
     }
 }

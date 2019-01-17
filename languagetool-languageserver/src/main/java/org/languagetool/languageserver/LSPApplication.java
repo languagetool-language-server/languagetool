@@ -30,7 +30,7 @@ public class LSPApplication {
     InputStream in = System.in;
     OutputStream out = System.out;
 
-    if ("--port" == args[0]) {
+    if ("--port".equals(args[0])) {
       String port = args[1];
       try (Socket socket = new Socket("localhost", Integer.parseInt(port))) {
         in = socket.getInputStream();

@@ -31,28 +31,28 @@ public class DocumentPositionCalculatorTest {
     }
 
     @Test
-    public void testGetPosition_starts_with_newline() {
+    public void testGetPositionStartsWithNewline() {
         Position position = new DocumentPositionCalculator("\nHi").getPosition(1);
 
         Assertions.assertEquals(new Position(1, 0), position);
     }
 
     @Test
-    public void testGetPosition_second_line_start() {
+    public void testGetPositionSecondLineStart() {
         Position position = sut.getPosition(6);
 
         Assertions.assertEquals(new Position(1, 0), position);
     }
 
     @Test
-    public void testGetPosition_second_line_second_character() {
+    public void testGetPositionSecondLineSecondCharacter() {
         Position position = sut.getPosition(7);
 
         Assertions.assertEquals(new Position(1, 1), position);
     }
 
     @Test
-    public void testGetPosition_arbitrary_position() {
+    public void testGetPositionArbitraryPosition() {
         Position position = sut.getPosition(12);
 
         Assertions.assertEquals(new Position(1, 6), position);

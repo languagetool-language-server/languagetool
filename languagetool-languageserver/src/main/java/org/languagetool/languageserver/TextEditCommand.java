@@ -19,7 +19,7 @@ import java.util.Collections;
 
 class TextEditCommand extends Command {
 
-  static final String CommandName = "langugageTool.acceptSuggestion";
+  private static final String CommandName = "langugageTool.acceptSuggestion";
 
   public TextEditCommand(String title, Range range, TextDocumentItem document) {
     this.setCommand(CommandName);
