@@ -54,7 +54,7 @@
                         <manifestEntries>
                             <!-- as we later unzip the language JARs (see languagetool-standalone's pom.xml), we need to add the top directory to the classpath: -->
                             <Class-Path>./</Class-Path>
-                            <Main-Class>org.languagetool.languageserver.LSPApplication</Main-Class>
+                            <Main-Class>org.languagetool.languageserver.Runner</Main-Class>
                             <ComponentVersion>${project.version}</ComponentVersion>
                             <Implementation-Date>${maven.build.timestamp}</Implementation-Date>
                         </manifestEntries>

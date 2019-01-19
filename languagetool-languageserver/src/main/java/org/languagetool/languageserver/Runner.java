@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class LSPApplication {
+public class Runner {
   public static void main(String[] args) {
 
     InputStream in = System.in;
