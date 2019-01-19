@@ -13,14 +13,9 @@
  */
 package org.languagetool.languageserver;
 
-// import com.vladsch.flexmark.ast.Document;
-// import com.vladsch.flexmark.parser.Parser;
-// import org.languagetool.languageserver.markdown.AnnotatedTextBuildingVisitor;
 import org.eclipse.lsp4j.*;
-import org.eclipse.lsp4j.services.*;
 import org.eclipse.lsp4j.jsonrpc.messages.Either;
-// import com.fasterxml.jackson.core.JsonFactory;
-// import com.fasterxml.jackson.core.JsonGenerator;
+import org.eclipse.lsp4j.services.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
@@ -38,27 +33,27 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware {
+class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware, WorkspaceService, TextDocumentService {
 
-  private HashMap<String, TextDocumentItem> documents = new HashMap<String, TextDocumentItem>();
+  private HashMap<String, TextDocumentItem> documents = new HashMap<>();
   private LanguageClient client = null;
   @Nullable
-  private Language language;
+  private Language language = null;
 
   private static boolean locationOverlaps(RuleMatch match, DocumentPositionCalculator positionCalculator, Range range) {
     return overlaps(range, createDiagnostic(match, positionCalculator).getRange());
   }
 
-  private static boolean overlaps(Range r1, Range r2) {
+  private static boolean overlaps(@NotNull Range r1, @NotNull Range r2) {
     return r1.getStart().getCharacter() <= r2.getEnd().getCharacter()
-        && r1.getEnd().getCharacter() >= r2.getStart().getCharacter()
-        && r1.getStart().getLine() >= r2.getEnd().getLine() && r1.getEnd().getLine() <= r2.getStart().getLine();
+      && r1.getEnd().getCharacter() >= r2.getStart().getCharacter()
+      && r1.getStart().getLine() >= r2.getEnd().getLine() && r1.getEnd().getLine() <= r2.getStart().getLine();
   }
 
-  private static Diagnostic createDiagnostic(RuleMatch match, DocumentPositionCalculator positionCalculator) {
+  private static Diagnostic createDiagnostic(@NotNull RuleMatch match, @NotNull DocumentPositionCalculator positionCalculator) {
     Diagnostic ret = new Diagnostic();
     ret.setRange(new Range(positionCalculator.getPosition(match.getFromPos()),
-        positionCalculator.getPosition(match.getToPos())));
+      positionCalculator.getPosition(match.getToPos())));
     ret.setSeverity(DiagnosticSeverity.Warning);
     ret.setSource(String.format("LanguageTool: %s", match.getRule().getDescription()));
     ret.setMessage(match.getMessage());
@@ -71,7 +66,7 @@ class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware 
     capabilities.setTextDocumentSync(TextDocumentSyncKind.Full);
     capabilities.setCodeActionProvider(true);
     capabilities
-        .setExecuteCommandProvider(new ExecuteCommandOptions(Collections.singletonList(TextEditCommand.getCommandName())));
+      .setExecuteCommandProvider(new ExecuteCommandOptions(Collections.singletonList(TextEditCommand.getCommandName())));
     return CompletableFuture.completedFuture(new InitializeResult(capabilities));
   }
 
@@ -83,77 +78,35 @@ class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware 
 
   @Override
   public void exit() {
-    // Method blank in Adam's original code. No idea why.
+    // Method blank in Adam's original code.
   }
 
   @Override
   public TextDocumentService getTextDocumentService() {
-    return new FullTextDocumentService(documents) {
+    return this;
+  }
 
-      private HashMap<String, TextDocumentItem> documents = new HashMap<String, TextDocumentItem>();
-
-      @Override
-      public CompletableFuture<List<Either<Command, CodeAction>>> codeAction(CodeActionParams params) {
-        if (params.getContext().getDiagnostics().isEmpty()) {
-          return CompletableFuture.completedFuture(Collections.emptyList());
-        }
-
-        TextDocumentItem document = this.documents.get(params.getTextDocument().getUri());
-
-        List<RuleMatch> matches = validateDocument(document);
-
-        DocumentPositionCalculator positionCalculator = new DocumentPositionCalculator(document.getText());
-
-        Stream<RuleMatch> relevant = matches.stream()
-            .filter(m -> locationOverlaps(m, positionCalculator, params.getRange()));
-
-        List<Either<Command, CodeAction>> commands = relevant
-            .flatMap(m -> getEditCommands(m, document, positionCalculator)).map(Either::<Command, CodeAction>forLeft)
-            .collect(Collectors.toList());
-
-        return CompletableFuture.completedFuture(commands);
-      }
-
-      @NotNull
-      private Stream<TextEditCommand> getEditCommands(RuleMatch match, TextDocumentItem document,
-          DocumentPositionCalculator positionCalculator) {
-        Range range = createDiagnostic(match, positionCalculator).getRange();
-        return match.getSuggestedReplacements().stream().map(str -> new TextEditCommand(str, range, document));
-      }
-
-      @Override
-      public void didOpen(DidOpenTextDocumentParams params) {
-        super.didOpen(params);
-
-        publishIssues(params.getTextDocument().getUri());
-      }
-
-      @Override
-      public void didChange(DidChangeTextDocumentParams params) {
-        super.didChange(params);
-
-        publishIssues(params.getTextDocument().getUri());
-      }
-
-      private void publishIssues(String uri) {
-        TextDocumentItem document = this.documents.get(uri);
-        LanguageToolLanguageServer.this.publishIssues(document);
-      }
-    };
+  private void publishIssues(String uri) {
+    TextDocumentItem document = this.documents.get(uri);
+    this.publishIssues(document);
   }
 
   private void publishIssues(TextDocumentItem document) {
     List<Diagnostic> diagnostics = getIssues(document);
-
     client.publishDiagnostics(new PublishDiagnosticsParams(document.getUri(), diagnostics));
   }
 
   private List<Diagnostic> getIssues(TextDocumentItem document) {
     List<RuleMatch> matches = validateDocument(document);
-
     DocumentPositionCalculator positionCalculator = new DocumentPositionCalculator(document.getText());
-
     return matches.stream().map(match -> createDiagnostic(match, positionCalculator)).collect(Collectors.toList());
+  }
+
+  @NotNull
+  private Stream<TextEditCommand> getEditCommands(RuleMatch match, TextDocumentItem document,
+                                                  DocumentPositionCalculator positionCalculator) {
+    Range range = createDiagnostic(match, positionCalculator).getRange();
+    return match.getSuggestedReplacements().stream().map(str -> new TextEditCommand(str, range, document));
   }
 
   private List<RuleMatch> validateDocument(TextDocumentItem document) {
@@ -161,7 +114,12 @@ class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware 
     // long term is not desirable because other clients may behave differently.
     // See: https://github.com/Microsoft/vscode/issues/28732
     String uri = document.getUri();
-    Boolean isSupportedScheme = uri.startsWith("file:") || uri.startsWith("untitled:");
+    boolean isSupportedScheme;
+    if (uri.startsWith("file:") || uri.startsWith("untitled:")) {
+      isSupportedScheme = true;
+    } else {
+      isSupportedScheme = false;
+    }
 
     if (language == null || !isSupportedScheme) {
       return Collections.emptyList();
@@ -169,7 +127,7 @@ class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware 
       JLanguageTool languageTool = new JLanguageTool(language);
 
       String languageId = document.getLanguageId();
-      
+
       try {
         switch (languageId) {
           case "text": {
@@ -195,30 +153,6 @@ class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware 
     }
   }
 
-  @Override
-  public WorkspaceService getWorkspaceService() {
-    return new NoOpWorkspaceService() {
-      @Override
-      public void didChangeConfiguration(DidChangeConfigurationParams params) {
-        super.didChangeConfiguration(params);
-
-        setLanguage(params.getSettings());
-      }
-
-      @SuppressWarnings({"unchecked", "rawtypes"})
-      @Override
-      public CompletableFuture<Object> executeCommand(ExecuteCommandParams params) {
-        if (Objects.equals(params.getCommand(), TextEditCommand.getCommandName())) {
-          return ((CompletableFuture<Object>) (CompletableFuture) client
-              .applyEdit(new ApplyWorkspaceEditParams(new WorkspaceEdit(
-                  (List<Either<TextDocumentEdit, ResourceOperation>>) (List) params.getArguments()))));
-        }
-        return CompletableFuture.completedFuture(false);
-      }
-    };
-  }
-
-  @SuppressWarnings("unchecked")
   private void setLanguage(@NotNull Object settingsObject) {
     Map<String, Object> settings = (Map<String, Object>) settingsObject;
     Map<String, Object> languageServerExample = (Map<String, Object>) settings.get("languageTool");
@@ -242,26 +176,6 @@ class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware 
   public void connect(LanguageClient client) {
     this.client = client;
   }
-
-  // From org.languagetool.server.ApiV2
-  // private AnnotatedText getAnnotatedTextFromString(JsonNode data, String text) {
-  //   AnnotatedTextBuilder textBuilder = new AnnotatedTextBuilder().addText(text);
-  //   if (data.has("metaData")) {
-  //     JsonNode metaData = data.get("metaData");
-  //     Iterator<String> it = metaData.fieldNames();
-  //     while (it.hasNext()) {
-  //       String key = it.next();
-  //       String val = metaData.get(key).asText();
-  //       try {
-  //         AnnotatedText.MetaDataKey metaDataKey = AnnotatedText.MetaDataKey.valueOf(key);
-  //         textBuilder.addGlobalMetaData(metaDataKey, val);
-  //       } catch (IllegalArgumentException e) {
-  //         textBuilder.addGlobalMetaData(key, val);
-  //       }
-  //     }
-  //   }
-  //   return textBuilder.build();
-  // }
 
   // From org.languagetool.server.ApiV2
   private AnnotatedText getAnnotatedTextFromJson(JsonNode data) {
@@ -292,6 +206,189 @@ class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware 
       }
     }
     return atb.build();
+  }
+
+  /*******************************
+   * WorkspaceService
+   */
+  // WorkspaceService
+  @Override
+  public WorkspaceService getWorkspaceService() {
+    return this;
+  }
+
+  // WorkspaceService
+  @Override
+  public void didChangeConfiguration(DidChangeConfigurationParams params) {
+    this.setLanguage(params.getSettings());
+  }
+
+  // WorkspaceService
+  @Override
+  public void didChangeWatchedFiles(DidChangeWatchedFilesParams params) {
+    List<FileEvent> settings = params.getChanges();
+  }
+
+  // WorkspaceService
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  @Override
+  public CompletableFuture<Object> executeCommand(ExecuteCommandParams params) {
+    if (Objects.equals(params.getCommand(), TextEditCommand.getCommandName())) {
+      return ((CompletableFuture<Object>) (CompletableFuture) client
+        .applyEdit(new ApplyWorkspaceEditParams(new WorkspaceEdit(
+          (List<Either<TextDocumentEdit, ResourceOperation>>) (List) params.getArguments()))));
+    }
+    return CompletableFuture.completedFuture(false);
+  }
+
+  /*******************************
+   * TextDocumentService
+   */
+  // TextDocumentService
+  @Override
+  public CompletableFuture<Either<List<CompletionItem>, CompletionList>> completion(CompletionParams position) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<CompletionItem> resolveCompletionItem(CompletionItem unresolved) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<Hover> hover(TextDocumentPositionParams position) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<SignatureHelp> signatureHelp(TextDocumentPositionParams position) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<List<? extends Location>> definition(TextDocumentPositionParams position) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<List<? extends Location>> references(ReferenceParams params) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<List<? extends DocumentHighlight>> documentHighlight(TextDocumentPositionParams position) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<List<Either<SymbolInformation, DocumentSymbol>>> documentSymbol(DocumentSymbolParams params) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<List<Either<Command, CodeAction>>> codeAction(CodeActionParams params) {
+    if (params.getContext().getDiagnostics().isEmpty()) {
+      return CompletableFuture.completedFuture(Collections.emptyList());
+    }
+
+    TextDocumentItem document = this.documents.get(params.getTextDocument().getUri());
+
+    List<RuleMatch> matches = validateDocument(document);
+
+    DocumentPositionCalculator positionCalculator = new DocumentPositionCalculator(document.getText());
+
+    Stream<RuleMatch> relevant = matches.stream()
+      .filter(m -> locationOverlaps(m, positionCalculator, params.getRange()));
+
+    List<Either<Command, CodeAction>> commands = relevant
+      .flatMap(m -> getEditCommands(m, document, positionCalculator)).map(Either::<Command, CodeAction>forLeft)
+      .collect(Collectors.toList());
+
+    return CompletableFuture.completedFuture(commands);
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<List<? extends CodeLens>> codeLens(CodeLensParams params) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<CodeLens> resolveCodeLens(CodeLens unresolved) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<List<? extends TextEdit>> formatting(DocumentFormattingParams params) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<List<? extends TextEdit>> rangeFormatting(DocumentRangeFormattingParams params) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<List<? extends TextEdit>> onTypeFormatting(DocumentOnTypeFormattingParams params) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public CompletableFuture<WorkspaceEdit> rename(RenameParams params) {
+    return null;
+  }
+
+  // TextDocumentService
+  @Override
+  public void didOpen(DidOpenTextDocumentParams params) {
+    this.documents.put(params.getTextDocument().getUri(), params.getTextDocument());
+    this.publishIssues(params.getTextDocument().getUri());
+  }
+
+  // TextDocumentService
+  @Override
+  public void didChange(DidChangeTextDocumentParams params) {
+    String uri = params.getTextDocument().getUri();
+    for (TextDocumentContentChangeEvent changeEvent : params.getContentChanges()) {
+      // Will be full update because we specified that is all we support
+      if (changeEvent.getRange() != null) {
+        throw new UnsupportedOperationException("Range should be null for full document update.");
+      }
+      if (changeEvent.getRangeLength() != null) {
+        throw new UnsupportedOperationException("RangeLength should be null for full document update.");
+      }
+
+      this.documents.get(uri).setText(changeEvent.getText());
+      this.documents.get(uri).setVersion(params.getTextDocument().getVersion());
+    }
+
+    publishIssues(params.getTextDocument().getUri());
+  }
+
+  // TextDocumentService
+  @Override
+  public void didClose(DidCloseTextDocumentParams params) {
+    String uri = params.getTextDocument().getUri();
+    this.documents.remove(uri);
+  }
+
+  // TextDocumentService
+  @Override
+  public void didSave(DidSaveTextDocumentParams params) {
+    // Method blank in Adam's original code.
   }
 
 }
