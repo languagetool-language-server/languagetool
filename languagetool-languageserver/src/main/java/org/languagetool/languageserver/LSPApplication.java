@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-@SuppressWarnings("unused")
 public class LSPApplication {
   public static void main(String[] args) {
 
