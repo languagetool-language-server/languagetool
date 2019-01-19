@@ -36,7 +36,7 @@
             <roles><role>Maintainer</role></roles>
         </developer>
     </developers>
-    
+
     <build>
         <plugins>
             <plugin>
@@ -60,7 +60,7 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
-            </plugin>            
+            </plugin>
         </plugins>
     </build>
 
@@ -138,5 +138,5 @@
             <scope>test</scope>
         </dependency> -->
     </dependencies>
-    
+
 </project>
