@@ -29,7 +29,7 @@ public class Runner {
     InputStream in = System.in;
     OutputStream out = System.out;
 
-    if (args.length > 0 && "--port".equals(args[0])) {
+    if (args.length == 2 && "--port".equals(args[0])) {
       String port = args[1];
       try (Socket socket = new Socket("localhost", Integer.parseInt(port))) {
         in = socket.getInputStream();
