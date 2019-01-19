@@ -71,7 +71,7 @@ class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware 
     capabilities.setTextDocumentSync(TextDocumentSyncKind.Full);
     capabilities.setCodeActionProvider(true);
     capabilities
-        .setExecuteCommandProvider(new ExecuteCommandOptions(Collections.singletonList(TextEditCommand.CommandName)));
+        .setExecuteCommandProvider(new ExecuteCommandOptions(Collections.singletonList(TextEditCommand.getCommandName())));
     return CompletableFuture.completedFuture(new InitializeResult(capabilities));
   }
 
@@ -90,13 +90,15 @@ class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware 
   public TextDocumentService getTextDocumentService() {
     return new FullTextDocumentService(documents) {
 
+      private HashMap<String, TextDocumentItem> documents = new HashMap<String, TextDocumentItem>();
+
       @Override
       public CompletableFuture<List<Either<Command, CodeAction>>> codeAction(CodeActionParams params) {
         if (params.getContext().getDiagnostics().isEmpty()) {
           return CompletableFuture.completedFuture(Collections.emptyList());
         }
 
-        TextDocumentItem document = documents.get(params.getTextDocument().getUri());
+        TextDocumentItem document = this.documents.get(params.getTextDocument().getUri());
 
         List<RuleMatch> matches = validateDocument(document);
 
@@ -206,7 +208,7 @@ class LanguageToolLanguageServer implements LanguageServer, LanguageClientAware 
       @SuppressWarnings({"unchecked", "rawtypes"})
       @Override
       public CompletableFuture<Object> executeCommand(ExecuteCommandParams params) {
-        if (Objects.equals(params.getCommand(), TextEditCommand.CommandName)) {
+        if (Objects.equals(params.getCommand(), TextEditCommand.getCommandName())) {
           return ((CompletableFuture<Object>) (CompletableFuture) client
               .applyEdit(new ApplyWorkspaceEditParams(new WorkspaceEdit(
                   (List<Either<TextDocumentEdit, ResourceOperation>>) (List) params.getArguments()))));

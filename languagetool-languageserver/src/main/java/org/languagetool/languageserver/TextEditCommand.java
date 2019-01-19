@@ -13,7 +13,12 @@
  */
 package org.languagetool.languageserver;
 
-import org.eclipse.lsp4j.*;
+import org.eclipse.lsp4j.Command;
+import org.eclipse.lsp4j.Range;
+import org.eclipse.lsp4j.TextDocumentEdit;
+import org.eclipse.lsp4j.TextDocumentItem;
+import org.eclipse.lsp4j.VersionedTextDocumentIdentifier;
+import org.eclipse.lsp4j.TextEdit;
 
 import java.util.Collections;
 
@@ -30,4 +35,9 @@ class TextEditCommand extends Command {
         Collections.singletonList(new TextDocumentEdit(id, Collections.singletonList(new TextEdit(range, title)))));
     this.setTitle(title);
   }
+
+  public static final String getCommandName() {
+    return TextEditCommand.CommandName;
+  }
+
 }
