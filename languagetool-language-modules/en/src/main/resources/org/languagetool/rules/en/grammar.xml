@@ -580,11 +580,13 @@ USA
                     <token/>
                     <token>and</token>
                     <marker><token>me</token></marker>
-                    <token postag="VB.?" postag_regexp="yes"/>
+                    <token postag="VB.?|MD" postag_regexp="yes"/>
                 </pattern>
                 <message>Did you mean <suggestion>I</suggestion>?</message>
-                <url>http://data.grammarbook.com/blog/pronouns/tis-i-or-tis-me/</url>
+                <url>https://data.grammarbook.com/blog/pronouns/tis-i-or-tis-me/</url>
                 <example correction="I">Tim and <marker>me</marker> work together.</example>
+                <example correction="I">Digitization and <marker>me</marker> don't agree.</example><!-- Anthropomorphism. -->
+                <example correction="I">Mary and <marker>me</marker> would often walk in the park.</example>
             </rule>
             <rule>
                 <pattern>
@@ -595,7 +597,7 @@ USA
                     <token postag="SENT_END"/>
                 </pattern>
                 <message>Did you mean <suggestion><match no="4" regexp_match="I" regexp_replace="me" case_conversion="startlower"/></suggestion>?</message>
-                <url>http://data.grammarbook.com/blog/pronouns/tis-i-or-tis-me/</url>
+                <url>https://data.grammarbook.com/blog/pronouns/tis-i-or-tis-me/</url>
                 <example correction="me">He gave it to Tim and <marker>I</marker>.</example>
                 <example>We need to talk, just you and I.</example>
             </rule>
@@ -640,10 +642,11 @@ USA
                     <token></token>
                     <token>and</token>
                     <marker><token>me</token></marker>
-                    <token postag="VB.?" postag_regexp="yes"/>
+                    <token postag="VB.?|MD" postag_regexp="yes"/>
                 </pattern>
                 <message>Did you mean <suggestion>I</suggestion>?</message>
                 <example correction="I">My mother and <marker>me</marker> went to California.</example>
+                <example correction="I">My brother and <marker>me</marker> would often go to the cinema.</example>
             </rule>
             <rule>
                 <pattern case_sensitive="yes">
@@ -663,10 +666,11 @@ USA
                     <token></token>
                     <token>and</token>
                     <marker><token>him</token></marker>
-                    <token postag="VB.?" postag_regexp="yes"/>
+                    <token postag="VB.?|MD" postag_regexp="yes"/>
                 </pattern>
                 <message>Did you mean <suggestion>he</suggestion>?</message>
                 <example correction="he">My mother and <marker>him</marker> went to California.</example>
+                <example correction="he">My sister and <marker>him</marker> might go to Paris.</example>
             </rule>
             <rule>
                 <pattern case_sensitive="yes">
@@ -675,10 +679,11 @@ USA
                     <token></token>
                     <token>and</token>
                     <marker><token>her</token></marker>
-                    <token postag="VB.?" postag_regexp="yes"/>
+                    <token postag="VB.?|MD" postag_regexp="yes"/>
                 </pattern>
                 <message>Did you mean <suggestion>she</suggestion>?</message>
                 <example correction="she">My mother and <marker>her</marker> went to California.</example>
+                <example correction="she">My brother and <marker>her</marker> would often argue.</example>
             </rule>
         </rulegroup>
         <rulegroup id="CONFUSION_OF_BEEN_BEING" name="been (being)">
@@ -3492,6 +3497,10 @@ USA
                     <token>arms</token>
                     <token regexp="yes">shipments?</token>
                 </antipattern>
+                <antipattern><!-- boundaries on spaces comes the question of -->
+                    <token postag_regexp="yes" postag="NNP?S"/>
+                    <token chunk="B-VP"/>
+                </antipattern>
                 <pattern>
                     <token><exception postag="PRP$"/><exception inflected="yes" regexp="yes">give|avail|serve</exception></token>
                     <token postag="DT|JJ.*" postag_regexp="yes"><exception postag="CD"/></token>
@@ -3525,6 +3534,11 @@ USA
                 <example>The incident resulted in a human resources complaint.</example>
                 <example>This will make the malicious <marker>programs</marker> spam the persons who have an entry in the address book.</example><!-- http://forum.languagetool.org/t/en-possible-false-positive-2017-05-31/1727/1 -->
                 <example>The <marker>arms shipment</marker> is not satisfactory.</example>
+                <example>With the ability to impose boundaries on <marker>spaces</marker> comes the question of how...</example>
+                <example>The <marker>devices</marker> comes in a number of variations where they can be...</example><!-- 'comes' is the start of a verb phrase. AGREEMENT_SENT_START[1] finds the problem -->
+                <example>The <marker>samples</marker> tests were not satisfactory.</example><!-- False negative, not related to the addition of the antipattern for 'boundaries on spaces' on 2019-01-18 -->
+                <example>The <marker>standards</marker> committee decided against shifting, and so ASCII ...</example><!-- False negative? The term 'standards committee' is possible, but in some contexts, the term is possibly incorrect. Cause: the chunker incorrectly gives 'B-VP' to committee. -->
+                <example>Much of the material in these <marker>articles</marker> comes from the CIA World Factbook 2000 and the...</example>
             </rule>
             <rule>
                 <antipattern>
@@ -5998,7 +6012,9 @@ USA
                 <token>the</token>
                 <token>only</token>
             </pattern>
-            <message>Did you mean <suggestion>one of the few</suggestion>?</message>
+            <message>Some people suggest that the phrase is idiomatic or illogical and that a better option is <suggestion>one of the few</suggestion>.</message>
+            <url>https://sesquiotic.com/2011/09/06/are-you-one-of-the-only-people-bothered-by-this/</url>
+            <!-- https://brians.wsu.edu/2016/05/19/one-of-the-only/ -->
             <example correction="one of the few">He's <marker>one of the only</marker> magicians in Providence.</example>
             <example>She's one of the few musicians with an accordion.</example>
         </rule>
@@ -7051,6 +7067,25 @@ USA
             <example><marker>Thank you</marker> for your help.</example>
             <example>He <marker>thanks</marker> you for your help.</example>
             <example><marker>Thanks</marker>, you are good to me.</example>
+        </rule>
+        <rule id="HI_TIME" name="hi (his, high) time">
+            <antipattern><!-- Assume initial caps is NNP -->
+                <token case_sensitive="yes" regexp="yes">[A-Z][a-z].+</token>
+                <token case_sensitive="yes" regexp="yes">[A-Z][a-z].+</token>
+            </antipattern>
+            <pattern>
+                <marker>
+                    <token>hi</token>
+                    <token>time</token>
+                </marker>
+            </pattern>
+            <message>Do you mean <suggestion>high \2</suggestion> or <suggestion>his \2</suggestion>?</message>
+            <url>https://www.collinsdictionary.com/dictionary/english/high-time</url>
+            <short>Possible typo</short>
+            <example correction="high time|his time">It's <marker>hi time</marker> you did this work.</example>
+            <example correction="high time|his time">During <marker>hi time</marker> with our organization, Jones made many improvements.</example>
+            <example>It's <marker>high time</marker> you did this work.</example>
+            <example><marker>Hi Time Wine Cellars</marker> is excited to introduce Mount Michael Wines to...</example>
         </rule>
     </category>
 
