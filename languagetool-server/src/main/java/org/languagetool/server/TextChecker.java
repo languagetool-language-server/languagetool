@@ -57,7 +57,8 @@ abstract class TextChecker {
                                         List<RuleMatch> hiddenMatches, String incompleteResultReason);
   @NotNull
   protected abstract List<String> getPreferredVariants(Map<String, String> parameters);
-  protected abstract DetectedLanguage getLanguage(String text, Map<String, String> parameters, List<String> preferredVariants, List<String> additionalDetectLangs);
+  protected abstract DetectedLanguage getLanguage(String text, Map<String, String> parameters, List<String> preferredVariants,
+                                                  List<String> additionalDetectLangs, List<String> preferredLangs);
   protected abstract boolean getLanguageAutoDetect(Map<String, String> parameters);
   @NotNull
   protected abstract List<String> getEnabledRuleIds(Map<String, String> parameters);
@@ -99,6 +100,7 @@ abstract class TextChecker {
     } else {
       this.logServerId = null;
     }
+
     pipelinePool = new PipelinePool(config, cache, internalServer);
     if (config.isPipelinePrewarmingEnabled()) {
       ServerTools.print("Prewarming pipelines...");
@@ -110,6 +112,11 @@ abstract class TextChecker {
       if (config.getAbTest().equals("SuggestionsOrderer")) {
         SuggestionsOrdererConfig.setMLSuggestionsOrderingEnabled(true);
       }
+    }
+    // enable logging after warmup to avoid false alarms
+    if (config.getSlowRuleLoggingThreshold() >= 0) {
+      //RuleLoggerManager.getInstance().addLogger(new SlowRuleLogger(this.logServerId, config.getSlowRuleLoggingThreshold()));
+      RuleLoggerManager.getInstance().addLogger(new SlowRuleLogger(System.out, config.getSlowRuleLoggingThreshold()));
     }
   }
 
@@ -204,7 +211,9 @@ abstract class TextChecker {
     }
     List<String> noopLangs = parameters.get("noopLanguages") != null ?
             Arrays.asList(parameters.get("noopLanguages").split(",")) : Collections.emptyList();
-    DetectedLanguage detLang = getLanguage(aText.getPlainText(), parameters, preferredVariants, noopLangs);
+    List<String> preferredLangs = parameters.get("preferredLanguages") != null ?
+            Arrays.asList(parameters.get("preferredLanguages").split(",")) : Collections.emptyList();
+    DetectedLanguage detLang = getLanguage(aText.getPlainText(), parameters, preferredVariants, noopLangs, preferredLangs);
     Language lang = detLang.getGivenLanguage();
     Integer count = languageCheckCounts.get(lang.getShortCodeWithCountryAndVariant());
     if (count == null) {
@@ -347,7 +356,7 @@ abstract class TextChecker {
       if(config.getHiddenMatchesServerFailTimeout() > 0 && lastHiddenMatchesServerTimeout != -1 &&
         System.currentTimeMillis() - lastHiddenMatchesServerTimeout < config.getHiddenMatchesServerFailTimeout()) {
         print("Warn: Skipped querying hidden matches server at " +
-          config.getHiddenMatchesServer() + " because of recent error/timeout.");
+          config.getHiddenMatchesServer() + " because of recent error/timeout (timeout=" + config.getHiddenMatchesServerFailTimeout() + "ms).");
       } else {
         ResultExtender resultExtender = new ResultExtender(config.getHiddenMatchesServer(), config.getHiddenMatchesServerTimeout());
         try {
@@ -471,8 +480,9 @@ abstract class TextChecker {
     return result;
   }
 
-  DetectedLanguage detectLanguageOfString(String text, String fallbackLanguage, List<String> preferredVariants, List<String> noopLangs) {
-    DetectedLanguage detected = identifier.detectLanguage(text, noopLangs);
+  DetectedLanguage detectLanguageOfString(String text, String fallbackLanguage, List<String> preferredVariants,
+                                          List<String> noopLangs, List<String> preferredLangs) {
+    DetectedLanguage detected = identifier.detectLanguage(text, noopLangs, preferredLangs);
     Language lang;
     if (detected == null) {
       lang = Languages.getLanguageForShortCode(fallbackLanguage != null ? fallbackLanguage : "en");

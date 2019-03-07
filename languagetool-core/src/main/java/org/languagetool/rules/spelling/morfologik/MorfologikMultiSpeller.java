@@ -32,10 +32,13 @@ import org.jetbrains.annotations.Nullable;
 import org.languagetool.Experimental;
 import org.languagetool.JLanguageTool;
 import org.languagetool.UserConfig;
+import org.languagetool.rules.spelling.SpellingCheckRule;
 
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+
+import static java.nio.charset.StandardCharsets.*;
 
 /**
  * Morfologik speller that merges results from binary (.dict) and plain text (.txt) dictionaries.
@@ -53,6 +56,7 @@ public class MorfologikMultiSpeller {
               List<byte[]> lines = getLines(reader.reader);
               if (reader.languageVariantReader != null) {
                 lines.addAll(getLines(reader.languageVariantReader));
+                lines.add(SpellingCheckRule.LANGUAGETOOL.getBytes());  // adding here so it's also used for suggestions
               }
               return lines;
             }
@@ -76,14 +80,16 @@ public class MorfologikMultiSpeller {
   public MorfologikMultiSpeller(String binaryDictPath, String plainTextPath, String languageVariantPlainTextPath,
     UserConfig userConfig, int maxEditDistance) throws IOException {
     this(binaryDictPath,
-         new BufferedReader(new InputStreamReader(JLanguageTool.getDataBroker().getFromResourceDirAsStream(plainTextPath), "utf-8")),
+         plainTextPath != null ? new BufferedReader(new InputStreamReader(JLanguageTool.getDataBroker().getFromResourceDirAsStream(plainTextPath), UTF_8)) : null,
          plainTextPath,
-         languageVariantPlainTextPath == null ? null : new BufferedReader(new InputStreamReader(JLanguageTool.getDataBroker().getFromResourceDirAsStream(languageVariantPlainTextPath), "utf-8")),
+         languageVariantPlainTextPath == null ? null : new BufferedReader(new InputStreamReader(JLanguageTool.getDataBroker().getFromResourceDirAsStream(languageVariantPlainTextPath), UTF_8)),
          languageVariantPlainTextPath,
          userConfig != null ? userConfig.getAcceptedWords(): Collections.emptyList(),
          maxEditDistance);
-    if (!plainTextPath.endsWith(".txt") || (languageVariantPlainTextPath != null && !languageVariantPlainTextPath.endsWith(".txt"))) {
-      throw new RuntimeException("Unsupported dictionary, plain text file needs to have suffix .txt: " + plainTextPath);
+    if (plainTextPath != null) {
+      if (!plainTextPath.endsWith(".txt") || (languageVariantPlainTextPath != null && !languageVariantPlainTextPath.endsWith(".txt"))) {
+        throw new RuntimeException("Unsupported dictionary, plain text file needs to have suffix .txt: " + plainTextPath);
+      }
     }
   }
 
@@ -105,10 +111,12 @@ public class MorfologikMultiSpeller {
     }
     spellers.add(speller);
     convertsCase = speller.convertsCase();
-    MorfologikSpeller plainTextSpeller = getPlainTextDictSpellerOrNull(plainTextReader, plainTextReaderPath,
-      languageVariantPlainTextReader, languageVariantPlainTextPath, binaryDictPath, maxEditDistance);
-    if (plainTextSpeller != null) {
-      spellers.add(plainTextSpeller);
+    if (plainTextReader != null) {
+      MorfologikSpeller plainTextSpeller = getPlainTextDictSpellerOrNull(plainTextReader, plainTextReaderPath,
+              languageVariantPlainTextReader, languageVariantPlainTextPath, binaryDictPath, maxEditDistance);
+      if (plainTextSpeller != null) {
+        spellers.add(plainTextSpeller);
+      }
     }
     this.spellers = Collections.unmodifiableList(spellers);
   }
@@ -119,7 +127,7 @@ public class MorfologikMultiSpeller {
     }
     List<byte[]> byteLines = new ArrayList<>();
     for (String line : userWords) {
-      byteLines.add(line.getBytes("utf-8"));
+      byteLines.add(line.getBytes(UTF_8));
     }
     Dictionary dictionary = getDictionary(byteLines, dictPath, dictPath.replace(".dict", ".info"), false);
     return new MorfologikSpeller(dictionary, maxEditDistance);
@@ -149,7 +157,7 @@ public class MorfologikMultiSpeller {
     String line;
     while ((line = br.readLine()) != null) {
       if (!line.startsWith("#")) {
-        lines.add(StringUtils.substringBefore(line,"#").trim().getBytes("utf-8"));
+        lines.add(StringUtils.substringBefore(line,"#").trim().getBytes(UTF_8));
       }
     }
     return lines;

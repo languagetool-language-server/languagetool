@@ -29,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -56,6 +57,11 @@ public abstract class AbstractDashRule extends Rule {
   public abstract String getDescription();
 
   @Override
+  public int estimateContextForSureMatch() {
+    return 2;
+  }
+
+  @Override
   public RuleMatch[] match(AnalyzedSentence sentence) throws IOException {
     List<RuleMatch> matches = new ArrayList<>();
     for (PatternRule dashRule : dashRules) {
@@ -66,14 +72,14 @@ public abstract class AbstractDashRule extends Rule {
         matches.add(rm);
       }
     }
-    return matches.toArray(new RuleMatch[matches.size()]);
+    return matches.toArray(new RuleMatch[0]);
   }
 
   protected static List<PatternRule> loadCompoundFile(String path, String msg, Language lang) {
     List<PatternRule> rules = new ArrayList<>();
     try (
         InputStream stream = JLanguageTool.getDataBroker().getFromResourceDirAsStream(path);
-        InputStreamReader reader = new InputStreamReader(stream, "utf-8");
+        InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
         BufferedReader br = new BufferedReader(reader)
     ) {
       String line;

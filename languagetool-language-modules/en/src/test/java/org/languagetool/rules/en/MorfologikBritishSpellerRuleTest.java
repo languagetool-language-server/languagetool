@@ -46,7 +46,17 @@ public class MorfologikBritishSpellerRuleTest extends AbstractEnglishSpellerRule
     // suggestions from language specific spelling_en-XX.txt
     assertSuggestion(rule, langTool, "GBTestWordToBeIgnore", "GBTestWordToBeIgnored");
   }
-  
+
+  @Test
+  public void testVariantMessages() throws IOException {
+    BritishEnglish language = new BritishEnglish();
+    JLanguageTool lt = new JLanguageTool(language);
+    Rule rule = new MorfologikBritishSpellerRule(TestTools.getMessages("en"), language, null, Collections.emptyList());
+    RuleMatch[] matches = rule.match(lt.getAnalyzedSentence("This is a nice color."));
+    assertEquals(1, matches.length);
+    assertTrue(matches[0].getMessage().contains("is American English"));
+  }
+
   @Test
   public void testMorfologikSpeller() throws IOException {
     BritishEnglish language = new BritishEnglish();
@@ -66,6 +76,8 @@ public class MorfologikBritishSpellerRuleTest extends AbstractEnglishSpellerRule
     assertEquals(0, rule.match(langTool.getAnalyzedSentence("This is my Ph.D. thesis.")).length);
     assertEquals(0, rule.match(langTool.getAnalyzedSentence(",")).length);
     assertEquals(0, rule.match(langTool.getAnalyzedSentence("123454")).length);
+    // Greek letters
+    assertEquals(0, rule.match(langTool.getAnalyzedSentence("μ")).length);
 
     //incorrect sentences:
 

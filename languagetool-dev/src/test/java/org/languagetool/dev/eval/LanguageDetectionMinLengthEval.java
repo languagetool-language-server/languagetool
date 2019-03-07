@@ -46,6 +46,7 @@ class LanguageDetectionMinLengthEval {
 
   private LanguageDetectionMinLengthEval() {
     languageIdentifier = new LanguageIdentifier();
+    //languageIdentifier = new CLD2Identifier();
     //languageIdentifier.enableFasttext(new File("/path/to/fasttext/binary"), new File("/path/to/fasttext/model"));
     // Daniel's paths:
     //languageIdentifier.enableFasttext(new File("/prg/fastText-0.1.0/fasttext"), new File("/prg/fastText-0.1.0/data/lid.176.bin"));
@@ -91,7 +92,7 @@ class LanguageDetectionMinLengthEval {
     int textLength = 1;
     for (int i = line.length(); i > 0; i--) {
       String text = line.substring(0, i);
-      DetectedLanguage detectedLangObj = languageIdentifier.detectLanguage(text, Collections.emptyList());
+      DetectedLanguage detectedLangObj = languageIdentifier.detectLanguage(text, Collections.emptyList(), Collections.emptyList());
       String detectedLang = null;
       if (detectedLangObj != null) {
         detectedLang = detectedLangObj.getDetectedLanguage().getShortCode();
@@ -106,7 +107,7 @@ class LanguageDetectionMinLengthEval {
         //System.out.println("TEXT     : " + line);
         //System.out.println("TOO SHORT : " + text + " => " + detectedLang + " (" + textLength + ")");
       } else if (!expectedLanguage.getShortCode().equals(detectedLang)){
-        System.out.printf(Locale.ENGLISH, "WRONG: Expected %s, but got %s -> %s (%.2f)%n", expectedLanguage.getShortCode(), detectedLang, text, detectedLangObj.getDetectionConfidence());
+        //System.out.printf(Locale.ENGLISH, "WRONG: Expected %s, but got %s -> %s (%.2f)%n", expectedLanguage.getShortCode(), detectedLang, text, detectedLangObj.getDetectionConfidence());
         if (textLength == 1) {
           textLength = i + 1;
         }

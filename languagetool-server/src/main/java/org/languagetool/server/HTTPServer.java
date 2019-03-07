@@ -20,6 +20,8 @@ package org.languagetool.server;
 
 import com.sun.net.httpserver.HttpServer;
 import org.languagetool.JLanguageTool;
+import org.languagetool.RuleLoggerManager;
+import org.languagetool.SlowRuleLogger;
 import org.languagetool.tools.Tools;
 
 import javax.management.ObjectName;
@@ -108,9 +110,6 @@ public class HTTPServer extends Server {
       server.createContext("/", httpHandler);
       executorService = getExecutorService(workQueue, config);
       server.setExecutor(executorService);
-      if (config.getWarmUp()) {
-        warmUp();
-      }
     } catch (Exception e) {
       ResourceBundle messages = JLanguageTool.getMessageBundle();
       String message = Tools.i18n(messages, "http_server_start_failed", host, Integer.toString(port));
@@ -139,9 +138,9 @@ public class HTTPServer extends Server {
     try {
       checkForNonRootUser();
       HTTPServer server;
-      System.out.println("WARNING: running in HTTP mode, consider using " + HTTPSServer.class.getName() + " for encrypted connections");
+      ServerTools.print("WARNING: running in HTTP mode, consider using " + HTTPSServer.class.getName() + " for encrypted connections");
       if (config.isPublicAccess()) {
-        System.out.println("WARNING: running in public mode, LanguageTool API can be accessed without restrictions!");
+        ServerTools.print("WARNING: running in public mode, LanguageTool API can be accessed without restrictions!");
         server = new HTTPServer(config, false, null, null);
       } else {
         server = new HTTPServer(config, false, DEFAULT_HOST, DEFAULT_ALLOWED_IPS);

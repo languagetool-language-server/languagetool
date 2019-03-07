@@ -170,12 +170,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                     <token regexp="yes">\d\d?</token>
                     <token min="0" regexp="yes">de|d'</token>
                     <token regexp="yes">&mesos_any;|&mesos_any_abrev;</token>
-                    <token> de</token>
+                    <token>de</token>
                     <token spacebefore="no" min="0">l</token>
                     <token regexp="yes">\d\d\d\d</token>
                 </pattern>
                 <filter class="org.languagetool.rules.ca.DateCheckFilter" args="year:\8 month:\5 day:\3 weekDay:\1"/>
-                <message>Aquesta data no és un <match no="1" case_conversion="alllower"/> sinó un {realDay}.</message>
+                <message>Aquesta data no és un {day} sinó un {realDay}.</message>
                 <example correction=""><marker>Dilluns, 7 d'octubre de 2014</marker></example>
                 <example correction=""><marker>Dilluns 7 d'octubre de 2014</marker></example>
                 <example><marker>Dimarts, 7 d'octubre de 2014</marker></example>
@@ -183,6 +183,39 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <example correction=""><marker>Dilluns 7 d'octubre del 2014</marker></example>
                 <example><marker>Dimarts, 7 d'octubre del 2014</marker></example>
                 <example><marker>Washington DC, 7 d'octubre del 2014</marker></example>
+            </rule>
+            <rule>
+                <antipattern>
+                    <marker>
+                        <token regexp="yes">&mesos_any;|&mesos_any_abrev;</token>
+                        <token>de</token>
+                        <token spacebefore="no" min="0">l</token>
+                        <token regexp="yes">\d\d\d\d</token>
+                    </marker>
+                </antipattern>
+                <antipattern>
+                    <marker>
+                        <token regexp="yes">&mesos_any;|&mesos_any_abrev;</token>
+                        <token regexp="yes">\d\d\d\d</token>
+                    </marker>
+                </antipattern>
+                <pattern>
+                    <!-- "Dilluns, 7 d'octubre " -->
+                    <token regexp="yes">&dies_setmana;|&dies_setmana_abrev;</token>
+                    <token min="0">,</token>
+                    <token regexp="yes">\d\d?</token>
+                    <token min="0" regexp="yes">de|d'</token>
+                    <token regexp="yes">&mesos_any;|&mesos_any_abrev;</token>
+                </pattern>
+                <filter class="org.languagetool.rules.ca.DateCheckFilter" args="month:\5 day:\3 weekDay:\1"/>
+                <message>Si us referiu a l'any actual ({currentYear}), aquesta data no és un {day} sinó un {realDay}.</message>
+                <example correction=""><marker>Dilluns 7 d'octubre</marker></example>
+                <example correction=""><marker>Dilluns, 7 d'octubre</marker></example>
+                <example><marker>Dimarts, 7 d'octubre</marker></example>
+                <example><marker>Washington DC, 7 d'octubre</marker></example>
+                <example>Dilluns 27 de novembre de 1922</example>
+                <example>Dilluns 27 de novembre del 1922</example>
+                <example>Dilluns 27 de novembre 1922</example>
             </rule>
             <!-- "Dilluns, 7 oct 2014" -->
             <rule>
@@ -199,6 +232,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <example correction=""><marker>Dilluns 7 oct 2014</marker></example>
                 <example><marker>Dimarts, 7 oct 2014</marker></example>
             </rule>
+
         </rulegroup>
     </category>
     <category id="REGIONAL_NON_VERBS" name="A2) Variants regionals: accentuació, possessius, demostratius, pronoms" default="on"  type="locale-violation">
@@ -2530,6 +2564,55 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <message>Possible error de concordança.</message>
                 <suggestion>totes soles</suggestion>
                 <example correction="totes soles">Ho van fer <marker>tot soles</marker>.</example>
+            </rule>
+        </rulegroup>
+        <rulegroup id="CONCORDANCES_QUIN" name="concordances quin/quina/quins/quines">
+            <rule>
+                <pattern>
+                    <marker>
+                        <token>quins</token>
+                    </marker>
+                    <token max="3" postag="V.*" postag_regexp="yes"></token>
+                    <token postag="D[AD].FP." postag_regexp="yes"/>
+                </pattern>
+                <message>Possible error de concordança.</message>
+                <suggestion>quines</suggestion>
+                <example correction="Quines"><marker>Quins</marker> poden haver estat les causes?</example>
+                <example correction="Quines"><marker>Quins</marker> són les qüestions més interessants?</example>
+            </rule>
+            <rule>
+                <pattern>
+                    <marker>
+                        <token>quines</token>
+                    </marker>
+                    <token max="3" postag="V.*" postag_regexp="yes"></token>
+                    <token postag="D[AD].MP." postag_regexp="yes"/>
+                </pattern>
+                <message>Possible error de concordança.</message>
+                <suggestion>quins</suggestion>
+                <example correction="Quins"><marker>Quines</marker> poden haver estat els causants?</example>
+            </rule>
+            <rule>
+                <pattern>
+                    <marker>
+                        <token>quin</token>
+                    </marker>
+                    <token postag="V...3P.." postag_regexp="yes"></token>
+                </pattern>
+                <message>Possible error de concordança.</message>
+                <suggestion>quins</suggestion>
+                <example correction="Quins"><marker>Quin</marker> són els llibres més interessants?</example>
+            </rule>
+            <rule>
+                <pattern>
+                    <marker>
+                        <token>quina</token>
+                    </marker>
+                    <token postag="V...3P.." postag_regexp="yes"></token>
+                </pattern>
+                <message>Possible error de concordança.</message>
+                <suggestion>quines</suggestion>
+                <example correction="Quines"><marker>Quina</marker> són les qüestions més interessants?</example>
             </rule>
         </rulegroup>
         <rulegroup id="UN_DE_LES" name="Concordances dubtoses «un de les»">
@@ -7953,7 +8036,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
     </category>
     <category id="DATES" name="Expressions de temps i datació">
         <rulegroup id="A_L_ABRIL_DE_1994" name="expressions de temps: *a l'abril/l'abril de 1994">
-            <url>http://esadir.cat/gramatica/sintaxi/remartmesany</url>
+            <url>http://esadir.cat/gramatica/sintaxi/prepatemporal</url>
             <rule>
                 <pattern>
                     <marker>
@@ -8049,7 +8132,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             </pattern>
             <message>Normalment s'escriu amb article.</message>
             <suggestion>del \2</suggestion>
-            <url>http://esadir.cat/gramatica/sintaxi/remartmesany</url>
+            <url>http://esadir.cat/gramatica/sintaxi/prepatemporal</url>
             <example correction="del 2010">és <marker>de 2010</marker>.</example>
             <example>de 2001 a 2015</example>
             <example>23 de febrer de 2003</example>
@@ -8057,7 +8140,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <example>És de 2000 anys aC.</example>
         </rule>
         <rulegroup id="PER_LA_NIT" name="Exigeix 'a la nit' en comptes de 'per la nit'">
-            <url>http://esadir.cat/entrades/fitxa/node/pel_mati</url>
+            <url>http://esadir.cat/gramatica/sintaxi/prepatemporal</url>
             <rule>
                 <pattern>
                     <token>pe</token>
@@ -10236,7 +10319,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <suggestion>pel fet que</suggestion>
                 <suggestion>a causa del fet que</suggestion>
                 <suggestion>gràcies al fet que</suggestion>
-                <url>http://esadir.cat/gramatica/sintaxi/acausadegut</url>
+                <url>http://esadir.cat/entrades/fitxa/node/degut_a</url>
                 <example correction="com que|perquè|ja que|pel fet que|a causa del fet que|gràcies al fet que"><marker>degut a que</marker></example>
                 <example>a causa que</example>
             </rule>
@@ -10251,7 +10334,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Expressió incorrecta.</message>
                 <suggestion>degut al fet que</suggestion>
-                <url>http://esadir.cat/gramatica/sintaxi/acausadegut</url>
+                <url>http://esadir.cat/entrades/fitxa/node/degut_a</url>
                 <example correction="degut al fet que">Això és <marker>degut a que</marker> sempre ve tard.</example>
                 <example>a causa que</example>
             </rule>
@@ -10492,7 +10575,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <suggestion>per</suggestion>
                 <suggestion>per culpa de</suggestion>
                 <suggestion>gràcies a</suggestion>
-                <url>http://esadir.cat/gramatica/sintaxi/acausadegut</url>
+                <url>http://esadir.cat/entrades/fitxa/node/degut_a</url>
                 <short>Possible error</short>
                 <example correction="a causa de|per|per culpa de|gràcies a">Es va suspendre l'actuació <marker>degut a</marker> la pluja</example>
                 <example correction="a causa de|per|per culpa de|gràcies a">Es va suspendre el partit <marker>degut a</marker> la pluja</example>
@@ -10523,7 +10606,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <suggestion>pe<match no="4"/></suggestion>
                 <suggestion>per culpa de<match no="4"/></suggestion>
                 <suggestion>gràcies a<match no="4"/></suggestion>
-                <url>http://esadir.cat/gramatica/sintaxi/acausadegut</url>
+                <url>http://esadir.cat/entrades/fitxa/node/degut_a</url>
                 <short>Possible error</short>
                 <example correction="a causa del|pel|per culpa del|gràcies al">Es va suspendre l'actuació <marker>degut al</marker> mal oratge.</example>
                 <example correction="a causa del|pel|per culpa del|gràcies al">Es va suspendre el partit <marker>degut al</marker> mal oratge.</example>
@@ -10545,7 +10628,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <message>Error de sintaxi.</message>
                 <suggestion><match no="1"/> què</suggestion>
                 <suggestion><match no="1"/> <match no="2"/> <match no="2" postag="DA..(.)." postag_regexp="yes" postag_replace="PR0C$1000">qual</match></suggestion>
-                <url>http://esadir.cat/entrades/fitxa/node/pronrel</url>
+                <url>http://esadir.cat/entrades/fitxa/node/Relatius_preposicio</url>
                 <short>Error de sintaxi</short>
                 <example correction="en què|en el qual">El lloc <marker>en el què</marker> el van trobar.</example>
                 <example correction="a què|a la qual">La feina <marker>a la què</marker> em referia.</example>
@@ -10564,7 +10647,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <message>Error de sintaxi.</message>
                 <suggestion><match no="1"/> què</suggestion>
                 <suggestion><match no="1"/><match no="2"/> <match no="2" postag="DA..(.)." postag_regexp="yes" postag_replace="PR0C$1000">qual</match></suggestion>
-                <url>http://esadir.cat/entrades/fitxa/node/pronrel</url>
+                <url>http://esadir.cat/entrades/fitxa/node/Relatius_preposicio</url>
                 <short>Error de sintaxi</short>
                 <example correction="de què|del qual">El lloc <marker>del què</marker> parlàvem.</example>
                 <example correction="de què|dels quals">Els llocs <marker>dels què</marker> parlàvem.</example>
@@ -10584,7 +10667,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <suggestion><match no="1"/><match no="2"/> <match no="2" postag="DA..(.)." postag_regexp="yes" postag_replace="PR0C$1000">qual</match></suggestion>
                 <suggestion>per què</suggestion>
                 <suggestion><match no="1"/><match no="2"/> que</suggestion>
-                <url>http://esadir.cat/entrades/fitxa/node/pronrel</url>
+                <url>http://esadir.cat/entrades/fitxa/node/Relatius_preposicio</url>
                 <short>Error de sintaxi</short>
                 <example correction="pel qual|per què|pel que">El tema <marker>pel què</marker> pregunta.</example>
                 <example>Pregunta pel què i pel com</example>
@@ -11046,18 +11129,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <example>La projecto cap a fora.</example>
             <example>El castell que projecto.</example>
             <example>Projecto certa simpatia.</example>
-        </rule>
-        <rule id="QUINS_QUINES" name="*quins/quines són les">
-            <pattern>
-                <marker>
-                    <token>quins</token>
-                </marker>
-                <token max="3" postag="V.*" postag_regexp="yes"></token>
-                <token>les</token>
-            </pattern>
-            <message>Possible error de traducció automàtica.</message>
-            <suggestion>quines</suggestion>
-            <example correction="Quines"><marker>Quins</marker> poden haver estat les causes?</example>
         </rule>
         <rule id="AQUESTS_AQUESTES" name="*aquests/aquestes són les">
             <pattern>
@@ -12974,12 +13045,27 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                         <token>atenent</token>
                         <token>a</token>
                     </marker>
+                    <token postag="D.*" postag_regexp="yes"/>
                 </pattern>
                 <message>En el sentit de "tenir en compte" el verb "atendre" és transitiu.</message>
-                <suggestion>atenent</suggestion>
+                <suggestion><match no="4" postag="D..(.)(.)." postag_regexp="yes" postag_replace="VMP00$2$10">atendre</match></suggestion>
                 <suggestion>atenint-nos a</suggestion>
                 <suggestion>tenint en compte</suggestion>
-                <example correction="Atenent|Atenint-nos a|Tenint en compte"><marker>Atenent a</marker> aquesta qüestió.</example>
+                <example correction="Ateses|Atenint-nos a|Tenint en compte"><marker>Atenent a</marker> les circumstàncies.</example>
+                <example>Atenent a tots els clients</example>
+            </rule>
+            <rule>
+                <pattern>
+                    <token postag="SENT_START|_PUNCT.*" postag_regexp="yes"/>
+                    <marker>
+                        <token>atenent</token>
+                        <token>a</token>
+                    </marker>
+                </pattern>
+                <message>En el sentit de "tenir en compte" el verb "atendre" és transitiu.</message>
+                <suggestion>atenint-nos a</suggestion>
+                <suggestion>tenint en compte</suggestion>
+                <example correction="Atenint-nos a|Tenint en compte"><marker>Atenent a</marker> aquesta qüestió.</example>
                 <example>Atenent a tots els clients</example>
             </rule>
         </rulegroup>
@@ -14264,6 +14350,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                     <token>comptes</token>
                 </marker>
             </antipattern>
+            <antipattern>
+                <marker>
+                    <token regexp="yes" inflected="yes">recull|col·lecció|llibre</token>
+                    <token>de</token>
+                    <token>contes</token>
+                </marker>
+            </antipattern>
             <pattern>
                 <marker>
                     <token inflected="yes" regexp="yes">conte|compte</token>
@@ -14279,6 +14372,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <example>Els contes de Pere Calders.</example>
             <example>Un dels millors contes de Calders (Pere).</example>
             <example>La Sindicatura de Comptes de Catalunya</example>
+            <example>Un llibre de contes de Ricard Garcia.</example>
         </rule>
         <rulegroup id="COMTAT" name="contat/*comptat/comtat d'Urgell">
             <rule>
@@ -19128,7 +19222,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <pattern>
                     <token>la<exception postag="(&lt;)?NP.*" postag_regexp="yes"/></token>
                     <token postag="_cometes_obertura" min="0"/>
-                    <token regexp="yes">h?[aeoàèéíòóú].*|h?[ui][^aeiouàèéíòóúüï]+([aeiou]s?|[ei]n)|urbs|URSS|UJI|11a<exception regexp="yes">ouija|host|ira|inxa|[aeiou]|efa|hac|ela|ema|en|ena|ene|er|erra|erre|essa|una|&mots_HAC_ASPIRADA;</exception><exception postag="hac_aspirada|mot_foraster|UNKNOWN|NP..000" postag_regexp="yes"/><exception regexp="yes">(?-i)Haia|UdA</exception></token>
+                    <token regexp="yes">h?[aeoàèéíòóú].*|h?[ui][^aeiouàèéíòóúüï]+([aeiou]s?|[ei]n)|urbs|URSS|UJI|11a<exception regexp="yes">ouija|host|ira|inxa|[aeiou]|efa|hac|ela|ema|en|ena|ene|er|erra|erre|essa|una|&mots_HAC_ASPIRADA;</exception><exception postag="hac_aspirada|mot_foraster|UNKNOWN|NP..000" postag_regexp="yes"/><exception regexp="yes" case_sensitive="yes">Haia|UdA|HAIA</exception></token>
                 </pattern>
                 <message>Cal apostrofar.</message>
                 <suggestion>l'<match no="2"/><match no="3"/></suggestion>
@@ -19683,17 +19777,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <pattern>
                     <token>ex</token>
                     <token>-</token>
-                    <token postag="[NA].*|V.P.*" postag_regexp="yes"><exception regexp="yes">\p{Lu}.*|primer(a|s|es)?|alts?|x.+</exception></token>
+                    <token postag="[NA].*|V.P.*" postag_regexp="yes"><exception regexp="yes">\p{Lu}.*|primer(a|s|es)?|alts?|x.+|número</exception></token>
                 </pattern>
                 <message>Normalment s'escriu sense guionet.</message>
                 <suggestion><match no="1"/><match no="3"/></suggestion>
-                <url>http://www.iecat.net/institucio/seccions/Filologica/llenguacatalana/documentsnormatius/docsf5.htm</url>
+                <url>http://esadir.cat/entrades/fitxa/node/guionet</url>
                 <short>Sense guionet</short>
                 <example correction="exmarit">Del meu <marker>ex-marit</marker>.</example>
                 <example>L'ex-Iugoslàvia.</example>
                 <example>Un ex-alt càrrec d'Interior.</example>
                 <example>Un ex-primer ministre.</example>
                 <example>És l'ex-xicot.</example>
+                <example>És l'ex-número dos del partit.</example>
             </rule>
             <rule id="PREFIXOS_SENSE_GUIONET_VERBS" name="prefixos sense guionet: *auto-anomenava *re-dirigia">
                 <pattern>
@@ -19703,7 +19798,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Normalment s'escriu sense guionet.</message>
                 <suggestion><match no="1"/><match no="3"/></suggestion>
-                <url>http://www.iecat.net/institucio/seccions/Filologica/llenguacatalana/documentsnormatius/docsf5.htm</url>
+                <url>http://esadir.cat/entrades/fitxa/node/guionet</url>
                 <short>Sense guionet</short>
                 <example correction="autoanomenava">Ell s'<marker>auto-anomenava</marker> el millor.</example>
                 <example>S'autoanomenava així.</example>
@@ -19712,7 +19807,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <pattern case_sensitive="yes">
                     <token>Castella</token>
                     <token min="0">-</token>
-                    <token >Lleó</token>
+                    <token>Lleó</token>
                 </pattern>
                 <message>S'escriu amb la conjunció 'i'.</message>
                 <suggestion>Castella i Lleó</suggestion>
@@ -19923,13 +20018,21 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Normalment s'escriu junt sense guionet.</message>
                 <suggestion><match no="1" regexp_match="(?iu)(pol|jur)[íi](.*o)" regexp_replace="$1i$2"/><match no="3"/></suggestion>
-                <url>http://www.iecat.net/institucio/seccions/Filologica/llenguacatalana/documentsnormatius/docsf5.htm</url>
+                <url>http://esadir.cat/entrades/fitxa/node/guionet</url>
                 <short>Sense guionet</short>
                 <example correction="politicomilitar">ETA <marker>político-militar</marker>.</example>
                 <example correction="juridicoadministrativa">L'organització <marker>jurídico-administrativa</marker>.</example>
                 <example>ETA politicomilitar.</example>
             </rule>
             <rule>
+                <antipattern>
+                    <marker>
+                        <token>secció</token>
+                        <token>històrico</token>
+                        <token spacebefore="no">-</token>
+                        <token spacebefore="no">arqueològica</token>
+                    </marker>
+                </antipattern>
                 <pattern>
                     <token regexp="yes">s[òo]cio|hist[oò]rico|econ[oò]mico|ideol[òo]gico|l[òo]gico|filos[òo]fico</token>
                     <token min="0">-</token>
@@ -19938,12 +20041,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Normalment s'escriu junt sense guionet.</message>
                 <suggestion><match no="1" regexp_match="(?iu)(s|hist|econ|ideol|l|filos)[òo](.*o)" regexp_replace="$1o$2"/><match no="3"/></suggestion>
-                <url>http://www.iecat.net/institucio/seccions/Filologica/llenguacatalana/documentsnormatius/docsf5.htm</url>
+                <url>http://esadir.cat/entrades/fitxa/node/guionet</url>
                 <short>Sense guionet</short>
                 <example correction="sociopolític">El clima <marker>sòcio-polític</marker>.</example>
                 <example correction="historicocultural">El clima <marker>històrico-cultural</marker>.</example>
                 <example correction="socioeconòmica">L'organització <marker>sòcio econòmica</marker>.</example>
                 <example>La situació socioeconòmica.</example>
+                <example>La Secció Històrico-Arqueològica de l'IEC.</example>
             </rule>
             <rule>
                 <pattern>
@@ -19963,7 +20067,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Normalment s'escriu junt sense guionet.</message>
                 <suggestion>tardo<match no="3"/></suggestion>
-                <url>http://www.iecat.net/institucio/seccions/Filologica/llenguacatalana/documentsnormatius/docsf5.htm</url>
+                <url>http://esadir.cat/entrades/fitxa/node/guionet</url>
                 <short>Sense guionet</short>
                 <example correction="tardoromànic">L'estil <marker>tardo-romànic</marker>.</example>
                 <example correction="tardoromànic">L'estil <marker>tardo romànic</marker>.</example>
@@ -19977,7 +20081,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Normalment s'escriu junt sense guionet.</message>
                 <suggestion>franco\3</suggestion>
-                <url>http://www.iecat.net/institucio/seccions/Filologica/llenguacatalana/documentsnormatius/docsf5.htm</url>
+                <url>http://esadir.cat/entrades/fitxa/node/guionet</url>
                 <example correction="francoprussiana">La guerra <marker>franc prussiana</marker>.</example>
                 <example>La guerra francoprussiana.</example>
             </rule>
@@ -20008,7 +20112,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Normalment s'escriu junt.</message>
                 <suggestion><match no="1"/><match no="3"/></suggestion>
-                <url>http://www.iecat.net/institucio/seccions/Filologica/llenguacatalana/documentsnormatius/docsf5.htm</url>
+                <url>http://esadir.cat/entrades/fitxa/node/guionet</url>
                 <example correction="exmarit">Del meu <marker>ex marit</marker>.</example>
                 <example>Deus ex machina</example>
                 <example>Ex 15, 1-20; 19, 3-7;</example>
@@ -20020,7 +20124,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Normalment s'escriu amb guionet o junt.</message>
                 <suggestion><match no="1"/>-<match no="3"/></suggestion>
-                <url>http://www.iecat.net/institucio/seccions/Filologica/llenguacatalana/documentsnormatius/docsf5.htm</url>
+                <url>http://esadir.cat/entrades/fitxa/node/guionet</url>
                 <example correction="ex-primer">És l'<marker>ex primer</marker> ministre.</example>
                 <example correction="ex-Iugoslàvia">És de l'<marker>ex Iugoslàvia</marker>.</example>
                 <example>És l'ex-xicot.</example>
@@ -25238,7 +25342,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             </pattern>
             <message>No useu el signe d'interrogació inicial.</message>
             <suggestion>\2</suggestion>
-            <url>http://www.iecat.net/institucio/seccions/Filologica/llenguacatalana/documentsnormatius/docsf2.htm</url>
             <example correction="És"><marker>¿És</marker> així?</example>
             <example>És així?</example>
         </rule>
@@ -25249,7 +25352,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             </pattern>
             <message>No useu el signe d'exclamació inicial.</message>
             <suggestion>\2</suggestion>
-            <url>http://www.iecat.net/institucio/seccions/Filologica/llenguacatalana/documentsnormatius/docsf2.htm</url>
             <example correction="És"><marker>¡És</marker> així!</example>
             <example>És així!</example>
         </rule>
@@ -26618,11 +26720,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                     </marker>
                 </antipattern>
                 <antipattern>
-                    <marker>
-                        <token regexp="yes">[;:]</token>
-                        <token>-</token>
-                        <token>)</token>
-                    </marker>
+                    <token spacebefore="yes" regexp="yes">[;:]</token>
+                    <token spacebefore="no" min="0">-</token>
+                    <token spacebefore="no" regexp="yes">[D)\]]</token>
                 </antipattern>
                 <pattern>
                     <token/> <!-- <exception regexp="yes">[-–—]</exception> -->
@@ -27051,6 +27151,17 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
         </rulegroup>
     </category>
     <category id="INCORRECT_EXPRESSIONS" name="Expressions incorrectes" type="grammar">
+        <rule id="DOIDA" name="conèixer *d'oïda">
+            <pattern>
+                <token inflected="yes">conèixer</token>
+                <token inflected="yes">de</token>
+                <token regexp="yes">oïda|oïdes</token>
+            </pattern>
+            <message>Expressió incorrecta.</message>
+            <suggestion>\1 de nom</suggestion>
+            <suggestion>\1 per referències</suggestion>
+            <example correction="coneixia de nom|coneixia per referències">El <marker>coneixia d'oïdes</marker>.</example>
+        </rule>
         <rule id="COMTESSA" name="comtessa/contesa">
             <pattern>
                 <marker>
@@ -27674,7 +27785,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             </pattern>
             <message>Verb mal construït.</message>
             <suggestion><match no="1" postag="(V.+)" postag_regexp="yes" postag_replace="$1">infligir</match></suggestion>
-            <url>http://esadir.cat/entrades/fitxa/node/infringir</url>
+            <url>http://esadir.cat/entrades/fitxa/node/infligir</url>
             <example correction="infligí">s'<marker>autoinfringí</marker></example>
         </rule>
         <rule id="TOT_I_AMB_AIXO" name="tot i amb això">
@@ -28501,7 +28612,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <suggestion>d'ara endavant</suggestion>
                 <suggestion>d'avui endavant</suggestion>
                 <suggestion>en endavant</suggestion>
-                <url>http://esadir.cat/entrades/fitxa/node/daraenendavant</url>
+                <url>http://esadir.cat/entrades/fitxa/node/daraendavant</url>
                 <example correction="d'ara endavant|d'avui endavant|en endavant"><marker>d'ara en endavant</marker></example>
                 <example>d'ara endavant</example>
             </rule>
@@ -28518,7 +28629,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <suggestion>d'avui endavant</suggestion>
                 <suggestion>en endavant</suggestion>
                 <suggestion>des d'ara</suggestion>
-                <url>http://esadir.cat/entrades/fitxa/node/daraenendavant</url>
+                <url>http://esadir.cat/entrades/fitxa/node/daraendavant</url>
                 <example correction="d'ara endavant|d'avui endavant|en endavant|des d'ara"><marker>des d'ara en endavant</marker></example>
                 <example>d'ara endavant</example>
             </rule>
@@ -31079,19 +31190,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <example correction="a bord">tots <marker>abord</marker> de la nau</example>
             <example>tots a bord de la nau</example>
         </rule>
-        <rule id="A_CIENCIA_CERTA" name="a ciència certa">
-            <pattern>
-                <token>a</token>
-                <token>ciència</token>
-                <token>certa</token>
-            </pattern>
-            <message>Expressió incorrecta.</message>
-            <suggestion>del cert</suggestion>
-            <suggestion>de ciència certa</suggestion>
-            <short>Expressió incorrecta</short>
-            <example correction="del cert|de ciència certa">Això ho sap <marker>a ciència certa</marker>.</example>
-            <example>Això ho sap <marker>de ciència certa</marker></example>
-        </rule>
         <rule id="A_DIARI" name="a diari"> <!-- per a diari? -->
             <pattern>
                 <token><exception regexp="yes">com|per|setmanari</exception></token>
@@ -33444,7 +33542,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <message>Expressió preferible.</message>
                 <suggestion><match no="1"/> <match no="2"/> i <match no="1" case_conversion="alllower"/> <match no="4"/></suggestion>
                 <suggestion><match no="1"/> <match no="2"/> darrere l'<match no="4"/></suggestion>
-                <url>http://esadir.cat/gramatica/sintaxi/indefinits</url>
                 <example correction="una vegada i una altra|una vegada darrere l'altra"><marker>una vegada i altra</marker></example>
                 <example>una vegada i una altra</example>
             </rule>
@@ -33458,7 +33555,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <message>Expressió preferible.</message>
                 <suggestion><match no="1"/> <match no="4"/> i <match no="1" case_conversion="alllower"/> <match no="3"/></suggestion>
                 <suggestion><match no="1"/> <match no="4"/> darrere l'<match no="3"/></suggestion>
-                <url>http://esadir.cat/gramatica/sintaxi/indefinits</url>
                 <example correction="una vegada i una altra|una vegada darrere l'altra"><marker>una i altra vegada</marker></example>
                 <example>una vegada i una altra</example>
             </rule>
@@ -35253,7 +35349,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Incorrecte en el sentit de 'anar sovint a un indret'.</message>
                 <suggestion><match no="1" postag="(V.*)" postag_regexp="yes" postag_replace="$1">freqüentar</match></suggestion>
-                <url>http://esadir.cat/entrades/fitxa/node/sovintejar</url>
                 <short>Possible error</short>
                 <example correction="Freqüentava"><marker>Sovintejava</marker> bars de copes.</example>
                 <example correction="Freqüentava"><marker>Sovintejava</marker> la farmàcia.</example>
@@ -35269,7 +35364,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Incorrecte en el sentit de 'anar sovint a un indret'.</message>
                 <suggestion><match no="1" postag="(V.*)" postag_regexp="yes" postag_replace="$1">freqüentar</match></suggestion>
-                <url>http://esadir.cat/entrades/fitxa/node/sovintejar</url>
                 <short>Possible error</short>
                 <example correction="Freqüentava"><marker>Sovintejava</marker> Sitges.</example>
                 <example>Freqüenta Sitges.</example>
@@ -35789,7 +35883,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             </rule>
         </rulegroup>
         <rulegroup id="ALCADA_ALTURA" name="alçada / altura">
-            <url>http://www.ub.edu/untipdetrucs//?p=1244</url>
+            <url>https://www.parlament.cat/document/intrade/6562</url>
             <rule>
                 <pattern>
                     <marker>
@@ -39744,6 +39838,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
         </rule>
     </category>
     <category id="PREFERABLE_EXPRESSIONS" name="C7) Expressions preferibles" default="on" type="style">
+        <rule id="A_CIENCIA_CERTA" name="a ciència certa">
+            <pattern>
+                <token>a</token>
+                <token>ciència</token>
+                <token>certa</token>
+            </pattern>
+            <message>Expressió preferible.</message>
+            <suggestion>del cert</suggestion>
+            <suggestion>de ciència certa</suggestion>
+            <example correction="del cert|de ciència certa">Això ho sap <marker>a ciència certa</marker>.</example>
+            <example>Això ho sap <marker>de ciència certa</marker></example>
+        </rule>
         <rule id="COM_A_MOLT_TARD" name="com a molt tard">
             <pattern>
                 <token>com</token>
@@ -40226,7 +40332,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Expressió preferible.</message>
                 <suggestion>gens d'\2</suggestion>
-                <url>http://esadir.cat/gramatica/sintaxi/advquantit</url>
+                <url>http://esadir.cat/entrades/fitxa/id/7104</url>
                 <example correction="gens d'importància">No té <marker>cap importància</marker>.</example>
                 <example>gens d'importància</example>
             </rule>
@@ -40246,7 +40352,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Expressió preferible.</message>
                 <suggestion>gens de</suggestion>
-                <url>http://esadir.cat/gramatica/sintaxi/advquantit</url>
+                <url>http://esadir.cat/entrades/fitxa/id/7104</url>
                 <example correction="gens de">Sense <marker>cap</marker> ganes.</example>
                 <example>Ser pobre no és cap vergonya.</example>
                 <example>No va aprovar cap pena de mort.</example>
@@ -40262,7 +40368,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Expressió preferible.</message>
                 <suggestion>gens de</suggestion>
-                <url>http://esadir.cat/gramatica/sintaxi/advquantit</url>
+                <url>http://esadir.cat/entrades/fitxa/id/7104</url>
                 <example correction="gens de">No em fa <marker>cap</marker> cas.</example>
                 <example correction="gens de">No em feia mai <marker>cap</marker> cas.</example>
                 <example>En cap cas</example>
@@ -40682,7 +40788,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <suggestion><match no="1" postag="(V.*)" postag_regexp="yes" postag_replace="$1">començar</match></suggestion>
             <suggestion><match no="1"/> principi</suggestion>
             <suggestion><match no="1" postag="(V.*)" postag_regexp="yes" postag_replace="$1">iniciar</match></suggestion>
-            <url>http://esadir.cat/entrades/fitxa/node/donarcomencament</url>
             <short>Expressió preferible</short>
             <example correction="començo|dono principi|inicio"><marker>dono començament</marker></example>
             <example correction="començàrem|donàrem principi|iniciàrem"><marker>donàrem començament</marker></example>
@@ -41140,10 +41245,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 </pattern>
                 <message>Val més usar una altra expressió, en especial en expressions temporals.</message>
                 <suggestion>aviat</suggestion>
+                <suggestion>prompte</suggestion>
                 <suggestion>pròximament</suggestion>
-                <url>http://esadir.cat/entrades/fitxa/node/properament</url>
+                <url>http://esadir.cat/entrades/fitxa/node/proper</url>
                 <short>Expressió preferible</short>
-                <example correction="aviat|pròximament">Es publicarà <marker>properament</marker>.</example>
+                <example correction="aviat|prompte|pròximament">Es publicarà <marker>properament</marker>.</example>
                 <example>Es publicarà pròximament.</example>
             </rule>
             <rule>
@@ -45065,7 +45171,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             </rule>
         </rulegroup>
         <rulegroup id="RELATIUS" name="Comprova les contruccions de relatiu: amb el que/amb el qual" default="on">
-            <url>http://esadir.cat/entrades/fitxa/node/pronrel</url>
+            <url>http://esadir.cat/entrades/fitxa/node/Relatius_preposicio</url>
             <antipattern>
                 <marker>
                     <token>el</token>
@@ -45311,7 +45417,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             </rule>
         </rulegroup>
         <rulegroup id="ENTRE_ELS_QUE" name="entre els *que/quals destaca">
-            <url>http://esadir.cat/entrades/fitxa/node/pronrel</url>
+            <url>http://esadir.cat/entrades/fitxa/node/Relatius_preposicio</url>
             <antipattern>
                 <marker>
                     <token postag="SENT_START"/>
@@ -45405,7 +45511,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             </rule>
         </rulegroup>
         <rulegroup id="ALTRES_CONSTRUCCIONS_RELATIU" name="Altres construccions de relatiu">
-            <url>http://esadir.cat/entrades/fitxa/node/pronrel</url>
+            <url>http://esadir.cat/entrades/fitxa/node/Relatius_preposicio</url>
             <antipattern>
                 <marker>
                     <token regexp="yes">referència|fa|feia</token>
@@ -45475,7 +45581,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <message>Llevat d'algunes excepcions, l'infinitiu sol usar-se sense article.</message>
                 <suggestion><match no="3"/></suggestion>
                 <suggestion>el fet de <match no="3"/></suggestion>
-                <url>http://esadir.cat/gramatica/sintaxi/noartinf</url>
+                <url>http://esadir.cat/gramatica/sintaxi/infinitiu_article</url>
                 <short>Construcció dubtosa</short>
                 <example correction="furtar|el fet de furtar">les ganes de<marker>l furtar</marker></example>
                 <example correction="saber|el fet de saber">És bo <marker>el saber</marker>-ho.</example>
@@ -45522,7 +45628,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <message>Llevat d'algunes excepcions, l'infinitiu sol usar-se sense article.</message>
                 <suggestion><match no="3"/></suggestion>
                 <suggestion>el fet d'<match no="3"/></suggestion>
-                <url>http://esadir.cat/gramatica/sintaxi/noartinf</url>
+                <url>http://esadir.cat/gramatica/sintaxi/infinitiu_article</url>
                 <short>Construcció dubtosa</short>
                 <example correction="imaginar|el fet d'imaginar">És bo <marker>l'imaginar</marker>-s'ho.</example>
                 <example>És bo imaginar-s'ho.</example>

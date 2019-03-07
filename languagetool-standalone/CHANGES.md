@@ -2,7 +2,61 @@
 
 ## 4.5-SNAPSHOT(release planned for 2019-03-26)
 
-  ...
+#### English
+  * `resource/en/en-US-GB.txt` contains a mapping from US to British
+    English and vice versa. It's not used to detect correct or incorrect spellings,
+    but only to improve error messages so that they explicitly explain that
+    the incorrect word is actually a different variant (like 'colour' in an en-US
+    text).
+  * updated en_GB spellchecker dictionary from https://github.com/marcoagpinto/aoo-mozilla-en-dict (Version 2.70 - 2019-03-01)
+  * spell check ignores single characters (e.g., 'α')
+  
+#### German
+  * added and improved rules
+  * Simple German: added and improved rules
+  * improved suggestions for typos that end with a dot (typically at the end of
+    the sentence) - the dot is not included anymore
+  * spell check ignores single characters (e.g., 'α') 
+
+#### Galician
+  * added and improved rules
+
+#### Portuguese
+  * added and improved rules
+  * disambiguation improvements
+  * POS and spelling improvements
+
+#### Russian
+  * added and improved rules
+  * disambiguation improvements
+  * added many words without "yo" letter to POS dictionary
+
+#### General
+  * URLs written like `mydomain.org/` are now detected as domains and not
+    considered spelling errors anymore. Note that the slash is still needed
+    to avoid missing real errors.
+  * JSON output: The `replacements` list now has an optional new item `shortDescription`
+    for each `value`. It can contain a short definition/hint about the word. Currently,
+    the only words that have a short description are ones that have a description
+    in `confusion_sets.txt` (i.e. a text after the `|` symbol).
+
+#### General
+  * bug fix: don't make `interpretAs` part of getTextWithMarkup() (#1393)
+  * Experimental new attribute `raw_pos` for the `<pattern>` element in `grammar.xml`.
+    If set to `yes`,  the `postag` will refer to the part-of-speech tags *before*
+    disambiguation.
+  * Experimental support for `<antipattern>` in `disambiguation.xml`
+  
+#### HTTP API / LT server
+  * Experimental new parameter `preferredLanguages`: up to a certain limit (currently
+    50 characters), only these languages will be considered for language detection.
+    This has to be a comma-delimited list of language codes without variants (e.g.
+    use 'en', not 'en-US'). 
+    This only works with fasttext configured as the language detector.
+  * Spellcheck-only languages can now be added dynamically from the configuration
+    using `lang-xx=languagename` and `lang-xx-dictPath=/path/to/morfologik.dict`.
+    `xx` needs to be the language code. The JSON result will contain `spellCheckOnly: true`
+    for these languages.
 
 
 

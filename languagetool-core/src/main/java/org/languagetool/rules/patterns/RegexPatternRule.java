@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.languagetool.AnalyzedSentence;
 import org.languagetool.Language;
 import org.languagetool.rules.RuleMatch;
+import org.languagetool.tools.InterruptibleCharSequence;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,8 +72,7 @@ class RegexPatternRule extends AbstractPatternRule implements RuleMatcher {
     List<Pair<Integer, Integer>> suggestionsInSuggestionsOutMsg = getClausePositionsInMessage(suggestionPattern, suggestionsOutMsg);
     List<Pair<Integer, Integer>> backReferencesInSuggestionsOutMsg = getClausePositionsInMessage(matchPattern, suggestionsOutMsg);
 
-
-    Matcher patternMatcher = pattern.matcher(sentenceObj.getText());
+    Matcher patternMatcher = pattern.matcher(new InterruptibleCharSequence(sentenceObj.getText()));
     List<RuleMatch> matches = new ArrayList<>();
     int startPos = 0;
 
@@ -96,7 +96,7 @@ class RegexPatternRule extends AbstractPatternRule implements RuleMatcher {
         throw new RuntimeException(String.format("Unexpected exception when processing regexp in rule with id %s.", this.getFullId()), e);
       }
     }
-    return matches.toArray(new RuleMatch[matches.size()]);
+    return matches.toArray(new RuleMatch[0]);
   }
 
   @NotNull
@@ -108,7 +108,6 @@ class RegexPatternRule extends AbstractPatternRule implements RuleMatcher {
     }
     return clausePositionsInMessage;
   }
-
 
   private String processMessage(Matcher matcher, String message, List<Pair<Integer, Integer>> backReferences,
                                 List<Pair<Integer, Integer>> suggestions, List<Match> matches) {
@@ -151,7 +150,7 @@ class RegexPatternRule extends AbstractPatternRule implements RuleMatcher {
       } else {
         suggestion = matchReferenceStringValue;
       }
-      processedMessage.append(message.substring(startOfProcessingPart, reference.getLeft())).append(suggestion);
+      processedMessage.append(message, startOfProcessingPart, reference.getLeft()).append(suggestion);
 
       startOfProcessingPart = reference.getRight();
     }
@@ -160,6 +159,11 @@ class RegexPatternRule extends AbstractPatternRule implements RuleMatcher {
     return processedMessage.toString();
   }
 
+  @Override
+  public int estimateContextForSureMatch() {
+    return -1;
+  }
+  
   @Override
   public String toString() {
     return pattern.toString() + "/flags:" + pattern.flags();

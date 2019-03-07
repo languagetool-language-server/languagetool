@@ -71,6 +71,8 @@ public class MultiDocumentsHandler {
   
   private JLanguageTool langTool = null;
   private Language docLanguage = null;
+  private Language fixedLanguage = null;
+  private Language langForShortName;
   private final ResourceBundle messages;
   private final XEventListener xEventListener;
   private final File configDir;
@@ -106,7 +108,9 @@ public class MultiDocumentsHandler {
     if (!hasLocale(locale)) {
       return paRes;
     }
-    Language langForShortName = getLanguage(locale);
+    if(fixedLanguage == null || langForShortName == null) {
+      langForShortName = getLanguage(locale);
+    }
     if (!langForShortName.equals(docLanguage) || langTool == null || recheck) {
       docLanguage = langForShortName;
       initLanguageTool();
@@ -164,11 +168,13 @@ public class MultiDocumentsHandler {
    */
   Configuration getConfiguration() {
     try {
-      if (config == null) {
+      if (config == null || recheck) {
         if(xContext != null) {
           linguServices = new LinguisticServices(xContext);
         }
-        docLanguage = getLanguage();
+        if(docLanguage == null) {
+          docLanguage = getLanguage();
+        }
         initLanguageTool();
       }
     } catch (Throwable t) {
@@ -210,6 +216,9 @@ public class MultiDocumentsHandler {
    */
   @Nullable
   public Language getLanguage() {
+    if(docLanguage != null) {
+      return docLanguage;
+    }
     XComponent xComponent = OfficeTools.getCurrentComponent(xContext);
     Locale charLocale;
     XPropertySet xCursorProps;
@@ -328,11 +337,18 @@ public class MultiDocumentsHandler {
         if(!testMode && documents.get(i).getXComponent() == null) {
           XComponent xComponent = OfficeTools.getCurrentComponent(xContext);
           if (xComponent == null) {
-            MessageHandler.printToLogFile("Error: Document (ID: " + docID + ") has no XComponent -> Internal space can not be deleted when document disposes");
+            MessageHandler.printToLogFile("Error: Document (ID: " + docID + ") has no XComponent -> Internal space will not be deleted when document disposes");
           } else {
-            documents.get(i).setXComponent(xContext, xComponent);
-            xComponent.addEventListener(xEventListener);
-            MessageHandler.printToLogFile("Fixed: XComponent set for Document (ID: " + docID + ")");
+            try {
+              xComponent.addEventListener(xEventListener);
+            } catch (Throwable t) {
+              MessageHandler.printToLogFile("Error: Document (ID: " + docID + ") has no XComponent -> Internal space will not be deleted when document disposes");
+              xComponent = null;
+            }
+            if(xComponent != null) {
+              documents.get(i).setXComponent(xContext, xComponent);
+              MessageHandler.printToLogFile("Fixed: XComponent set for Document (ID: " + docID + ")");
+            }
           }
         }
         return i;
@@ -343,9 +359,14 @@ public class MultiDocumentsHandler {
     if (!testMode) {              //  xComponent == null for test cases 
       xComponent = OfficeTools.getCurrentComponent(xContext);
       if (xComponent == null) {
-        MessageHandler.printToLogFile("Error: Document (ID: " + docID + ") has no XComponent -> Internal space can not be deleted when document disposes");
+        MessageHandler.printToLogFile("Error: Document (ID: " + docID + ") has no XComponent -> Internal space will not be deleted when document disposes");
       } else {
-        xComponent.addEventListener(xEventListener);
+        try {
+          xComponent.addEventListener(xEventListener);
+        } catch (Throwable t) {
+          MessageHandler.printToLogFile("Error: Document (ID: " + docID + ") has no XComponent -> Internal space will not be deleted when document disposes");
+          xComponent = null;
+        }
       }
     }
     documents.add(new SingleDocument(xContext, config, docID, xComponent));
@@ -394,6 +415,10 @@ public class MultiDocumentsHandler {
         linguServices = new LinguisticServices(xContext);
       }
       config = new Configuration(configDir, configFile, docLanguage, linguServices);
+      fixedLanguage = config.getDefaultLanguage();
+      if(fixedLanguage != null) {
+        docLanguage = fixedLanguage;
+      }
       switchOff = config.isSwitchedOff();
       // not using MultiThreadedJLanguageTool here fixes "osl::Thread::Create failed", see https://bugs.documentfoundation.org/show_bug.cgi?id=90740:
       langTool = new JLanguageTool(docLanguage, config.getMotherTongue(), null, 

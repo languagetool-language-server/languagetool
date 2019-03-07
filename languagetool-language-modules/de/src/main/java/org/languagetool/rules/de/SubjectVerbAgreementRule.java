@@ -97,6 +97,11 @@ public class SubjectVerbAgreementRule extends Rule {
       new PatternTokenBuilder().posRegex("EIG:.*").build(),
       new PatternTokenBuilder().csToken("und").setSkip(2).build(),
       new PatternTokenBuilder().tokenRegex("sind|waren").build()
+    ),
+    Arrays.asList(
+      new PatternTokenBuilder().pos("KON:UNT").build(),
+      new PatternTokenBuilder().csToken("sie").setSkip(3).build(),
+      new PatternTokenBuilder().tokenRegex("sind|waren").build()
     )
   );
 
@@ -123,6 +128,11 @@ public class SubjectVerbAgreementRule extends Rule {
   @Override
   public String getDescription() {
     return "Kongruenz von Subjekt und Prädikat (unvollständig)";
+  }
+
+  @Override
+  public int estimateContextForSureMatch() {
+    return ANTI_PATTERNS.stream().mapToInt(List::size).max().orElse(0);
   }
 
   @Override

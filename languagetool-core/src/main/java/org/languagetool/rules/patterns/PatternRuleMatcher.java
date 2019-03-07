@@ -75,7 +75,8 @@ final public class PatternRuleMatcher extends AbstractPatternRulePerformer imple
       currentlyActiveRules.compute(key, (k, v) -> v == null ? 1 : v + 1);
     }
     try {
-      AnalyzedTokenReadings[] tokens = sentence.getTokensWithoutWhitespace();
+      boolean isPreDisambigMatch = rule instanceof PatternRule && ((PatternRule)rule).isInterpretPosTagsPreDisambiguation();
+      AnalyzedTokenReadings[] tokens = isPreDisambigMatch ? sentence.getPreDisambigTokensWithoutWhitespace() : sentence.getTokensWithoutWhitespace();
       List<Integer> tokenPositions = new ArrayList<>(tokens.length + 1);
       int patternSize = patternTokenMatchers.size();
       int limit = Math.max(0, tokens.length - patternSize + 1);
@@ -170,7 +171,7 @@ final public class PatternRuleMatcher extends AbstractPatternRulePerformer imple
       if (runTime > slowMatchThreshold) {
         logger.warn("Slow match for rule " + rule.getFullId() + ": " + runTime + "ms, sentence len: " + sentence.getText().length() + " (threshold: " + slowMatchThreshold + "ms)");
       }
-    }*/return filteredMatches.toArray(new RuleMatch[filteredMatches.size()]);
+    }*/return filteredMatches.toArray(new RuleMatch[0]);
     } finally {
       if (monitorRules) {
         currentlyActiveRules.computeIfPresent(key, (k, v) -> v - 1 > 0 ? v - 1 : null);
@@ -506,7 +507,7 @@ final public class PatternRuleMatcher extends AbstractPatternRulePerformer imple
         outputList.addAll(Arrays.asList(sList));
       }
     }
-    return outputList.toArray(new String[outputList.size()]);
+    return outputList.toArray(new String[0]);
   }
 
 }

@@ -18,6 +18,7 @@ brief	brief	VBG
 buckling	buckling	NNS
 bugs	bugs	JJ
 bundling	bundling	NNS
+bustling	bustling	NNS
 cabling	cabling	NNS
 cancelling	cancelling	NNS
 cars	cars	NN
@@ -36,6 +37,7 @@ culling	culling	NNS
 curling	curling	NNS
 dangling	dangling	NNS
 defuelling	defuelling	NNS
+divers	divers	DT
 dumpling	dumpling	NNS
 dumplings	dumplings	NN
 earlier	earlier	JJ
@@ -60,6 +62,7 @@ fuelling	fuelling	NNS
 fulfilling	fulfilling	NNS
 galling	galling	NNS
 garbling	garbling	NNS
+gonna	go	VBG
 handling	handling	NNS
 high-quality	high-quality	NN:UN
 hypothesises	hypothesis	NNS
@@ -87,6 +90,7 @@ mineralisation	mineralization	NNS
 mingling	mingling	NNS
 mislabelling	mislabelling	NNS
 negative	negative	VBG
+ne	ne	NN
 oiling	oiling	NNS
 opsonised	opsonize	VBD
 opsonised	opsonize	VBN
@@ -116,12 +120,14 @@ sealing	sealing	NNS
 selling	selling	NNS
 settling	settling	NNS
 shackling	shackling	NNS
+shan	shan	NN
+shans	shan	NNS
 shapely	shapely	RB
 should	should	JJ
 shrivelling	shrivelling	NNS
 signalling	signalling	NNS
 single	single	VBG
-so	so	NN:U
+smithereens	smithereens	NN
 spams	Spam	NNPS
 sparkling	sparkling	NNS
 species	specie	NNS
@@ -141,6 +147,7 @@ telling	telling	NNS
 tenfold	tenfold	NN
 three-fold	three-fold	NN
 tooling	tooling	NNS
+townspeople	townspeople	NN
 traveling	traveling	NNS
 travelling	travelling	NNS
 trickling	trickling	NNS

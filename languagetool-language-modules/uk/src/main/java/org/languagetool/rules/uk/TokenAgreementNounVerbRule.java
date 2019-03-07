@@ -47,8 +47,9 @@ import org.slf4j.LoggerFactory;
  * @since 3.6
  */
 public class TokenAgreementNounVerbRule extends Rule {
-  private static Logger logger = LoggerFactory.getLogger(TokenAgreementNounVerbRule.class);
   
+  private static Logger logger = LoggerFactory.getLogger(TokenAgreementNounVerbRule.class);
+
   private static final Pattern VERB_INFLECTION_PATTERN = Pattern.compile(":([mfnps])(:([123])?|$)");
   private static final Pattern NOUN_INFLECTION_PATTERN = Pattern.compile("(?::((?:[iu]n)?anim))?:([mfnps]):(v_naz)");
   private static final Pattern NOUN_PERSON_PATTERN = Pattern.compile(":([123])");

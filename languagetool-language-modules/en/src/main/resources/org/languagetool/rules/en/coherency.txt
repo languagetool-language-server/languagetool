@@ -1,4 +1,4 @@
-# Words that have two valid spellings (refer to https://github.com/languagetool-org/languagetool/issues/834). Used by WordCoherencyRule.
+# Words that have two valid spellings in one locale(refer to https://github.com/languagetool-org/languagetool/issues/834). Used by WordCoherencyRule.
 # For words that can have both initial uppercase and initial lowercase (romanise/Romanise), refer to https://forum.languagetool.org/t/coherency-rules-for-words-such-as-christianize-and-balkanize/3505/2
 # This file must be encoded in UTF-8.
 # NOTE: 
@@ -6,6 +6,7 @@
 #    (Hence, variants which have the same base form such as 'cancelled' and 'canceled' are [currently] not detected)
 # 2) to find fullforms those forms may need to be added to added.txt
 # absinth;absinthe: https://wikidiff.com/absinth/absinthe
+# anarchist;anarchistic (adj). 'Anarchist' is both a noun and an adjective.
 # gram;gramme. https://en.wikipedia.org/wiki/Gram_flour
 # meter;metre: meter is an instrument and a unit of measurement.
 # prise;prize: in BrE, both spellings are possible for the verb, but the noun is prize.
@@ -147,6 +148,7 @@ authorisation;authorization
 authorise;authorize
 authorised;authorized
 authoriser;authorizer
+autogiro;autogyro
 autoionisation;autoionization
 automatisation;automatization
 automatise;automatize
@@ -161,6 +163,7 @@ bacterise;bacterize
 balkanise;balkanize
 banalisation;banalization
 banalise;banalize
+banister;bannister
 baptise;baptize
 barbarisation;barbarization
 barbarise;barbarize
@@ -179,6 +182,7 @@ botrytised;botrytized
 bowdlerisation;bowdlerization
 bowdlerise;bowdlerize
 bowdleriser;bowdlerizer
+breadthways;breadthwise
 bromise;bromize
 brutalisation;brutalization
 brutalise;brutalize
@@ -191,6 +195,8 @@ canalisation;canalization
 canalise;canalize
 cancelable;cancellable
 cancelation;cancellation
+canceled;cancelled
+canceling;cancelling
 canisterise;canisterize
 cannibalisation;cannibalization
 cannibalise;cannibalize
@@ -332,6 +338,8 @@ convener;convenor
 conventionalise;conventionalize
 conveyorisation;conveyorization
 conveyorise;conveyorize
+co-operate;cooperate
+co-operation;cooperation
 co-ordinate;coordinate
 co-pilot;copilot
 copolymerisation;copolymerization
@@ -511,6 +519,7 @@ devalorisation;devalorization
 devalorise;devalorize
 devitalise;devitalize
 devocalise;devocalize
+dexterous;dextrous
 diabolise;diabolize
 diagonalisable;diagonalizable
 diagonalisation;diagonalization
@@ -583,9 +592,11 @@ emigré;emigre
 émigré;emigre
 émigré;emigré
 emotionalise;emotionalize
+empanel;impanel
 empathise;empathize
 emperise;emperize
 emphasise;emphasize
+encyclopaedia;encyclopedia
 energisation;energization
 energise;energize
 engrain;ingrain
@@ -660,7 +671,9 @@ fertilisable;fertilizable
 fertilisation;fertilization
 fertilise;fertilize
 fertiliser;fertilizer
+fetal;foetal
 fetishise;fetishize
+fetus;foetus
 feudalisation;feudalization
 feudalise;feudalize
 fiberisation;fiberization
@@ -728,11 +741,13 @@ Germaniser;Germanizer
 ghettoisation;ghettoization
 ghettoise;ghettoize
 gigagram;gigagramme
+gipsy;gypsy
 glamorisation;glamorization
 glamorise;glamorize
 globalisation;globalization
 globalise;globalize
 globaliser;globalizer
+glueing;gluing
 gluttonise;gluttonize
 Gnosticise;Gnosticize
 Gnosticiser;Gnosticizer
@@ -756,6 +771,9 @@ graphitisation;graphitization
 graphitise;graphitize
 grecianise;grecianize
 greisenisation;greisenization
+griffin;griffon
+griffin;gryphon
+griffon;gryphon
 gutturalisation;gutturalization
 gutturalise;gutturalize
 gyrostabiliser;gyrostabilizer
@@ -780,6 +798,7 @@ heroicise;heroicize
 heroise;heroize
 heterodimerise;heterodimerize
 hexametrise;hexametrize
+hiccough;hiccup
 hierarchise;hierarchize
 Hinduise;Hinduize
 Hispanicisation;Hispanicization
@@ -872,6 +891,7 @@ industrialisation;industrialization
 industrialise;industrialize
 infantilise;infantilize
 inflection;inflexion
+inflexible;unflexible
 informatisation;informatization
 informatise;informatize
 initialisation;initialization
@@ -924,6 +944,8 @@ journalise;journalize
 Judaisation;Judaization
 Judaise;Judaize
 Judaiser;Judaizer
+judgement;judgment
+judgemental;judgmental
 judicialise;judicialize
 kaolinise;kaolinize
 keratinise;keratinize
@@ -1021,6 +1043,7 @@ mechanisation;mechanization
 mechanise;mechanize
 mechanised;mechanized
 mechaniser;mechanizer
+mediaeval;medieval
 mediatisation;mediatization
 mediatise;mediatize
 medicalisation;medicalization
@@ -1848,6 +1871,7 @@ unauthorised;unauthorized
 unbowdlerise;unbowdlerize
 uncapitalised;uncapitalized
 uncategorisable;uncategorizable
+uncivilised;uncivilized
 uncrystallised;uncrystallized
 undercapitalisation;undercapitalization
 undercapitalise;undercapitalize
@@ -1875,10 +1899,13 @@ unrealisable;unrealizable
 unrealise;unrealize
 unrecognisable;unrecognizable
 unrecognisably;unrecognizably
+unrecognised;unrecognized
 unromanticised;unromanticized
 unsocialised;unsocialized
 unspecialised;unspecialized
 unspoiled;unspoilt
+unstandardised;unstandardized
+unsynchronised;unsynchronized
 unverbalised;unverbalized
 uralitise;uralitize
 urbanisation;urbanization
@@ -1957,6 +1984,9 @@ westward;westwards
 womanise;womanize
 womaniser;womanizer
 yoctogram;yoctogramme
+yoghurt;yoghourt
+yogurt;yoghourt
+yogurt;yoghurt
 yottagram;yottagramme
 zeptogram;zeptogramme
 zettagram;zettagramme

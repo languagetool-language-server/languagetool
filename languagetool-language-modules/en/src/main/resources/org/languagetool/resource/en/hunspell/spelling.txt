@@ -5,6 +5,7 @@ a posteriori
 a priori
 ab initio
 Abu Dhabi
+accomplishable
 achromatization
 Airbnb
 Al Jazeera
@@ -12,6 +13,8 @@ Alibaba
 alkalizer
 alkalizers
 alphameric
+amplexus
+amplexuses
 analyte
 analytes
 Antiguans
@@ -24,8 +27,10 @@ astronomizing
 au contraire
 au fait
 AutoCAD
+autoxidizable
 Bing
 blackbody radiation
+bona fide
 brussels sprout
 brussels sprouts
 Buffett
@@ -34,10 +39,20 @@ chronobiologist
 chronobiologists
 chronotype
 chronotypes
+cicatrizant
+cognizably
+computerizable
 counterintuitive
 counterintuitively
 Craigslist
+criticizable
 cui bono
+cyberattacker
+cyberattackers
+cyberintrusion
+cyberintrusions
+cyberoperation
+cyberoperations
 de facto
 de jure
 decolorization
@@ -53,13 +68,18 @@ drumroll
 El Niño
 embox
 en masse
+enolizable
 et al
 etherealization
 ex officio
 exempli gratia
 fait accompli
+feralized
 focalization
+fo'c'sle
+formalizable
 Fortnite
+GCHQ
 gelatinization
 geminate
 genealogize
@@ -87,6 +107,7 @@ granitizes
 granitizing
 granulator
 granulators
+graphitizable
 groupthink
 gutturalize
 gutturalized
@@ -94,10 +115,13 @@ gutturalizes
 gutturalizing
 gyrostabilizer
 gyrostabilizers
+Hammerstein
 historize
 historized
 historizes
 historizing
+hors d'oeuvre
+hors d'oeuvres
 Huawei
 humorize
 humorized
@@ -117,6 +141,9 @@ intelligizes
 intelligizing
 inter alia
 ipso facto
+irrealizable
+jeu d'esprit
+jeux d'esprit
 Jimi
 lingua franca
 lingua francas
@@ -125,11 +152,13 @@ lingualized
 lingualizes
 lingualizing
 LinkedIn
+Mailchimp
 majuscule
 marsupialize
 marsupialized
 marsupializes
 marsupializing
+memorizable
 mercurialize
 mercurialized
 mercurializes
@@ -146,6 +175,7 @@ microminiaturized
 microminiaturizes
 microminiaturizing
 Minecraft
+mineralizable
 mithridatize
 mithridatized
 mithridatizes
@@ -173,6 +203,8 @@ mylonitize
 mylonitized
 mylonitizes
 mylonitizing
+né
+ne plus ultra
 nephrectomize
 nephrectomized
 nephrectomizes
@@ -182,6 +214,7 @@ nodalize
 nodalized
 nodalizes
 nodalizing
+nonpolarizable
 nota bene
 notarize
 notarizes
@@ -190,15 +223,19 @@ oophorectomize
 oophorectomized
 oophorectomizes
 oophorectomizing
+operationalizable
 orthonormalize
 orthonormalized
 orthonormalizes
 orthonormalizing
+ostracizable
 oxygenize
 oxygenized
 oxygenizes
 oxygenizing
 pacta sunt servanda
+Palme d'or
+Palme d'Or
 panegyrize
 panegyrized
 panegyrizes
@@ -222,14 +259,17 @@ paternalize
 paternalized
 paternalizes
 paternalizing
+pectizable
 Pelagianize
 Pelagianized
 Pelagianizes
 Pelagianizing
+peptizable
 per annum
 per capita
 per centum
 per diem
+per se
 phoneticize
 phoneticized
 phoneticizes
@@ -248,6 +288,8 @@ pinealectomize
 pinealectomized
 pinealectomizes
 pinealectomizing
+polarizable
+polymerizable
 porcelainize
 porcelainized
 porcelainizes
@@ -305,16 +347,25 @@ pyritize
 pyritized
 pyritizes
 pyritizing
+quantizable
 quod vide
+rainforest
+rainforests
 raison d'être
+rationalizable
+Rebecca
 rehospitalization
 resocialization
 Rio Grande
 rivulose
+serializable
+sheesh
+Shenzhen
 sizable
 sizably
 sizeably
 Snapchat
+socializable
 spina bifida
 spiralizer
 spiralizers
@@ -328,16 +379,24 @@ tabula rasa
 terpenoid
 terpenoids
 theatricalization
+tr
 traditionalize
 traditionalized
 traditionalizes
 traditionalizing
+Uighur
+Uighurs
+uncategorizable
 undercapitalization
 unenfranchised
+unlink
+unlinking
+unlinks
 unnaturalize
 unnaturalized
 unnaturalizes
 unnaturalizing
+unobservable
 unprotestantize
 unprotestantized
 unprotestantizes
@@ -345,9 +404,15 @@ unprotestantizing
 unrealize
 unrealizes
 unrealizing
+unrecognized
+unspecialized
+vaporizable
+verbalizable
 vernalization
+volatilizable
 von Neumann
 Wachovia
 WhatsApp
+Wi-Fi
 Xbox
 Xiaomi

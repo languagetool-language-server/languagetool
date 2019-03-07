@@ -46,8 +46,6 @@ import org.languagetool.tools.StringTools;
  */
 
 public class UkrainianHybridDisambiguator extends AbstractDisambiguator {
-  private static Logger logger = LoggerFactory.getLogger(UkrainianHybridDisambiguator.class);
-
   private static final String LAST_NAME_TAG = ":lname";
   private static final Pattern INITIAL_REGEX = Pattern.compile("[А-ЯІЇЄҐ]\\.");
   private static final Pattern INANIM_VKLY = Pattern.compile("noun:inanim:.:v_kly.*");
@@ -132,16 +130,19 @@ public class UkrainianHybridDisambiguator extends AbstractDisambiguator {
     }    
   }
 
+  private static final Pattern PUNCT_AFTER_KLY_PATTERN = Pattern.compile("[,!»\"\u201C\u201D]|[\\.!]{3}");
+
   private void removeInanimVKly(AnalyzedSentence input) {
     AnalyzedTokenReadings[] tokens = input.getTokensWithoutWhitespace();
     for (int i = 1; i < tokens.length; i++) {
       List<AnalyzedToken> analyzedTokens = tokens[i].getReadings();
-      
-      if( i < tokens.length -1
-          && Arrays.asList(",", "!", "»", "\u201C", "\u201D", "...").contains(tokens[i+1].getToken()) 
-          && PosTagHelper.hasPosTag(tokens[i-1], "adj.*v_kly.*") )
+
+      if( i < tokens.length - 1
+          && PUNCT_AFTER_KLY_PATTERN.matcher(tokens[i+1].getToken()).matches()
+          && (PosTagHelper.hasPosTag(tokens[i-1], "adj:.:v_kly.*")
+            || "о".equalsIgnoreCase(tokens[i-1].getToken())) )
         continue;
-      
+
       ArrayList<AnalyzedToken> inanimVklyReadings = new ArrayList<>();
       boolean otherFound = false;
       for(int j=0; j<analyzedTokens.size(); j++) {
@@ -150,7 +151,7 @@ public class UkrainianHybridDisambiguator extends AbstractDisambiguator {
           break;
         if( posTag.equals(JLanguageTool.SENTENCE_END_TAGNAME) )
           continue;
-          
+
         if( INANIM_VKLY.matcher(posTag).matches() ) {
           inanimVklyReadings.add(analyzedTokens.get(j));
         }
@@ -224,10 +225,6 @@ public class UkrainianHybridDisambiguator extends AbstractDisambiguator {
   private void retagInitials(AnalyzedSentence input) {
     AnalyzedTokenReadings[] tokens = input.getTokens();
 
-    if( input.toString().contains("Баку") ) {
-        logger.debug(Arrays.asList(tokens).toString());
-    }
-
     List<Integer> initialsIdxs = new ArrayList<Integer>();
     AnalyzedTokenReadings lastName = null;
 
@@ -239,9 +236,7 @@ public class UkrainianHybridDisambiguator extends AbstractDisambiguator {
 
       if( tokens[i].hasPartialPosTag(LAST_NAME_TAG) ) {
         lastName = tokens[i];
-    if( input.toString().contains("Баку") )
-        logger.debug("lastN: " + lastName);
-        
+
         // split before next inital starts: "для Л.Кучма Л.Кравчук"
         if( initialsIdxs.size() > 0 ) {
           checkForInitialRetag(lastName, initialsIdxs, tokens);
@@ -253,33 +248,22 @@ public class UkrainianHybridDisambiguator extends AbstractDisambiguator {
 
 
       if( isInitial(tokens, i) ) {
-    if( input.toString().contains("Баку") )
-        logger.debug("init: " + tokens[i]);
         initialsIdxs.add(i);
         continue;
       }
 
       checkForInitialRetag(lastName, initialsIdxs, tokens);
 
-      if( lastName != null )
-    if( input.toString().contains("Баку") )
-        logger.debug("--");
-
       lastName = null;
       initialsIdxs.clear();
     }
 
     checkForInitialRetag(lastName, initialsIdxs, tokens);
-    if( lastName != null )
-    if( input.toString().contains("Баку") )
-      logger.debug("--");
   }
 
   private static void checkForInitialRetag(AnalyzedTokenReadings lastName, List<Integer> initialsIdxs, AnalyzedTokenReadings[] tokens) {
     if( lastName != null
         && (initialsIdxs.size() == 1 || initialsIdxs.size() == 2) ) {
-
-      logger.debug("{} / {}", lastName, initialsIdxs);
 
       int fnamePos = initialsIdxs.get(0);
       AnalyzedTokenReadings newReadings = getInitialReadings(tokens[fnamePos], lastName, "fname");

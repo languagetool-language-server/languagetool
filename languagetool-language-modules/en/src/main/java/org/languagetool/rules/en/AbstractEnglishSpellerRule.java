@@ -18,17 +18,18 @@
  */
 package org.languagetool.rules.en;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import org.languagetool.AnalyzedSentence;
-import org.languagetool.AnalyzedToken;
-import org.languagetool.Language;
-import org.languagetool.UserConfig;
+import org.languagetool.*;
 import org.languagetool.rules.Example;
 import org.languagetool.rules.RuleMatch;
 import org.languagetool.rules.spelling.morfologik.MorfologikSpellerRule;
 import org.languagetool.synthesis.en.EnglishSynthesizer;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public abstract class AbstractEnglishSpellerRule extends MorfologikSpellerRule {
@@ -44,6 +45,7 @@ public abstract class AbstractEnglishSpellerRule extends MorfologikSpellerRule {
    */
   public AbstractEnglishSpellerRule(ResourceBundle messages, Language language, UserConfig userConfig, List<Language> altLanguages) throws IOException {
     super(messages, language, userConfig, altLanguages);
+    super.ignoreWordsWithLength = 1;
     setCheckCompound(true);
     addExamplePair(Example.wrong("This <marker>sentenc</marker> contains a spelling mistake."),
                    Example.fixed("This <marker>sentence</marker> contains a spelling mistake."));
@@ -53,6 +55,33 @@ public abstract class AbstractEnglishSpellerRule extends MorfologikSpellerRule {
     }
   }
 
+  protected static Map<String,String> loadWordlist(String path, int column) {
+    if (column != 0 && column != 1) {
+      throw new IllegalArgumentException("Only column 0 and 1 are supported: " + column);
+    }
+    Map<String,String> words = new HashMap<>();
+    try (
+        InputStreamReader isr = new InputStreamReader(JLanguageTool.getDataBroker().getFromResourceDirAsStream(path), StandardCharsets.UTF_8);
+        BufferedReader br = new BufferedReader(isr);
+    ) {
+      String line;
+      while ((line = br.readLine()) != null) {
+        line = line.trim();
+        if (line.isEmpty() ||  line.startsWith("#")) {
+          continue;
+        }
+        String[] parts = line.split(";");
+        if (parts.length != 2) {
+          throw new IOException("Unexpected format in " + path + ": " + line + " - expected two parts delimited by ';'");
+        }
+        words.put(parts[column], parts[column == 1 ? 0 : 1]);
+      }
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+    return words;
+  }
+  
   @Override
   protected List<RuleMatch> getRuleMatches(String word, int startPos, AnalyzedSentence sentence, List<RuleMatch> ruleMatchesSoFar) throws IOException {
     List<RuleMatch> ruleMatches = super.getRuleMatches(word, startPos, sentence, ruleMatchesSoFar);
@@ -60,23 +89,47 @@ public abstract class AbstractEnglishSpellerRule extends MorfologikSpellerRule {
       // so 'word' is misspelled: 
       IrregularForms forms = getIrregularFormsOrNull(word);
       if (forms != null) {
-        RuleMatch oldMatch = ruleMatches.get(0);
-        RuleMatch newMatch = new RuleMatch(this, sentence, oldMatch.getFromPos(), oldMatch.getToPos(), 
-                "Possible spelling mistake. Did you mean <suggestion>" + forms.forms.get(0) +
+        String message = "Possible spelling mistake. Did you mean <suggestion>" + forms.forms.get(0) +
                 "</suggestion>, the " + forms.formName + " form of the " + forms.posName +
-                " '" + forms.baseform + "'?");
-        List<String> allSuggestions = new ArrayList<>();
-        allSuggestions.addAll(forms.forms);
-        for (String repl : oldMatch.getSuggestedReplacements()) {
-          if (!allSuggestions.contains(repl)) {
-            allSuggestions.add(repl);
-          }
+                " '" + forms.baseform + "'?";
+        addFormsToFirstMatch(message, sentence, ruleMatches, forms.forms);
+      } else {
+        VariantInfo variantInfo = isValidInOtherVariant(word);
+        if (variantInfo != null) {
+          String message = "Possible spelling mistake. '" + word + "' is " + variantInfo.getVariantName() + ".";
+          replaceFormsOfFirstMatch(message, sentence, ruleMatches, Collections.singletonList(variantInfo.otherVariant()));
         }
-        newMatch.setSuggestedReplacements(allSuggestions);
-        ruleMatches.set(0, newMatch);
       }
     }
     return ruleMatches;
+  }
+
+  /**
+   * @since 4.5
+   */
+  @Nullable
+  protected VariantInfo isValidInOtherVariant(String word) {
+    return null;
+  }
+  
+  private void addFormsToFirstMatch(String message, AnalyzedSentence sentence, List<RuleMatch> ruleMatches, List<String> forms) {
+    RuleMatch oldMatch = ruleMatches.get(0);
+    RuleMatch newMatch = new RuleMatch(this, sentence, oldMatch.getFromPos(), oldMatch.getToPos(), message);
+    List<String> allSuggestions = new ArrayList<>(forms);
+    for (String repl : oldMatch.getSuggestedReplacements()) {
+      if (!allSuggestions.contains(repl)) {
+        allSuggestions.add(repl);
+      }
+    }
+    newMatch.setSuggestedReplacements(allSuggestions);
+    ruleMatches.set(0, newMatch);
+  }
+
+  private void replaceFormsOfFirstMatch(String message, AnalyzedSentence sentence, List<RuleMatch> ruleMatches, List<String> suggestions) {
+    RuleMatch oldMatch = ruleMatches.get(0);
+    RuleMatch newMatch = new RuleMatch(this, sentence, oldMatch.getFromPos(), oldMatch.getToPos(), message);
+    newMatch.setSuggestedReplacements(suggestions);
+    ruleMatches.set(0, newMatch);
   }
 
   @SuppressWarnings({"ReuseOfLocalVariable", "ControlFlowStatementWithoutBraces"})
@@ -148,6 +201,10 @@ public abstract class AbstractEnglishSpellerRule extends MorfologikSpellerRule {
       return Arrays.asList("the");
     } else if ("todays".equals(word)) {
       return Arrays.asList("today's");
+    } else if ("heres".equals(word)) {
+    	return Arrays.asList("here's");
+    } else if ("Heres".equals(word)) {
+      return Arrays.asList("Here's");
     }
     return super.getAdditionalTopSuggestions(suggestions, word);
   }

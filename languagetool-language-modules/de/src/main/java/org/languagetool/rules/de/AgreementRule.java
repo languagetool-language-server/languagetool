@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -87,7 +86,7 @@ public class AgreementRule extends Rule {
     Arrays.asList(  // "Wir bereinigen das nächsten Dienstag."
       new PatternTokenBuilder().posRegex("VER:.*").build(),
       new PatternTokenBuilder().token("das").build(),
-      new PatternTokenBuilder().tokenRegex("nächste[ns]?").build(),
+      new PatternTokenBuilder().tokenRegex("(über)?nächste[ns]?|kommende[ns]?").build(),
       new PatternTokenBuilder().tokenRegex("Montag|D(ien|onner)stag|Mittwoch|Freitag|S(ams|onn)tag|Woche|Monat|Jahr").build()
     ),
     Arrays.asList(
@@ -274,11 +273,11 @@ public class AgreementRule extends Rule {
       new PatternTokenBuilder().posRegex("SUB:AKK:PLU:.*").build()
     ),
     Arrays.asList( // "Für ihn ist das Alltag." / "Für die Religiösen ist das Blasphemie."
-      new PatternTokenBuilder().token("für").setSkip(2).build(),
-      new PatternTokenBuilder().tokenRegex("ist|war").build(),
+    	new PatternTokenBuilder().posRegex("PRP:.+|ADV:MOD").setSkip(2).build(),
+      new PatternTokenBuilder().token("sein").matchInflectedForms().build(),
       new PatternTokenBuilder().csToken("das").build(),
       new PatternTokenBuilder().posRegex("SUB:NOM:.*").build(),
-      new PatternTokenBuilder().pos("PKT").build()
+      new PatternTokenBuilder().posRegex("PKT|SENT_END").build()
     ),
     Arrays.asList( // "Sie sagte, dass das Rache bedeuten würden"
       new PatternTokenBuilder().pos("KON:UNT").build(),
@@ -314,6 +313,16 @@ public class AgreementRule extends Rule {
       new PatternTokenBuilder().csToken("schenken").matchInflectedForms().build(),
       new PatternTokenBuilder().csToken("dem").build(),
       new PatternTokenBuilder().csToken("Achtung").build()
+    ),
+    Arrays.asList(
+      new PatternTokenBuilder().csToken("dem").build(),
+      new PatternTokenBuilder().csToken("Rechnung").setSkip(1).build(),
+      new PatternTokenBuilder().csToken("tragen").matchInflectedForms().build()
+    ),
+    Arrays.asList(
+      new PatternTokenBuilder().csToken("tragen").matchInflectedForms().build(),
+      new PatternTokenBuilder().csToken("dem").build(),
+      new PatternTokenBuilder().csToken("Rechnung").build()
     ),
     Arrays.asList(
       new PatternTokenBuilder().csToken("zum").build(),
@@ -452,6 +461,11 @@ public class AgreementRule extends Rule {
   @Override
   public String getId() {
     return "DE_AGREEMENT";
+  }
+
+  @Override
+  public int estimateContextForSureMatch() {
+    return ANTI_PATTERNS.stream().mapToInt(List::size).max().orElse(0); 
   }
 
   @Override

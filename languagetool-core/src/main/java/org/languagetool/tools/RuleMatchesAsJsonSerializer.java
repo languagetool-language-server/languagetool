@@ -25,10 +25,7 @@ import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
 import org.languagetool.markup.AnnotatedText;
 import org.languagetool.markup.AnnotatedTextBuilder;
-import org.languagetool.rules.Category;
-import org.languagetool.rules.CategoryId;
-import org.languagetool.rules.RuleInformation;
-import org.languagetool.rules.RuleMatch;
+import org.languagetool.rules.*;
 import org.languagetool.rules.patterns.AbstractPatternRule;
 
 import java.io.IOException;
@@ -123,10 +120,16 @@ public class RuleMatchesAsJsonSerializer {
     g.writeObjectFieldStart("language");
     g.writeStringField("name", detectedLang.getGivenLanguage().getName());
     g.writeStringField("code", detectedLang.getGivenLanguage().getShortCodeWithCountryAndVariant());
+    if (detectedLang.getGivenLanguage().isSpellcheckOnlyLanguage()) {
+      g.writeBooleanField("spellCheckOnly", true);
+    }
     g.writeObjectFieldStart("detectedLanguage");
     g.writeStringField("name", detectedLang.getDetectedLanguage().getName());
     g.writeStringField("code", detectedLang.getDetectedLanguage().getShortCodeWithCountryAndVariant());
     g.writeNumberField("confidence", detectedLang.getDetectionConfidence());
+    if (detectedLang.getDetectedLanguage().isSpellcheckOnlyLanguage()) {
+      g.writeBooleanField("spellCheckOnly", true);
+    }
     g.writeEndObject();
     g.writeEndObject();
   }
@@ -148,6 +151,7 @@ public class RuleMatchesAsJsonSerializer {
       g.writeEndObject();
       writeRule(g, match);
       g.writeBooleanField("ignoreForIncompleteSentence", RuleInformation.ignoreForIncompleteSentences(match.getRule().getId(), lang));
+      g.writeNumberField("contextForSureMatch", match.getRule().estimateContextForSureMatch());
       g.writeEndObject();
     }
     g.writeEndArray();
@@ -159,9 +163,12 @@ public class RuleMatchesAsJsonSerializer {
   
   private void writeReplacements(JsonGenerator g, RuleMatch match) throws IOException {
     g.writeArrayFieldStart("replacements");
-    for (String replacement : match.getSuggestedReplacements()) {
+    for (SuggestedReplacement replacement : match.getSuggestedReplacementObjects()) {
       g.writeStartObject();
-      g.writeStringField("value", replacement);
+      g.writeStringField("value", replacement.getReplacement());
+      if (replacement.getShortDescription() != null) {
+        g.writeStringField("shortDescription", replacement.getShortDescription());
+      }
       g.writeEndObject();
     }
     g.writeEndArray();

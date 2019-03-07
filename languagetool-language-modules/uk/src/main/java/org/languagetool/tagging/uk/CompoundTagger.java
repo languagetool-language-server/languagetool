@@ -21,6 +21,7 @@ package org.languagetool.tagging.uk;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -61,6 +62,7 @@ class CompoundTagger {
   private static final Pattern REQ_NUM_DVA_PATTERN = Pattern.compile("(місн|томник|поверхів).{0,4}");
   private static final Pattern REQ_NUM_DESYAT_PATTERN = Pattern.compile("(класни[кц]|раундов|томн|томов|хвилин|десятиріч|кілометрів|річ).{0,4}");
   private static final Pattern REQ_NUM_STO_PATTERN = Pattern.compile("(річч|літт|метрів|грамов|тисячник).{0,3}");
+  private static final Pattern INTJ_PATTERN = Pattern.compile("intj.*");
 
   private static final Pattern MNP_NAZ_REGEX = Pattern.compile(".*?:[mnp]:v_naz.*");
   private static final Pattern MNP_ZNA_REGEX = Pattern.compile(".*?:[mnp]:v_zna.*");
@@ -77,7 +79,7 @@ class CompoundTagger {
   private static final String ADJ_TAG_FOR_PO_ADV_NAZ = "adj:m:v_naz";
 
   private static final List<String> LEFT_O_ADJ = Arrays.asList(
-    "австро", "адиго", "американо", "англо", "афро", "еко", "етно", "іспано", "києво", "марокано", "угро"
+    "австро", "адиго", "американо", "англо", "афро", "еко", "етно", "іспано", "італо", "києво", "марокано", "угро"
   );
 
   private static final List<String> LEFT_INVALID = Arrays.asList(
@@ -144,10 +146,20 @@ class CompoundTagger {
     boolean startsWithDigit = Character.isDigit(word.charAt(0));
 
     if( ! startsWithDigit && dashIdx != firstDashIdx ) {
-      if( StringUtils.countMatches(word, "-") == 2
+      int dashCount = StringUtils.countMatches(word, "-");
+
+      if( dashCount >= 2
+          && dashIdx > firstDashIdx + 1 ) {
+        List<AnalyzedToken> tokens = doGuessMultiHyphens(word, firstDashIdx, dashIdx);
+        if( tokens != null )
+          return tokens;
+      }
+      
+      if( dashCount == 2
           && dashIdx > firstDashIdx + 1 ) {
         return doGuessTwoHyphens(word, firstDashIdx, dashIdx);
       }
+      
       return null;
     }
 
@@ -225,8 +237,27 @@ class CompoundTagger {
 
     List<TaggedWord> rightWdList = tagEitherCase(rightWord);
       
-    if( rightWdList.isEmpty() )
+    if( rightWdList.isEmpty() ) {
+     
+      if( word.startsWith("напів") ) {
+        // напівпольської-напіванглійської
+        Matcher napivMatcher = Pattern.compile("напів(.+?)-напів(.+)").matcher(word);
+        if( napivMatcher.matches() ) {
+          List<TaggedWord> napivLeftWdList = tagAsIsAndWithLowerCase(napivMatcher.group(1));
+          List<TaggedWord> napivRightWdList = tagAsIsAndWithLowerCase(napivMatcher.group(2));
+
+          List<AnalyzedToken> napivLeftAnalyzedTokens = ukrainianTagger.asAnalyzedTokenListForTaggedWordsInternal(napivMatcher.group(1), napivLeftWdList);
+          List<AnalyzedToken> napivRightAnalyzedTokens = ukrainianTagger.asAnalyzedTokenListForTaggedWordsInternal(napivMatcher.group(2), napivRightWdList);
+
+          List<AnalyzedToken> tagMatch = tagMatch(word, napivLeftAnalyzedTokens, napivRightAnalyzedTokens);
+          if( tagMatch != null ) {
+            return tagMatch;
+          }
+        }
+      }
+      
       return null;
+    }
 
     List<AnalyzedToken> rightAnalyzedTokens = ukrainianTagger.asAnalyzedTokenListForTaggedWordsInternal(rightWord, rightWdList);
 
@@ -325,15 +356,13 @@ class CompoundTagger {
 
     // вгору-вниз, лікар-гомеопат, жило-було
 
-    if( ! leftWdList.isEmpty() ) {
-
+    if( ! leftWdList.isEmpty() && leftWord.length() > 2 ) {
       List<AnalyzedToken> tagMatch = tagMatch(word, leftAnalyzedTokens, rightAnalyzedTokens);
       if( tagMatch != null ) {
         return tagMatch;
       }
     }
 
-    
     List<AnalyzedToken> match = tryOWithAdj(word, leftWord, rightAnalyzedTokens);
     if( match != null )
       return match;
@@ -376,20 +405,48 @@ class CompoundTagger {
     return null;
   }
 
+  private List<AnalyzedToken> doGuessMultiHyphens(String word, int firstDashIdx, int dashIdx) {
+    String lowerWord = word.toLowerCase();
+
+    String[] parts = lowerWord.split("-");
+    HashSet<String> set = new LinkedHashSet<>(Arrays.asList(parts));
+
+    if( set.size() == 2 ) {
+      List<TaggedWord> leftWdList = tagEitherCase(parts[0]);
+      List<TaggedWord> rightWdList = tagEitherCase(new ArrayList<>(set).get(1));
+
+      if( PosTagHelper.hasPosTag2(leftWdList, INTJ_PATTERN)
+          && PosTagHelper.hasPosTag2(rightWdList, INTJ_PATTERN) ) {
+        return Arrays.asList(new AnalyzedToken(word, rightWdList.get(0).getPosTag(), lowerWord));
+      }
+    }
+    else if( set.size() == 1 ) {
+      if( lowerWord.equals("ла") ) {
+        return Arrays.asList(new AnalyzedToken(word, "intj", lowerWord));
+      }
+
+      List<TaggedWord> rightWdList = tagEitherCase(parts[0]);
+      if( PosTagHelper.hasPosTag2(rightWdList, INTJ_PATTERN) ) {
+        return Arrays.asList(new AnalyzedToken(word, rightWdList.get(0).getPosTag(), lowerWord));
+      }
+    }
+
+    return null;
+  }
 
   private List<AnalyzedToken> doGuessTwoHyphens(String word, int firstDashIdx, int dashIdx) {
     String[] parts = word.split("-");
 
     List<TaggedWord> rightWdList = tagEitherCase(parts[2]);
-    
+
     if( rightWdList.isEmpty() )
       return null;
 
     List<AnalyzedToken> rightAnalyzedTokens = ukrainianTagger.asAnalyzedTokenListForTaggedWordsInternal(parts[2], rightWdList);
 
     String firstAndSecond = parts[0] + "-" + parts[1];
-    
-    if( dashPrefixes2.contains( firstAndSecond  ) 
+
+    if( dashPrefixes2.contains( firstAndSecond )
         || dashPrefixes2.contains( firstAndSecond.toLowerCase() ) ) {
 
       return getNvPrefixNounMatch(word, rightAnalyzedTokens, firstAndSecond);
@@ -665,18 +722,20 @@ class CompoundTagger {
   private List<AnalyzedToken> tagMatch(String word, List<AnalyzedToken> leftAnalyzedTokens, List<AnalyzedToken> rightAnalyzedTokens) {
     List<AnalyzedToken> newAnalyzedTokens = new ArrayList<>();
     List<AnalyzedToken> newAnalyzedTokensAnimInanim = new ArrayList<>();
-    
+
     String animInanimNotTagged = null;
-    
+
     for (AnalyzedToken leftAnalyzedToken : leftAnalyzedTokens) {
       String leftPosTag = leftAnalyzedToken.getPOSTag();
-      
+
       if( leftPosTag == null 
           || IPOSTag.contains(leftPosTag, IPOSTag.abbr.getText()) )
         continue;
 
-      // we don't want to mess with v_kly, e.g. no v_kly у рибо-полювання
-      if( leftPosTag.startsWith("noun") && leftPosTag.contains("v_kly") )
+      // we don't want to have v_kly for рибо-полювання
+      // but we do for пане-товаришу
+      if( leftPosTag.startsWith("noun:inanim")
+          && leftPosTag.contains("v_kly") )
         continue;
 
       String leftPosTagExtra = "";
@@ -700,13 +759,14 @@ class CompoundTagger {
 
       for (AnalyzedToken rightAnalyzedToken : rightAnalyzedTokens) {
         String rightPosTag = rightAnalyzedToken.getPOSTag();
-        
+
         if( rightPosTag == null
 //            || rightPosTag.contains("v_kly")
             || rightPosTag.contains(IPOSTag.abbr.getText()) )
           continue;
 
-        if( rightPosTag.startsWith("noun") && rightPosTag.contains("v_kly") )
+        if( rightPosTag.startsWith("noun:inanim")
+            && rightPosTag.contains("v_kly") )
           continue;
 
         String extraNvTag = "";

@@ -91,7 +91,16 @@ public final class TokenAgreementNounVerbExceptionHelper {
       logException();
       return true;
     }
-    
+
+    // — це були невільники
+    if( i > 2
+        && tokens[i-1].getToken().equals("це") 
+        && tokens[i-2].getToken().matches("[—–-]") ) {
+      logException();
+      return true;
+    }
+
+
     // handled by xml rule
     if( LemmaHelper.hasLemma(tokens[i-1], Arrays.asList("воно", "решта")) ) {
       if( PosTagHelper.hasPosTagPart(tokens[i], ":impers") ) {
@@ -466,7 +475,7 @@ public final class TokenAgreementNounVerbExceptionHelper {
     return loadSet;
   }
 
-  
+
   private static void logException() {
     if( logger.isDebugEnabled() ) {
       StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];

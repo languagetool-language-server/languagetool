@@ -249,6 +249,8 @@ atrás de	SP000
 Atrás de	SP000
 através de	SP000
 Através de	SP000
+à face de	SP000
+à face de	SP000
 à venda em	SP000
 À venda em	SP000
 à vista de	SP000
@@ -416,8 +418,8 @@ de vez em quando	RG
 De vez em quando	RG
 devido a	SP000
 Devido a	SP000
-dezenas de	RG
-Dezenas de	RG
+# dezenas de	RG
+# Dezenas de	RG
 dia a dia	RG
 Dia a dia	RG
 dia após dia	RG
@@ -528,6 +530,12 @@ E por aí	RG
 # É que	RG
 face a	SP000
 Face a	SP000
+face ao	SP000
+Face ao	SP000
+face aos	SP000
+Face aos	SP000
+face às	SP000
+Face às	SP000
 frente a frente	RG
 Frente a frente	RG
 frente a	SP000
@@ -2112,6 +2120,7 @@ Aphanomyces astaci	NPCN000_
 Aphanomyces invadans	NPCN000_
 Aphanomyces sp	NPCN000_
 Aphanomyces spp	NPCN000_
+Apis mellifera	NPCN000_
 Apis melliferatta	NPCN000_
 Apis sp	NPCN000_
 Apis spp	NPCN000_
@@ -3643,6 +3652,9 @@ Ursus arctos	NPCN000_
 Ursus maritimus	NPCN000_
 Ursus sp	NPCN000_
 Ursus spp	NPCN000_
+Vespa velutina	NPCN000_
+Vespa sp	NPCN000_
+Vespa spp	NPCN000_
 Vibrio cholerae	NPCN000_
 Vibrio comma	NPCN000_
 Vibrio parahaemolyticus	NPCN000_
@@ -3689,6 +3701,36 @@ Ziphius spp	NPCN000_
 Zootermopsis nevadensis	NPCN000_
 Zootermopsis sp	NPCN000_
 Zootermopsis spp	NPCN000_
+########################################################
+##### Species imported from Catalan multiwords.txt #####
+########################################################
+Melia azedarach	NPCN000_
+Cocculus indicus	NPCN000_
+Ricinus communis	NPCN000_
+Cyclamen europaeum	NPCN000_
+Aconitum ferox	NPCN000_
+Dryopteris filix-mas	NPCN000_
+Myristica fragrans	NPCN000_
+Strychnos ignatii	NPCN000_
+Cicuta maculata	NPCN000_
+Convallaria majalis	NPCN000_
+Carbo medicinalis	NPCN000_
+Gratiola officinalis	NPCN000_
+Nerium oleander	NPCN000_
+Corynebacterium parvum	NPCN000_
+Amanita phalloides	NPCN000_
+Abrus precatorius	NPCN000_
+Gaultheria procumbens	NPCN000_
+Claviceps purpurea	NPCN000_
+Caladium seguinium	NPCN000_
+Gelsemium sempervirens	NPCN000_
+Actaea spicata	NPCN000_
+Delphinium staphisagria	NPCN000_
+Bacillus subtilis	NPCN000_
+Physostigma venenosum	NPCN000_
+Clematis vitalba	NPCN000_
+Helleborus viridis	NPCN000_
+Juniperus oxycedrus	NPCN000_
 
 # Legal expression from 
 # https://ptwikipediaorg/wiki/Lista_de_express%C3%B5es_jur%C3%ADdicas_em_latim
@@ -10960,6 +11002,8 @@ Castel Volturno	NPCS000_
 Castilla-La Mancha	CPMSG00_
 cenário base	NCMS000_
 cenários base	NCMP000_
+célula de Schwann	NCFS000_
+células de Schwann	NCFP000_
 Champions League	NCFS000_
 Che Guevara	NPMS000_
 Chris Columbus	NPMS000_
@@ -11029,6 +11073,7 @@ estudantes Erasmus	NCCP000
 Evo Morales	NPMS000_
 faixa BUS	NCFS000
 faixas BUS	NCFP000
+fake news	NCFP000_
 Feng Shui	NPMS000_
 Ferenc Liszt	NPMS000_
 Fidel Castro	NPMS000_
@@ -11049,11 +11094,14 @@ geração Y	NPFS000_
 Geração Y	NPFS000_
 geração Z	NPFS000_
 Geração Z	NPFS000_
+Greta Thunberg	NPFS000_
 gomi goreng	NCMP000
 hora h	NCFS000_
 Hora h	NCFS000_
 hora H	NCFS000_
 Hora H	NCFS000_
+ideias chave	NCFP000_
+Ideias chave	NCFP000_
 I Guerra Mundial	NPFS000_
 II Guerra Mundial	NPFS000_
 III Guerra Mundial	NPFS000_
@@ -11072,8 +11120,11 @@ Kofi Annan	NPMS000_
 La Salette	NPFS000_
 Le Pen	NPFS000_
 Lehman Brothers	NPMS000_
+Leonardo diCaprio	NPMS000_
 Lex Luthor	NPMS000_
 lingua franca	NCFS000_
+linha SOS	NCFS000_
+linhas SOS	NCFP000_
 Lucky Luke	NPMS000_
 Luís Maria	NPMSO00_
 Luís Santos	NPMSO00_
@@ -11145,13 +11196,22 @@ pontos base	NCMP000
 Porto Rico	NPMSG00_
 Portugal Telecom	NPFS000_
 Praceta Teixeira	NPFSO00_
+presidente da República	NCCS000_
+presidentes da República	NCCP000_
+Presidente da República	NCCS000_
+Presidentes da República	NCCP000_
 prima donna	NCFS000_
 Prima donna	NCFS000_
 primeira volta	NCFS000_
 Primeira volta	NCFS000_
 primeiras voltas	NCFP000_
 Primeiras voltas	NCFP000_
+princípio base	NCMS000
+Princípio base	NCMS000
+princípios base	NCMP000
+Princípios base	NCMP000
 programas base	NCMP000
+Programas base	NCMP000
 Raios Gama	NCMP000
 raios Gama	NCMP000
 raios gama	NCMP000
@@ -11202,6 +11262,7 @@ Sopa à lavrador	NCMS000
 Sopa à Lavrador	NCMS000
 sotto voce	AQCS00_
 Steve Wozniak	NPMS000_
+TED talk	NPFS000_
 Tel Aviv	NPFS000_
 terceira volta	NCFS000_
 Terceira volta	NCFS000_

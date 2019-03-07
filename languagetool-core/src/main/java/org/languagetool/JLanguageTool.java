@@ -45,6 +45,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.jar.Manifest;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -86,6 +87,8 @@ public class JLanguageTool {
 
   private final ResultCache cache;
   private final UserConfig userConfig;
+  private final ShortDescriptionProvider descProvider;
+
   private float maxErrorsPerWordRate;
 
   /**
@@ -257,6 +260,7 @@ public class JLanguageTool {
       throw new RuntimeException("Could not activate rules", e);
     }
     this.cache = cache;
+    descProvider = new ShortDescriptionProvider(language);
   }
 
   /**
@@ -770,6 +774,7 @@ public class JLanguageTool {
   public List<RuleMatch> checkAnalyzedSentence(ParagraphHandling paraMode,
         List<Rule> rules, AnalyzedSentence analyzedSentence) throws IOException {
     List<RuleMatch> sentenceMatches = new ArrayList<>();
+    RuleLoggerManager logger = RuleLoggerManager.getInstance();
     for (Rule rule : rules) {
       if (rule instanceof TextLevelRule) {
         continue;
@@ -784,7 +789,10 @@ public class JLanguageTool {
       if (paraMode == ParagraphHandling.ONLYPARA) {
         continue;
       }
+      long time = System.currentTimeMillis();
       RuleMatch[] thisMatches = rule.match(analyzedSentence);
+      logger.log(new RuleCheckTimeMessage(rule.getId(), language.getShortCodeWithCountryAndVariant(),
+        time, analyzedSentence.getText().length()), Level.FINE);
       for (RuleMatch elem : thisMatches) {
         sentenceMatches.add(elem);
       }
@@ -826,7 +834,8 @@ public class JLanguageTool {
     }
     RuleMatch thisMatch = new RuleMatch(match.getRule(), match.getSentence(),
         fromPos, toPos, match.getMessage(), match.getShortMessage());
-    thisMatch.setSuggestedReplacements(match.getSuggestedReplacements());
+    List<SuggestedReplacement> replacements = match.getSuggestedReplacementObjects();
+    thisMatch.setSuggestedReplacementObjects(extendSuggestions(replacements));
     thisMatch.setUrl(match.getUrl());
     thisMatch.setType(match.getType());
     String sentencePartToError = sentence.substring(0, match.getFromPos());
@@ -854,6 +863,19 @@ public class JLanguageTool {
     return thisMatch;
   }
 
+  private List<SuggestedReplacement> extendSuggestions(List<SuggestedReplacement> replacements) {
+    List<SuggestedReplacement> extended = new ArrayList<>();
+    for (SuggestedReplacement replacement : replacements) {
+      if (replacement.getShortDescription() == null) {  // don't overwrite more specific suggestions from the rule
+        String descOrNull = descProvider.getShortDescription(replacement.getReplacement());
+        extended.add(new SuggestedReplacement(replacement.getReplacement(), descOrNull));
+      } else {
+        extended.add(new SuggestedReplacement(replacement.getReplacement(), replacement.getShortDescription()));
+      }
+    }
+    return extended;
+  }
+  
   protected void rememberUnknownWords(AnalyzedSentence analyzedText) {
     if (listUnknownWords) {
       AnalyzedTokenReadings[] atr = analyzedText.getTokensWithoutWhitespace();
@@ -904,7 +926,9 @@ public class JLanguageTool {
     if (cachedSentence != null) {
       return cachedSentence;
     } else {
-      AnalyzedSentence analyzedSentence = language.getDisambiguator().disambiguate(getRawAnalyzedSentence(sentence));
+      AnalyzedSentence raw = getRawAnalyzedSentence(sentence);
+      AnalyzedSentence disambig = language.getDisambiguator().disambiguate(raw);
+      AnalyzedSentence analyzedSentence = new AnalyzedSentence(disambig.getTokens(), raw.getTokens());
       if (language.getPostDisambiguationChunker() != null) {
         language.getPostDisambiguationChunker().addChunkTags(Arrays.asList(analyzedSentence.getTokens()));
       }
@@ -1154,9 +1178,14 @@ public class JLanguageTool {
 
     private List<RuleMatch> getTextLevelRuleMatches() throws IOException {
       List<RuleMatch> ruleMatches = new ArrayList<>();
+      RuleLoggerManager logger = RuleLoggerManager.getInstance();
+      String lang = language.getShortCodeWithCountryAndVariant();
       for (Rule rule : rules) {
         if (rule instanceof TextLevelRule && !ignoreRule(rule) && paraMode != ParagraphHandling.ONLYNONPARA) {
+          long time = System.currentTimeMillis();
           RuleMatch[] matches = ((TextLevelRule) rule).match(analyzedSentences, annotatedText);
+          logger.log(new RuleCheckTimeMessage(rule.getId(), lang,
+            time, annotatedText.getPlainText().length()), Level.FINE);
           List<RuleMatch> adaptedMatches = new ArrayList<>();
           for (RuleMatch match : matches) {
             LineColumnRange range = getLineColumnRange(match);

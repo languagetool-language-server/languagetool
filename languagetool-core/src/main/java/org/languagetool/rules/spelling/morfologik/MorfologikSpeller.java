@@ -25,10 +25,12 @@ import morfologik.speller.Speller;
 import morfologik.stemming.Dictionary;
 import org.jetbrains.annotations.NotNull;
 import org.languagetool.JLanguageTool;
+import org.languagetool.databroker.ResourceDataBroker;
 import org.languagetool.rules.spelling.SpellingCheckRule;
 import org.languagetool.tools.StringTools;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -47,12 +49,18 @@ public class MorfologikSpeller {
       .build(new CacheLoader<String, Dictionary>() {
         @Override
         public Dictionary load(@NotNull String fileInClassPath) throws IOException {
-          return Dictionary.read(JLanguageTool.getDataBroker().getFromResourceDirAsUrl(fileInClassPath));
+          ResourceDataBroker dataBroker = JLanguageTool.getDataBroker();
+          if (dataBroker.resourceExists(fileInClassPath)) {
+            return Dictionary.read(dataBroker.getFromResourceDirAsUrl(fileInClassPath));
+          } else {
+            return Dictionary.read(Paths.get(fileInClassPath));
+          }
         }
       });
 
   private final Dictionary dictionary;
   private final Speller speller;
+  private final int maxEditDistance;
 
   /**
    * Creates a speller with the given maximum edit distance.
@@ -76,6 +84,7 @@ public class MorfologikSpeller {
       throw new RuntimeException("maxEditDistance must be > 0: " + maxEditDistance);
     }
     this.dictionary = dictionary;
+    this.maxEditDistance = maxEditDistance;
     speller = new Speller(dictionary, maxEditDistance);
   }
 
@@ -88,6 +97,9 @@ public class MorfologikSpeller {
 
   public List<String> getSuggestions(String word) {
     List<String> suggestions = new ArrayList<>();
+    // needs to be reset every time, possible bug: HMatrix for distance computation is not reset;
+    // output changes when reused
+    Speller speller = new Speller(dictionary, maxEditDistance);
     suggestions.addAll(speller.findReplacements(word));
     suggestions.addAll(speller.replaceRunOnWords(word));
     // capitalize suggestions if necessary

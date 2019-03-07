@@ -69,6 +69,7 @@ anagrammatize
 anagrammatized
 anagrammatizes
 anagrammatizing
+anesthetically
 animalize
 animalized
 animalizes
@@ -197,6 +198,7 @@ botanize
 botanized
 botanizes
 botanizing
+botrytized
 bougie
 bowdlerizer
 bowdlerizers
@@ -213,6 +215,8 @@ Canadianize
 Canadianized
 Canadianizes
 Canadianizing
+cancelled
+cancelling
 caponize
 caponized
 caponizes
@@ -280,6 +284,7 @@ civilianized
 civilianizes
 civilianizing
 civilizable
+civilizational
 civilizer
 civilizers
 classicize
@@ -384,6 +389,9 @@ cyanize
 cyanized
 cyanizes
 cyanizing
+cyberattack
+cyberespionage
+cybersecurity
 dacquoise
 dacquoises
 damageability
@@ -603,6 +611,7 @@ diabolize
 diabolized
 diabolizes
 diabolizing
+dialyzable
 dialyze
 dialyzed
 dialyzing
@@ -858,6 +867,7 @@ Gothicized
 Gothicizes
 Gothicizing
 grayscale
+habeas corpus
 Hamas
 hangry
 harmonizable
@@ -1055,10 +1065,15 @@ Judaize
 Judaized
 Judaizes
 Judaizing
+judgement
+judgemental
+judgements
 keratinize
 keratinized
 keratinizes
 keratinizing
+Klansmen
+Ku Klux Klan
 labialization
 laicization
 laicize
@@ -1166,6 +1181,7 @@ memorialization
 memorizer
 memorizers
 mercerization
+mesothelioma
 metalize
 metalized
 metalizes
@@ -1765,6 +1781,7 @@ reacclimatize
 reacclimatized
 reacclimatizes
 reacclimatizing
+realizably
 realizer
 realizers
 reargue
@@ -2259,6 +2276,7 @@ teraliter
 teraliters
 terameter
 terameters
+tergiversation
 territorialize
 territorialized
 territorializes
@@ -2314,11 +2332,13 @@ tropicalizing
 Uber
 ultraprecise
 uncapitalized
+uncrystallized
 underemphasize
 underemphasized
 underemphasizes
 underemphasizing
 underutilization
+unflexible
 unpile
 unpiled
 unpiles
@@ -2326,6 +2346,9 @@ unpiling
 unrealizable
 unrefrigerated
 unsalability
+unsocialized
+unstandardized
+unsynchronized
 unweave
 unweaved
 unweaves

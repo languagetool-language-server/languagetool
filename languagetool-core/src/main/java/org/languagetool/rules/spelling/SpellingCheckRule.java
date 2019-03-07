@@ -84,6 +84,7 @@ public abstract class SpellingCheckRule extends Rule {
   private List<DisambiguationPatternRule> antiPatterns = new ArrayList<>();
   private boolean considerIgnoreWords = true;
   private boolean convertsCase = false;
+  protected int ignoreWordsWithLength = 0;
 
   public SpellingCheckRule(ResourceBundle messages, Language language, UserConfig userConfig) {
     this(messages, language, userConfig, Collections.emptyList());
@@ -135,7 +136,7 @@ public abstract class SpellingCheckRule extends Rule {
                                    .collect(Collectors.groupingBy(s -> s.substring(0,1), Collectors.toSet()));
     wordsToBeIgnoredDictionaryIgnoreCase = wordsToBeIgnored
                                              .stream()
-                                             .map(s -> s.toLowerCase())
+                                             .map(String::toLowerCase)
                                              .collect(Collectors.groupingBy(s -> s.substring(0,1), Collectors.toSet()));
   }
 
@@ -197,7 +198,8 @@ public abstract class SpellingCheckRule extends Rule {
 
   private boolean isIgnoredNoCase(String word) {
     return wordsToBeIgnored.contains(word) ||
-           (convertsCase && wordsToBeIgnored.contains(word.toLowerCase(language.getLocale())));
+           (convertsCase && wordsToBeIgnored.contains(word.toLowerCase(language.getLocale()))) ||
+           (ignoreWordsWithLength > 0 && word.length() <= ignoreWordsWithLength);
   }
 
   /**
@@ -255,8 +257,10 @@ public abstract class SpellingCheckRule extends Rule {
     for (String ignoreWord : wordListLoader.loadWords(getIgnoreFileName())) {
       addIgnoreWords(ignoreWord);
     }
-    for (String ignoreWord : wordListLoader.loadWords(getSpellingFileName())) {
-      addIgnoreWords(ignoreWord);
+    if (getSpellingFileName() != null) {
+      for (String ignoreWord : wordListLoader.loadWords(getSpellingFileName())) {
+        addIgnoreWords(ignoreWord);
+      }
     }
     updateIgnoredWordDictionary();
     for (String prohibitedWord : wordListLoader.loadWords(getProhibitFileName())) {

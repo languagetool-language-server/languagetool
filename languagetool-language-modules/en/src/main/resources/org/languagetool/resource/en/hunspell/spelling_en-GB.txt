@@ -37,6 +37,7 @@ achromatize
 achromatized
 achromatizes
 achromatizing
+acidisation
 acidise
 acidised
 acidises
@@ -137,6 +138,7 @@ alcoholize
 alcoholized
 alcoholizes
 alcoholizing
+aldolisation
 alienise
 alienised
 alienises
@@ -197,6 +199,9 @@ anagrammatize
 anagrammatized
 anagrammatizes
 anagrammatizing
+anatomisation
+anatomiser
+anatomisers
 androgenisation
 androgenise
 androgenised
@@ -256,6 +261,8 @@ appetises
 appetize
 appetized
 appetizes
+arabicisation
+arabisation
 Arabise
 Arabised
 Arabises
@@ -276,6 +283,7 @@ archaize
 archaized
 archaizes
 archaizing
+aromatisation
 aromatise
 aromatised
 aromatises
@@ -364,6 +372,7 @@ Australianizes
 Australianizing
 authorisable
 authorizable
+autoionisation
 automobile
 automobiles
 autos
@@ -397,6 +406,7 @@ bacterise
 bacterised
 bacterises
 bacterising
+banalisation
 banalise
 banalised
 banalises
@@ -407,6 +417,8 @@ banalizes
 banalizing
 banksman
 banksmen
+barbarisation
+barbarisations
 bariatric
 behoving
 bestialise
@@ -432,6 +444,7 @@ bipolarize
 bipolarized
 bipolarizes
 bipolarizing
+bituminisation
 bituminise
 bituminised
 bituminises
@@ -515,6 +528,7 @@ canoniser
 canonisers
 canonizer
 canonizers
+cantonisation
 cantonise
 cantonised
 cantonises
@@ -530,6 +544,8 @@ carbolises
 carbolising
 carbonisable
 carbonizable
+carburisation
+carburisations
 carburise
 carburised
 carburises
@@ -546,6 +562,8 @@ carnalize
 carnalized
 carnalizes
 carnalizing
+cartelisation
+cartelisations
 cartelise
 cartelised
 cartelises
@@ -623,6 +641,7 @@ chemicalize
 chemicalized
 chemicalizes
 chemicalizing
+chorisation
 Christianiser
 Christianisers
 Christianizer
@@ -643,12 +662,17 @@ chronologize
 chronologized
 chronologizes
 chronologizing
+cicatrisant
 cicatrised
+cicatriser
+cicatrisers
 cicatrises
 cicatrising
 cicatrized
 cicatrizes
 cicatrizing
+cinchonisation
+cinchonisations
 cinchonise
 cinchonised
 cinchonises
@@ -665,6 +689,7 @@ citizenize
 citizenized
 citizenizes
 citizenizing
+civilianisation
 civilianise
 civilianised
 civilianises
@@ -752,6 +777,7 @@ communalize
 communalized
 communalizes
 communalizing
+communisation
 commutability
 compensability
 componentisation
@@ -1003,6 +1029,7 @@ decarbonising
 decarbonized
 decarbonizes
 decarbonizing
+decarburisation
 decarburise
 decarburised
 decarburises
@@ -1218,6 +1245,8 @@ demutualize
 demutualized
 demutualizes
 demutualizing
+demythologiser
+demythologisers
 denaturalise
 denaturalised
 denaturalises
@@ -1226,6 +1255,7 @@ denaturalize
 denaturalized
 denaturalizes
 denaturalizing
+denisation
 denormalisation
 denormalization
 dentalise
@@ -1295,6 +1325,7 @@ deradicalize
 deradicalized
 deradicalizes
 deradicalizing
+derealisation
 derealised
 derealiseded
 derealiseding
@@ -1336,6 +1367,7 @@ desacralize
 desacralized
 desacralizes
 desacralizing
+desalinisation
 desexualise
 desexualised
 desexualises
@@ -1458,6 +1490,7 @@ dimerize
 dimerized
 dimerizes
 dimerizing
+diphthongisation
 diphthongise
 diphthongised
 diphthongises
@@ -1466,6 +1499,7 @@ diphthongize
 diphthongized
 diphthongizes
 diphthongizing
+Disambiguator Log
 discombobulates
 discombobulating
 disconnexion
@@ -1501,6 +1535,8 @@ disincentivize
 disincentivized
 disincentivizes
 disincentivizing
+disorganiser
+disorganisers
 dispauperise
 dispauperised
 dispauperises
@@ -1614,6 +1650,8 @@ embolize
 embolized
 embolizes
 embolizing
+empanel
+empanels
 enolisable
 enolisation
 ensilability
@@ -1661,6 +1699,7 @@ epoxidized
 epoxidizes
 epoxidizing
 erodable
+erotisation
 erotise
 erotised
 erotises
@@ -1708,6 +1747,8 @@ etymologizes
 etymologizing
 euphemise
 euphemised
+euphemiser
+euphemisers
 euphemises
 euphemising
 euphemize
@@ -1786,6 +1827,9 @@ fanaticize
 fanaticized
 fanaticizes
 fanaticizing
+faradisation
+faradiser
+faradisers
 femtogram
 femtogramme
 femtogrammes
@@ -1794,6 +1838,7 @@ femtolitre
 femtolitres
 femtometre
 femtometres
+feralised
 fertilisable
 fertilizable
 feudalisation
@@ -1806,6 +1851,7 @@ feudalize
 feudalized
 feudalizes
 feudalizing
+fiberisation
 fiberise
 fiberised
 fiberises
@@ -1819,6 +1865,7 @@ finaliser
 finalisers
 finalizer
 finalizers
+financialisation
 Finlandise
 Finlandised
 Finlandises
@@ -1874,6 +1921,7 @@ fractionalize
 fractionalized
 fractionalizes
 fractionalizing
+fractionisation
 fractionise
 fractionised
 fractionises
@@ -2079,8 +2127,12 @@ grammaticize
 grammaticized
 grammaticizes
 grammaticizing
+grangerisation
+grangerisations
 grangerise
 grangerised
+grangeriser
+grangerisers
 grangerises
 grangerising
 grangerize
@@ -2108,6 +2160,7 @@ grecianize
 grecianized
 grecianizes
 grecianizing
+greisenisation
 greyest
 greyscale
 gutturalisation
@@ -2160,6 +2213,7 @@ heparinizes
 heparinizing
 hepatectomised
 hepatectomized
+hepatisation
 herborise
 herborised
 herborises
@@ -2219,6 +2273,7 @@ Hinduize
 Hinduized
 Hinduizes
 Hinduizing
+Hispanicisation
 Hispanicise
 Hispanicised
 Hispanicises
@@ -2252,6 +2307,8 @@ humorise
 humorised
 humorises
 humorising
+hyalinisation
+hyalinisations
 hyalinise
 hyalinised
 hyalinises
@@ -2266,6 +2323,7 @@ hybridisers
 hybridizable
 hybridizer
 hybridizers
+hydrogenisation
 hydrolysable
 hydrolysation
 hydrolyser
@@ -2303,6 +2361,8 @@ hypersensitize
 hypersensitized
 hypersensitizes
 hypersensitizing
+hyphenisation
+hyphenisations
 hypnotisability
 hypnotisable
 hypnotisation
@@ -2413,6 +2473,7 @@ immiserize
 immiserized
 immiserizes
 immiserizing
+immortalisation
 immuniser
 immunisers
 imperialise
@@ -2482,7 +2543,11 @@ introflection
 introflexion
 inventable
 inventible
+iodisation
+iodiser
+iodisers
 ionisable
+iridisation
 iridise
 iridised
 iridises
@@ -2499,6 +2564,7 @@ irrationalize
 irrationalized
 irrationalizes
 irrationalizing
+irrealisable
 irreclaimability
 irreclaimably
 irresolvability
@@ -2580,6 +2646,7 @@ judicializes
 judicializing
 Keltically
 Kelticism
+kyanisation
 kyanise
 kyanised
 kyanises
@@ -2598,6 +2665,7 @@ labialize
 labialized
 labializes
 labializing
+laicisation
 laicise
 laicised
 laicises
@@ -2625,6 +2693,7 @@ lateralize
 lateralized
 lateralizes
 lateralizing
+laterisation
 laterise
 laterised
 laterises
@@ -2683,6 +2752,9 @@ lionisation
 lionizers
 lionizes
 lionizing
+literalisation
+literaliser
+literalisers
 lithotritise
 lithotritised
 lithotritises
@@ -2737,6 +2809,8 @@ macarize
 macarized
 macarizes
 macarizing
+maderisation
+maderisations
 maderise
 maderised
 maderises
@@ -2856,6 +2930,8 @@ melanizes
 melanizing
 melodise
 melodised
+melodiser
+melodisers
 melodises
 melodising
 melodize
@@ -2905,6 +2981,8 @@ mercurialised
 mercurialises
 mercurialising
 mercurialization
+mesmerisation
+mesmerisations
 metamorphise
 metamorphised
 metamorphises
@@ -3011,6 +3089,7 @@ misrecognize
 misrecognized
 misrecognizes
 misrecognizing
+missionisation
 missionise
 missionised
 missionises
@@ -3088,6 +3167,8 @@ monumentalize
 monumentalized
 monumentalizes
 monumentalizing
+moralisation
+moralisations
 moralizer
 moralizers
 morticer
@@ -3160,6 +3241,7 @@ mutualize
 mutualized
 mutualizes
 mutualizing
+mylonitisation
 mylonitise
 mylonitised
 mylonitises
@@ -3172,6 +3254,7 @@ mythicize
 mythicized
 mythicizes
 mythicizing
+nanisation
 nanogram
 nanogramme
 nanogrammes
@@ -3262,6 +3345,7 @@ nodalise
 nodalised
 nodalises
 nodalising
+nomadisation
 nomadise
 nomadised
 nomadises
@@ -3303,6 +3387,7 @@ nuclearize
 nuclearized
 nuclearizes
 nuclearizing
+objectivisation
 objectivise
 objectivised
 objectivises
@@ -3384,6 +3469,7 @@ orthonormalise
 orthonormalised
 orthonormalises
 orthonormalising
+ostracisable
 ostracisation
 ostracization
 ostracize
@@ -3526,6 +3612,7 @@ paedogenetic
 paedogenic
 paganise
 paganised
+paganiser
 paganises
 paganising
 paganize
@@ -3554,6 +3641,9 @@ parabolize
 parabolized
 parabolizes
 parabolizing
+parameterisation
+parameterization
+parameterizations
 parenthesises
 parenthesising
 parenthesizes
@@ -3582,6 +3672,7 @@ partialize
 partialized
 partializes
 partializing
+particularisation
 passivisation
 passivise
 passivised
@@ -3622,6 +3713,8 @@ patrialize
 patrialized
 patrializes
 patrializing
+pauperisation
+pauperisations
 pauperize
 pauperized
 pauperizes
@@ -3991,6 +4084,7 @@ powderize
 powderized
 powderizes
 powderizing
+pragmatisation
 pragmatise
 pragmatised
 pragmatises
@@ -4127,6 +4221,8 @@ racialize
 racialized
 racializes
 racializing
+radialisation
+radialisations
 radialise
 radialises
 radialising
@@ -4255,6 +4351,10 @@ rehandle
 rehandled
 rehandles
 rehandling
+reharden
+rehardened
+rehardening
+rehardens
 rehospitalisation
 rehospitalise
 rehospitalised
@@ -4335,6 +4435,8 @@ rematerialize
 rematerialized
 rematerializes
 rematerializing
+remilitarisation
+remilitarisations
 remilitarise
 remilitarised
 remilitarises
@@ -4527,6 +4629,7 @@ revascularized
 revascularizes
 revascularizing
 revealability
+revisualisation
 revisualise
 revisualised
 revisualises
@@ -4562,6 +4665,7 @@ romanizer
 romanizers
 romanticisation
 romanticization
+routinisation
 routinize
 routinized
 routinizes
@@ -4578,6 +4682,7 @@ ruggedize
 ruggedized
 ruggedizes
 ruggedizing
+Russianisation
 Russianise
 Russianised
 Russianises
@@ -4632,6 +4737,7 @@ satinized
 satinizes
 satinizing
 satirisable
+satirisation
 satiriser
 satirisers
 satirizable
@@ -4681,6 +4787,7 @@ sectionalising
 sectionalized
 sectionalizes
 sectionalizing
+sectionisation
 sectionise
 sectionised
 sectionises
@@ -4721,6 +4828,7 @@ sequelized
 sequelizes
 sequelizing
 serialisable
+sericitisation
 serpentinise
 serpentinised
 serpentinises
@@ -4826,6 +4934,9 @@ sociologize
 sociologized
 sociologizes
 sociologizing
+sodomisation
+solarisation
+solarisations
 solarise
 solarised
 solarises
@@ -4839,6 +4950,9 @@ soliloquize
 soliloquized
 soliloquizes
 soliloquizing
+solmisation
+solmisations
+solonisation
 somatise
 somatised
 somatises
@@ -4885,6 +4999,7 @@ spiralize
 spiralized
 spiralizes
 spiralizing
+spiritualisation
 spiritualise
 spiritualised
 spiritualiser
@@ -5043,6 +5158,8 @@ syllogizer
 syllogizers
 syllogizes
 syllogizing
+symmetrisation
+symmetrisations
 synergised
 synergises
 synergising
@@ -5077,6 +5194,9 @@ syntonize
 syntonized
 syntonizes
 syntonizing
+tabularisation
+tabularisations
+Talibanisation
 Talibanise
 Talibanised
 Talibanises
@@ -5131,6 +5251,7 @@ technologizes
 technologizing
 temporisation
 temporization
+tenderisation
 teragram
 teragramme
 teragrammes
@@ -5217,6 +5338,7 @@ thymectomize
 thymectomized
 thymectomizes
 thymectomizing
+Token
 tokenisations
 tokenization
 tokenizations
@@ -5228,6 +5350,8 @@ topicalize
 topicalized
 topicalizes
 topicalizing
+totalisation
+totalisations
 totalisator
 totalisators
 totalise
@@ -5242,6 +5366,8 @@ traditionalise
 traditionalised
 traditionalises
 traditionalising
+trichinisation
+trichinisations
 trichinise
 trichinised
 trichinises
@@ -5289,7 +5415,10 @@ unbowdlerized
 unbowdlerizes
 unbowdlerizing
 uncapitalized
+uncategorisable
 uncleanly
+uncrystallised
+uncrystallized
 undercapitalisation
 underemphasise
 underemphasised
@@ -5303,6 +5432,7 @@ underpraise
 underpraised
 underpraises
 underpraising
+underrepresented
 unfeudalise
 unfeudalised
 unfeudalises
@@ -5323,6 +5453,8 @@ unionizer
 unionizers
 unionizes
 unionizing
+unitisation
+unitisations
 unitise
 unitised
 unitises
@@ -5351,6 +5483,7 @@ unpiled
 unpiles
 unpiling
 unpolarisable
+unpolarizable
 unprotestantise
 unprotestantised
 unprotestantises
@@ -5362,9 +5495,12 @@ unrealizable
 unromanticised
 unromanticized
 unsaleability
+unsocialised
+unsocialized
 unstandardized
 unsurely
 unverbalised
+unverbalized
 unweave
 unweaved
 unweaves
@@ -5391,6 +5527,7 @@ vampirize
 vampirized
 vampirizes
 vampirizing
+vandalisation
 vaporisable
 vasectomise
 vasectomised
@@ -5454,6 +5591,8 @@ vocationalized
 vocationalizes
 vocationalizing
 volatilisable
+volcanisation
+volcanisations
 volcanise
 volcanised
 volcanises
@@ -5478,6 +5617,8 @@ voucherize
 voucherized
 voucherizes
 voucherizing
+vowelisation
+vowelisations
 vowelise
 vowelised
 vowelises
@@ -5518,6 +5659,8 @@ yoctolitre
 yoctolitres
 yoctometre
 yoctometres
+yoghourt
+yoghourts
 yottagram
 yottagramme
 yottagrammes
