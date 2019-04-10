@@ -1,6 +1,44 @@
 # LanguageTool Change Log
 
-## 4.5-SNAPSHOT(release planned for 2019-03-26)
+## 4.6 (2019-06-26)
+
+#### Galician
+  * added verbal agreement rules
+
+#### German
+  * added and improved rules
+  * The false friend rule has been modified to use ngrams: Now false friends
+    cause error messages if they are used in a wrong context, according to ngram statistics.
+    Note that some pairs from `false-friends.xml` are not supported anymore because
+    their precision isn't good enough. See `confusion_sets_l2_de.txt` for active DE/EN pairs.
+    Use `My handy is broken.` to test the rule. As before, this will only create
+    an error if `motherTongue` is set to a German language code.
+
+#### Portuguese
+  * POS and spelling improvements
+
+#### Spanish
+  * Updated spell dictionary from 2.1 to 2.4
+
+#### HTTP API / LT server
+  * `altLanguages` will only be considered for words with >= 3 characters
+  * Cleaned up error handling: invalid parameters will now return an HTTP error 400
+    instead of 500.
+
+
+## 4.5.1 (2019-03-28)
+
+#### LibreOffice / Apache OpenOffice Integration
+ 
+ * Fixed a bug that caused the rules in the options dialog to not appear in the text language 
+
+
+
+## 4.5 (2019-03-26)
+
+#### Catalan
+  * added and improved rules
+  * updated dictionary (catalan-pos-dict-2.3) with health terminology 
 
 #### English
   * `resource/en/en-US-GB.txt` contains a mapping from US to British
@@ -11,25 +49,36 @@
   * updated en_GB spellchecker dictionary from https://github.com/marcoagpinto/aoo-mozilla-en-dict (Version 2.70 - 2019-03-01)
   * spell check ignores single characters (e.g., 'α')
   
+#### Galician
+  * added and improved rules
+  * disambiguation improvements
+  * foreign names recognition
+
 #### German
   * added and improved rules
   * Simple German: added and improved rules
   * improved suggestions for typos that end with a dot (typically at the end of
     the sentence) - the dot is not included anymore
-  * spell check ignores single characters (e.g., 'α') 
-
-#### Galician
-  * added and improved rules
+  * spell check ignores single characters (e.g., 'α') and hyphenated compounds (e.g., 'α-Strahler')
 
 #### Portuguese
-  * added and improved rules
+  * added and significantly improved rules accuracy
   * disambiguation improvements
+     - Chinese common names are now detected
   * POS and spelling improvements
+  * updated Hunspell dictionaries to:
+    - [pt-PT pos-AO] Dicionários Portugueses Complementares 3.1
 
 #### Russian
   * added and improved rules
   * disambiguation improvements
   * added many words without "yo" letter to POS dictionary
+  * added new words to spell dictionary
+
+#### Ukrainian
+  * dictionary update
+  * added and improved rules
+  * improvements to tokenization, tagging, and disambiguation
 
 #### General
   * URLs written like `mydomain.org/` are now detected as domains and not

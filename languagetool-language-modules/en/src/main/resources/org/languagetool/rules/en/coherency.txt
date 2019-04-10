@@ -359,6 +359,7 @@ criminalisation;criminalization
 criminalise;criminalize
 criticisable;criticizable
 criticise;criticize
+crystallisability;crystallizability
 crystallisable;crystallizable
 crystallisation;crystallization
 crystallise;crystallize
@@ -377,6 +378,7 @@ czar;tsar
 deaminise;deaminize
 decagram;decagramme
 decapitalise;decapitalize
+decarbonisation;decarbonization
 decarbonise;decarbonize
 decarburisation;decarburization
 decarburise;decarburize
@@ -512,7 +514,7 @@ desulphurise;desulphurize
 desynchronisation;desynchronization
 desynchronise;desynchronize
 deterritorialise;deterritorialize
-deterritorialization;deterritorialisation
+deterritorialisation;deterritorialization
 detribalisation;detribalization
 detribalise;detribalize
 devalorisation;devalorization
@@ -646,6 +648,7 @@ experimentalise;experimentalize
 extemporisation;extemporization
 extemporise;extemporize
 extendable;extendible
+exteriorisation;exteriorization
 exteriorise;exteriorize
 externalisation;externalization
 externalise;externalize
@@ -1003,6 +1006,7 @@ localisation;localization
 localise;localize
 localiser;localizer
 logicise;logicize
+lutanist;lutenist
 luteinisation;luteinization
 lyophilise;lyophilize
 lyricise;lyricize
@@ -1277,8 +1281,11 @@ ozonise;ozonize
 ozoniser;ozonizer
 packetise;packetize
 paedogenetic;paedogenic
+paganisation;paganization
 paganise;paganize
+paganiser;paganizer
 palatalise;palatalize
+palletisation;palletization
 palletise;palletize
 palletiser;palletizer
 panegyrise;panegyrize
@@ -1290,6 +1297,7 @@ parabolise;parabolize
 parallelisation;parallelization
 parallelise;parallelize
 paralyse;paralyze
+parameterisation;parameterization
 parameterise;parameterize
 parameterization;parametrization
 parameterize;parametrize
@@ -1303,6 +1311,7 @@ Parkerise;Parkerize
 parochialise;parochialize
 parodise;parodize
 partialise;partialize
+particularisation;particularization
 particularise;particularize
 passivisation;passivization
 passivise;passivize
@@ -1414,7 +1423,7 @@ populariser;popularizer
 porcelainise;porcelainize
 porcellanise;porcellanize
 postalise;postalize
-posterisation;posterisation
+posterisation;posterization
 posterise;posterize
 posturise;posturize
 potentialise;potentialize
@@ -1513,6 +1522,7 @@ recognisably;recognizably
 recognisance;recognizance
 recognise;recognize
 recogniser;recognizer
+recolonisation;recolonization
 recolonise;recolonize
 reconceptualise;reconceptualize
 recontextualise;recontextualize
@@ -1660,7 +1670,7 @@ sequelise;sequelize
 serialisable;serializable
 serialisation;serialization
 serialise;serialize
-sericitisation;sericitisation
+sericitisation;sericitization
 sermonise;sermonize
 serpentinise;serpentinize
 sexualisation;sexualization
@@ -1962,6 +1972,7 @@ vocalise;vocalize
 vocaliser;vocalizer
 vocationalise;vocationalize
 volatilisable;volatilizable
+volatilisation;volatilization
 volatilise;volatilize
 volcanisation;volcanization
 volcanise;volcanize

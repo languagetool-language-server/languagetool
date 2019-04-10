@@ -35,7 +35,6 @@ import org.languagetool.rules.patterns.PatternRuleLoader;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,7 +46,6 @@ import java.util.concurrent.Callable;
 import java.util.jar.Manifest;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * The main class used for checking text against different rules:
@@ -68,9 +66,14 @@ import java.util.stream.Collectors;
 public class JLanguageTool {
 
   /** LanguageTool version as a string like {@code 2.3} or {@code 2.4-SNAPSHOT}. */
-  public static final String VERSION = "4.5-SNAPSHOT";
+  public static final String VERSION = "4.6-SNAPSHOT";
   /** LanguageTool build date and time like {@code 2013-10-17 16:10} or {@code null} if not run from JAR. */
   @Nullable public static final String BUILD_DATE = getBuildDate();
+  /** 
+   * Abbreviated git id or {@code null} if not available.
+   * @since 4.5
+   */
+  @Nullable public static final String GIT_SHORT_ID = getShortGitId();
 
   /** The name of the file with error patterns. */
   public static final String PATTERN_FILE = "grammar.xml";
@@ -112,6 +115,24 @@ public class JLanguageTool {
       }
     } catch (IOException e) {
       throw new RuntimeException("Could not get build date from JAR", e);
+    }
+  }
+
+  /**
+   * Returns the abbreviated git id or {@code null}.
+   */
+  @Nullable
+  private static String getShortGitId() {
+    try {
+      InputStream in = JLanguageTool.class.getClassLoader().getResourceAsStream("git.properties");
+      if (in != null) {
+        Properties props = new Properties();
+        props.load(in);
+        return props.getProperty("git.commit.id.abbrev");
+      }
+      return null;
+    } catch (IOException e) {
+      throw new RuntimeException("Could not get git id from 'git.properties'", e);
     }
   }
 
@@ -254,7 +275,10 @@ public class JLanguageTool {
     this.cleanOverlappingMatches = true;
     try {
       activateDefaultPatternRules();
-      activateDefaultFalseFriendRules();
+      if (!language.hasNGramFalseFriendRule(motherTongue)) {
+        // use the old false friends, which always match, not depending on context
+        activateDefaultFalseFriendRules();
+      }
       updateOptionalLanguageModelRules(null); // start out with rules without language model
     } catch (Exception e) {
       throw new RuntimeException("Could not activate rules", e);
@@ -412,7 +436,7 @@ public class JLanguageTool {
     if (motherTongue == null) {
       return Collections.emptyList();
     }
-    FalseFriendRuleLoader ruleLoader = new FalseFriendRuleLoader();
+    FalseFriendRuleLoader ruleLoader = new FalseFriendRuleLoader(motherTongue);
     try (InputStream is = this.getClass().getResourceAsStream(filename)) {
       if (is == null) {
         return ruleLoader.getRules(new File(filename), language, motherTongue);
@@ -429,7 +453,7 @@ public class JLanguageTool {
   private void updateOptionalLanguageModelRules(@Nullable LanguageModel lm) {
     ResourceBundle messages = getMessageBundle(language);
     try {
-      List<Rule> rules = language.getRelevantLanguageModelCapableRules(messages, lm, userConfig, altLanguages);
+      List<Rule> rules = language.getRelevantLanguageModelCapableRules(messages, lm, userConfig, motherTongue, altLanguages);
       userRules.removeIf(rule -> optionalLanguageModelRules.contains(rule.getId()));
       optionalLanguageModelRules.clear();
       rules.stream().map(Rule::getId).forEach(optionalLanguageModelRules::add);
@@ -832,12 +856,11 @@ public class JLanguageTool {
       fromPos = annotatedText.getOriginalTextPositionFor(fromPos);
       toPos = annotatedText.getOriginalTextPositionFor(toPos - 1) + 1;
     }
-    RuleMatch thisMatch = new RuleMatch(match.getRule(), match.getSentence(),
-        fromPos, toPos, match.getMessage(), match.getShortMessage());
+    RuleMatch thisMatch = new RuleMatch(match);
+    thisMatch.setOffsetPosition(fromPos, toPos);
     List<SuggestedReplacement> replacements = match.getSuggestedReplacementObjects();
     thisMatch.setSuggestedReplacementObjects(extendSuggestions(replacements));
-    thisMatch.setUrl(match.getUrl());
-    thisMatch.setType(match.getType());
+
     String sentencePartToError = sentence.substring(0, match.getFromPos());
     String sentencePartToEndOfError = sentence.substring(0, match.getToPos());
     int lastLineBreakPos = sentencePartToError.lastIndexOf('\n');
@@ -861,21 +884,22 @@ public class JLanguageTool {
     thisMatch.setColumn(column);
     thisMatch.setEndColumn(endColumn);
     return thisMatch;
+
   }
 
   private List<SuggestedReplacement> extendSuggestions(List<SuggestedReplacement> replacements) {
     List<SuggestedReplacement> extended = new ArrayList<>();
     for (SuggestedReplacement replacement : replacements) {
+      SuggestedReplacement newReplacement = new SuggestedReplacement(replacement);
       if (replacement.getShortDescription() == null) {  // don't overwrite more specific suggestions from the rule
         String descOrNull = descProvider.getShortDescription(replacement.getReplacement());
-        extended.add(new SuggestedReplacement(replacement.getReplacement(), descOrNull));
-      } else {
-        extended.add(new SuggestedReplacement(replacement.getReplacement(), replacement.getShortDescription()));
+        newReplacement.setShortDescription(descOrNull);
       }
+      extended.add(newReplacement);
     }
     return extended;
   }
-  
+
   protected void rememberUnknownWords(AnalyzedSentence analyzedText) {
     if (listUnknownWords) {
       AnalyzedTokenReadings[] atr = analyzedText.getTokensWithoutWhitespace();
@@ -1191,8 +1215,8 @@ public class JLanguageTool {
             LineColumnRange range = getLineColumnRange(match);
             int newFromPos = annotatedText.getOriginalTextPositionFor(match.getFromPos());
             int newToPos = annotatedText.getOriginalTextPositionFor(match.getToPos() - 1) + 1;
-            RuleMatch newMatch = new RuleMatch(match.getRule(), match.getSentence(), newFromPos, newToPos, match.getMessage(), match.getShortMessage());
-            newMatch.setUrl(match.getUrl());
+            RuleMatch newMatch = new RuleMatch(match);
+            newMatch.setOffsetPosition(newFromPos, newToPos);
             newMatch.setLine(range.from.line);
             newMatch.setEndLine(range.to.line);
             if (match.getLine() == 0) {
@@ -1201,8 +1225,6 @@ public class JLanguageTool {
               newMatch.setColumn(range.from.column);
             }
             newMatch.setEndColumn(range.to.column);
-            newMatch.setSuggestedReplacements(match.getSuggestedReplacements());
-            newMatch.setType(match.getType());
             adaptedMatches.add(newMatch);
           }
           ruleMatches.addAll(adaptedMatches);
@@ -1240,8 +1262,7 @@ public class JLanguageTool {
           }
           List<RuleMatch> adaptedMatches = new ArrayList<>();
           for (RuleMatch elem : sentenceMatches) {
-            RuleMatch thisMatch = adjustRuleMatchPos(elem,
-                    charCount, columnCount, lineCount, sentence, annotatedText);
+            RuleMatch thisMatch = adjustRuleMatchPos(elem, charCount, columnCount, lineCount, sentence, annotatedText);
             adaptedMatches.add(thisMatch);
             if (listener != null) {
               listener.matchFound(thisMatch);

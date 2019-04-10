@@ -276,7 +276,7 @@ public final class RuleOverview {
     List<Rule> rules = new ArrayList<>(lang.getRelevantRules(JLanguageTool.getMessageBundle(),
       null, Collections.emptyList()));
     rules.addAll(lang.getRelevantLanguageModelCapableRules(JLanguageTool.getMessageBundle(), null, null,
-      Collections.emptyList()));
+            null, Collections.emptyList()));
     for (Rule rule : rules) {
       if (rule.isDictionaryBasedSpellingRule()) {
         if (rule instanceof HunspellNoSuggestionRule) {
@@ -295,7 +295,7 @@ public final class RuleOverview {
     if (dataBroker.resourceExists(path)) {
       try (InputStream confusionSetStream = dataBroker.getFromResourceDirAsStream(path)) {
         ConfusionSetLoader confusionSetLoader = new ConfusionSetLoader();
-        return confusionSetLoader.loadConfusionSet(confusionSetStream).size()/2;
+        return confusionSetLoader.loadConfusionPairs(confusionSetStream).size()/2;
       } catch (IOException e) {
         throw new RuntimeException(e);
       }

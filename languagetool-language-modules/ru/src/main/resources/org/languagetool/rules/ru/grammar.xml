@@ -2308,17 +2308,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
         <rulegroup id="ROST" name="«Рост»" default="off">
             <rule>
                 <pattern>
-                    <token postag="NN:Inanim:.*" postag_regexp="yes" skip="-1"><exception inflected="yes" regexp="yes" >&rost;</exception><exception scope="next" inflected="yes" regexp="yes" >&rost;</exception></token>
-                    <token inflected="yes">рост<exception inflected="yes" regexp="yes" scope="next" >&rost;</exception><exception postag="NN:Inanim:.*" postag_regexp="yes" scope="next" ></exception></token>
+                    <token postag="NN:Inanim:.*" postag_regexp="yes" skip="-1"><exception inflected="yes" regexp="yes" >&rost;</exception><exception scope="next" inflected="yes" regexp="yes" >&rost;</exception><exception scope="next" regexp="yes" >[,:;-—–]</exception></token>
+                    <token>роста<exception inflected="yes" regexp="yes" scope="next" >&rost;</exception><exception postag="NN:Inanim:.*" postag_regexp="yes" scope="next" ></exception><exception scope="previous" regexp="yes" >[,:;-—–]</exception></token>
                 </pattern>
                 <message>Рост бывает у одушевлённых слов (человек большого роста), некого числа характеристик (рост показателей, рост качества, количества) и в некоторых устойчивых выражениях (рост экономики, преступности, безработицы).</message>
                 <short>Замените другим словом</short>
                 <example correction=""><marker>Дом большого роста</marker>.</example>
                 <example>Дом большой высоты.</example>
+                <example>В последнее время импорт в России находится в стагнации, при этом наблюдается рост экономики.</example>
             </rule>
             <rule>
                 <pattern>
-                    <token inflected="yes" skip="-1">рост<exception inflected="yes" regexp="yes" scope="next">&rost;</exception><exception inflected="yes" regexp="yes" scope="previous">&rost;</exception></token>
+                    <token inflected="yes" skip="-1">рост<exception inflected="yes" regexp="yes" scope="next">&rost;</exception><exception inflected="yes" regexp="yes" scope="previous">&rost;</exception><exception scope="next" regexp="yes" >[,:;-—–]</exception></token>
                     <token postag="NN:Inanim:.*" postag_regexp="yes" ></token>
                 </pattern>
                 <message>Рост бывает у одушевлённых слов (человек большого роста), некого числа характеристик (рост показателей, рост качества, количества) и в некоторых устойчивых выражениях (рост экономики, преступности, безработицы).</message>
@@ -2326,6 +2327,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <example correction="">Сопутствующий <marker>рост доступных учебных материалов</marker> по языку.</example>
                 <example>Сопутствующий рост количества доступных учебных материалов по языку.</example>
             </rule>
+        </rulegroup>
+        <rulegroup id="ROST2" name="«Рост 2»" default="on"> 
             <rule>
                 <antipattern>
                     <token postag="NN:Inanim:.*:Nom" postag_regexp="yes" skip="1"><exception inflected="yes" regexp="yes" >&rost;</exception></token>
@@ -3470,7 +3473,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <!-- Вводные слова: конечно, несомненно, вероятно, может быть, кажется, однако ...-->
                 <pattern case_sensitive="no">
                     <token negate="yes" regexp="yes">[\p{Punct}]|-|—|–|наиболее|наименее|более|менее|очень|а|и|но|что<exception postag="SENT_START"></exception></token>
-                    <token regexp="yes">конечно|несомненно|вероятно|кажется|однако</token>              
+                    <token regexp="yes">конечно|несомненно|вероятно|кажется</token>   <!-- temp remove однако -->           
                     <and>
                         <token negate="yes">,</token>
                         <token negate="yes">же</token>
@@ -3490,7 +3493,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <!-- Вводные слова: конечно, несомненно, вероятно, может быть, кажется, однако ...-->
                 <pattern case_sensitive="no">
                     <token negate="yes" regexp="yes">[\p{Punct}]|-|—|–|наиболее|наименее|более|менее|очень|а|и|но|что<exception postag="SENT_START"></exception></token>
-                    <token regexp="yes">конечно|несомненно|вероятно|кажется|однако</token>
+                    <token regexp="yes">конечно|несомненно|вероятно|кажется</token>  <!-- temp remove однако (Вводное слово «однако» не может стоять в начале предложения, соединять однородные члены и части сложного предложения.)--> 
                     <token>,</token>
                 </pattern>
                 <message>Пропущена запятая:<suggestion>\1, \2\3</suggestion>.</message>
@@ -3504,7 +3507,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <pattern case_sensitive="yes">
                     <token>,<exception postag="SENT_START"></exception></token>
                     <marker>
-                        <token regexp="yes">конечно|несомненно|вероятно|кажется|однако</token>
+                        <token regexp="yes">конечно|несомненно|вероятно|кажется</token>  <!-- temp remove однако --> 
                     </marker>
                     <token negate="yes" regexp="yes" skip="-1"><exception regexp= "yes" >если|же|ж</exception><exception scope="next" postag_regexp="yes" postag="VB:.*"></exception>[\p{Punct}]|-|—|–</token>
                     <token regexp="yes">[.,:;!?]</token>
@@ -3612,7 +3615,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                     <token>Однако</token>
                     <token>,</token>
                 </pattern>
-                <message>Слово <suggestion>\2</suggestion> в этом контексте не является вводным и не выделяется запятыми.</message>
+                <message>Слово <suggestion>\2</suggestion> в начале предложения никогда не может являться вводным. Может выделяться запятой или восклицательным знаком, если выступает в роли междометия.</message>
                 <url>http://ru.wikipedia.org/wiki/%D0%92%D0%B2%D0%BE%D0%B4%D0%BD%D1%8B%D0%B5_%D1%81%D0%BB%D0%BE%D0%B2%D0%B0</url>
                 <short>Лишняя запятая.</short>
                 <example>Однако эта работа представляет огромную научную ценность.</example>
@@ -4330,10 +4333,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <rule>
                 <pattern>
                     <token>ни</token>
-                    <token regexp="yes">свет|рыба|жив|дать</token>
+                    <token regexp="yes">свет|рыба|жив|дать|кафтан</token>
                     <token>,</token>
                     <token>ни</token>
-                    <token regexp="yes">заря|мясо|мертв|мёртв|взять</token>
+                    <token regexp="yes">заря|мясо|мертв|мёртв|взять|ряса</token>
                 </pattern>
                 <message>Запятая не нужна:<suggestion>\1 \2 \4 \5</suggestion>.</message>
                 <short>Запятая не нужна.</short>
@@ -4867,7 +4870,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
     
         </rulegroup>
         
-        <rule default="off" id="TIRE" name="Дефис вместо тире">
+        <rule default="on" id="TIRE" name="Дефис вместо тире">
             <pattern>
                 <token regexp="yes">[а-я][а-я].*</token>
                 <marker>
@@ -5176,7 +5179,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
         </rule>
         <rule id="grammar_Duplication_by_the_pronoun_of_the_noun-subject" name="Грамматические ошибки. Дублирование местоимением существительного-подлежащего»">
             <pattern>
-                <token postag="NN:.*:.*:.*:Nom" postag_regexp="yes"><exception  postag="NN:.*" postag_regexp="yes" negate_pos="yes" ></exception></token>
+                <token postag="NN:.*" postag_regexp="yes"><exception  postag="NN:.*" postag_regexp="yes" negate_pos="yes" ></exception><exception  postag="NN:.*:.*:.*:Nom" postag_regexp="yes" negate_pos="yes" ></exception></token>
                 <token><exception  postag="VB:.*|UNKNOWN|DPT.*|PT:.*|PT_Short:.*|ADJ:Short:.*" postag_regexp="yes" /></token>
                 <token>,</token>
                 <token postag="PNN:.*:Nom:P3" postag_regexp="yes"><exception  postag="PNN:.*:Nom:P3" postag_regexp="yes"  negate_pos="yes"></exception></token>
@@ -5190,6 +5193,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <example>Эта героиня выступала, она стремилась показать себя с лучшей стороны.</example>
             <example>У разных агентств разные критерии того, кого считать пользователем она.</example>
             <example>Понимая, что его дни сочтены, он пытался решить проблему.</example>
+            <example>Наше резервирование ещё раз подтвердили в администрации здания, оно продолжает действовать.</example>
         </rule>
        
         <rule id="grammar_bolee_interesnee" name="Грамматические ошибки «более (менее) интереснее, ...»">
@@ -5811,7 +5815,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                             <unify negate="yes">
                                 <feature id="number"/>
                                 <token postag="ADJ:.*" postag_regexp="yes">
-                                    <exception scope="previous"  regexp="yes">,|и|–|-|—|&double_num;</exception>
+                                    <exception scope="previous"  regexp="yes">,|и|или|–|-|—|&double_num;</exception>
                                     <exception postag="ADV|ADJ:Comp|PT:.*|ADJ:MPR:.*|ADJ:Short:.*|NN:.*" postag_regexp='yes'/>
                                     <exception regexp="yes">полн.*|выходн(ых|ые)|средн.*|арифметическ(ое|ие)|зернов.*|животных|основн.*|легких|лёгких|позднее|поминальное</exception>
                                 </token>
@@ -6295,6 +6299,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <short>Ошибка в согласовании по числу.</short>
                 <example>Коты грелись на солнышке.</example>
                 <example>Блюдо готовилось на сковородке.</example>
+                <!-- <example>около 75% объёма поставляемой воды приходится на компанию X.</example> -->
                 <example>Сыр и сливочное масло делаются из молока.</example>
                 <example>Учащиеся всё время сидели неподвижно.</example>
                 <example>Эти легенды следует передать нашим потомкам.</example> 
@@ -6557,6 +6562,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
         
         <rulegroup default="on" id="O_P_padeg" name="Предлоги и предложный падеж">
             <rule>
+                <antipattern>
+                    <marker>
+                        <token chunk="MayMissingYO"></token>
+                    </marker>
+                </antipattern>
                 <pattern case_sensitive="yes">
                     <token postag="SENT_START" skip="-1"><exception regexp="yes" scope="next">о|обо|об|в|во|при|по|на|и|или|но|да|О|Обо|Об|В|Во|При|По|На|И|Или|Но|Да|метрах|шагах|километрах|саженях</exception></token>
                     <marker>
@@ -6567,10 +6577,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <url>http://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%B5%D0%B4%D0%BB%D0%BE%D0%B6%D0%BD%D1%8B%D0%B9_%D0%BF%D0%B0%D0%B4%D0%B5%D0%B6</url>
                 <short>Пропущен предлог.</short>
                 <example>Они думали о доме.</example>
+                <example>Не только в Москве и России, но и во всем мире.</example>
                 <example>Рабочие красили забор метрах в пятидесяти от меня.</example>
                 <example correction="о доме|в доме|при доме|по доме|на доме">Они думали <marker>доме</marker>.</example>
             </rule>
             <rule>
+                 <antipattern>
+                    <token postag="SENT_START"></token>
+                    <token chunk="MayMissingYO"></token> 
+                </antipattern>
                 <pattern>
                     <token postag="SENT_START"></token>
                     <marker>
@@ -6796,11 +6811,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             
             <rule>
                 <pattern>
-                    <token regexp="yes">ихний|ихняя|ихнее|ихнего|ихнему|ихним|ихнем|ихней|ихнюю</token>
+                    <token regexp="yes">ихний|ихняя|ихнее|ихнего|ихнему|ихним|ихнем|ихней|ихнюю|ихних|ихними|ихние</token>
                 </pattern>
-                <message>Правильная форма - <suggestion>их</suggestion>.</message>
+                <message>Правильная форма – <suggestion>их</suggestion>.</message>
                 <url>http://ru.wikipedia.org/wiki/%D0%9C%D0%B5%D1%81%D1%82%D0%BE%D0%B8%D0%BC%D0%B5%D0%BD%D0%B8%D0%B5_%D0%B2_%D1%80%D1%83%D1%81%D1%81%D0%BA%D0%BE%D0%BC_%D1%8F%D0%B7%D1%8B%D0%BA%D0%B5</url>
-                <short>Правильная форма - &quot;их&quot;.</short>
+                <short>Правильная форма – &quot;их&quot;.</short>
                 <example>Там находится их дом.</example>
                 <example correction="их">Там находится <marker>ихний</marker> дом.</example>
             </rule>   
@@ -6849,8 +6864,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <example correction="жареная">Сегодня на ужин <marker>жаренная</marker> картошка.</example>
             </rule>
         </rulegroup>
-         <rulegroup default="on" id="Ne_narech" name="«Не» с наречиями">
-            <rule> <!-- TODO  1.) невесть кто (что, какой, где, куда )-->
+        <rulegroup default="on" id="Ne_narech" name="«Не» с наречиями">
+            <!-- TODO  -->
+            <rule> <!--  1.) невесть кто (что, какой, где, куда )-->
                 <pattern case_sensitive="no">
                     <marker>
                         <token>не</token>
@@ -6863,7 +6879,110 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <example>Невесть кто</example>
                 <example correction="Невесть"><marker>Не весть</marker> кто.</example>
             </rule>
-        </rulegroup>
+            <rule>
+                <pattern case_sensitive="no">
+                    <marker>
+                        <token>не</token>
+                        <token regexp="yes">где|куда|откуда|зачем</token>
+                    </marker>
+                </pattern>
+                <message>Пишется слитно: <suggestion>\1\2</suggestion>.</message>
+                <short>Слитно с «не»</short>
+                <example>Некуда идти.</example>
+                <example correction="Некуда"><marker>Не куда</marker> лететь.</example>
+            </rule>
+            <rule>
+                <!-- раздельное написание частицы не:
+                далеко не, вовсе не, отнюдь не или зависимые слова, начинающиеся с ни-
+                -->
+                <pattern>
+                    <marker>         
+                        <or>
+                            <token regexp="yes">далеко|вовсе|отнюдь</token>
+                            <token postag="ADV"  regexp="yes">(ни)(.*)</token>   
+                        </or>
+                        <token postag="ADV"  regexp="yes">(не)(.*)[о]</token>                  
+                    </marker>
+                </pattern>
+                <filter class="org.languagetool.rules.ru.RussianPartialPosTagFilter" 
+                args="no:2 regexp:не(.*) postag_regexp:(ADV)  "/>      <!-- Test if word without "не" exist -->
+                <message>Пишется раздельно с «не»: <suggestion><match no="1"></match> <match no="2" regexp_match="(не)(.*)" regexp_replace="$1 $2"></match></suggestion>.</message>
+                <short>Раздельно с «не»</short>
+                <example>Работа выполнена далеко не плохо.</example>
+                <example correction="далеко не плохо">Работа выполнена <marker>далеко неплохо</marker>.</example>
+            </rule>
+            <rule>
+                <!-- раздельное написание частицы не:
+                наречию на -о имеется противопоставление с союзом «а»
+                -->
+                <pattern>
+                    <marker>         
+                        <token postag="ADV"  regexp="yes">(не)(.*)[о]</token>
+                        <token>,</token>
+                        <token>а</token>
+                        <token postag="ADV"  ></token>
+                    </marker>
+                </pattern>
+                <filter class="org.languagetool.rules.ru.RussianPartialPosTagFilter" 
+                args="no:1 regexp:не(.*) postag_regexp:(ADV)  "/>      <!-- Test if word without "не" exist -->
+                <message>Пишется раздельно с «не», имеется противопоставление с союзом «а»: <suggestion><match no="1" regexp_match="(не)(.*)" regexp_replace="$1 $2"></match><match no="2"></match> <match no="3"></match> <match no="4"></match></suggestion>.</message>
+                <short>Раздельно с «не»</short>
+                <example>Работа выполнена не плохо, а хорошо.</example>
+                <example correction="не плохо, а хорошо">Работа выполнена <marker>неплохо, а хорошо</marker>.</example>
+            </rule>
+            <rule>
+                <!-- слитное написание частицы не:
+                наречию на -о имеется союз «но» (приписывается оба признака)
+                -->
+                <pattern>
+                    <marker>         
+                        <token>не</token>
+                        <token postag="ADV"  regexp="yes">(.*)[о]</token>
+                        <token>,</token>
+                        <token >но</token>
+                    </marker>                 
+                    <or>  
+                        <token postag="ADV" ></token>
+                        <token postag="&lt;ADV&gt;" ></token>
+                    </or>      
+                </pattern>
+                <message>Пишется слитно с «не», имеется союз «но», нет отрицания: <suggestion>не<match no="2"></match><match no="3"></match> <match no="4" ></match></suggestion>.</message>
+                <short>Слитно с «не»</short>
+                <example>Работа выполнена неплохо, но с опозданием.</example>
+                <example correction="неплохо, но">Работа выполнена <marker>не плохо, но</marker> с опозданием.</example>
+                <example correction="неплохо, но">Работа выполнена <marker>не плохо, но</marker> медленно.</example>
+        </rule>
+        </rulegroup>            
+        <rule default="off" id="Ne_narech2" name="«Не» с наречиями 2">
+            <!-- TODO set on after release -->
+            <!-- слитное написание частицы не:
+               отсутствует противопоставление, отсутствуют слова  «отнюдь, вовсе, далеко», отсутствует местоимение или наречие с «ни»
+                -->
+                <antipattern>
+                    <marker>
+                        <token>не</token>
+                        <token skip="-1" postag="ADV"  regexp="yes">(.*)[о]<exception postag="PARTICLE"></exception></token>
+                    </marker> 
+                    <token>,</token>
+                    <token postag="ADV"  regexp="yes">(.*)[о]<exception postag="PARTICLE"></exception></token>
+                </antipattern>
+                <pattern>
+                    <marker>         
+                        <token>не<exception scope="previous" regexp="yes">ни(.*)|отнюдь|вовсе|далеко|–|-|—|это|эти|эта|этот|тот|та|те|да|а</exception></token>
+                        <token postag="ADV"  regexp="yes">(.*)[о]<exception regexp="yes">заново|настолько|несколько|одиноко|особенно|особо|специально</exception><exception scope="next" regexp="yes">,|а|да|иной|иное|иные|иная</exception><exception scope="next" postag_regexp="yes" postag="CONJ|ADV"></exception><exception postag="PARTICLE"></exception></token>
+                    </marker>                        
+                </pattern>
+                       <!-- TODO  Test if word with "не" exist! -->
+                <message>Пишется слитно с «не», отсутствует противопоставление: <suggestion>не<match no="2"></match></suggestion>.</message>
+                <url>https://kak-pravilno.net/ne-obyazatelno-ili-neobyazatelno-kak-pravilno/</url>
+                <short>Слитно с «не»</short>
+                <example>Несложно проверить его стабильность.</example>
+                <example>Она начала играть в волейбол не столько из интереса, сколько из тщеславия.</example>
+                <example>Сегодня не особо ветрено.</example>
+                <example>Это не ново.</example>
+                <example correction="Несложно"><marker>Не сложно</marker> проверить его стабильность.</example>
+        </rule>        
+                
         <rulegroup default="on" id="Ne_pril_prich" name="«Не» с прилагательными/причастиями">
             <rule> <!-- TODO -->
                 <pattern>
@@ -7461,6 +7580,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                       <token>как</token>
                   </marker>
               </antipattern>
+              <antipattern>
+                  <token>,</token>
+                  <token regexp="yes">включая|исключая</token>
+                  <marker>
+                      <token regexp="yes">такой|такая|такие|такое|таких</token>
+                      <token>как</token>
+                  </marker>
+              </antipattern>
               <pattern>
                   <marker>
                       <token regexp="yes">такой|такая|такие|такое|таких</token>
@@ -7473,6 +7600,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <example correction="такой, как">Но не <marker>такой как</marker> обычно.</example>
             <example>Но не такой, как обычно.</example>
             <example>Туристы посетили старинные города, такие как Новгород и Владимир.</example>
+            <example>Туристы посетили старинные города, включая такие как Новгород и Владимир.</example>
             <example>Погода дождливая, такая как в Лондоне.</example>
           </rule>
           <rule>
@@ -8372,7 +8500,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
         </rule>
         
          <rule default="on" id="Verb_and_PREP" name="Глагол и предлог">
-            <pattern case_sensitive="no">
+             <antipattern>
+                 <token postag="PREP"/>
+                 <token chunk="MayMissingYO"></token> 
+             </antipattern>
+             <pattern case_sensitive="no">
                 <!--              PREP VB:.*    -->
                 <!--              excluded prep "по" for another rule    -->
                 <or>
@@ -8392,6 +8524,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <url>http://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%B5%D0%B4%D0%BB%D0%BE%D0%B3</url>
             <short>Предлог перед глаголом не употребляется.</short>
             <example>Он пошёл в лес.</example>
+            <example>Он лёгок на подъем.</example>
             <example>Как насчет поиграть в теннис сегодня после обеда?</example>
             <example correction="пошёл|пошёл в">Он <marker>в пошёл</marker> лес.</example>
         </rule>
@@ -8855,7 +8988,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
           <rule>
             <pattern>
                 <!--              PREP в -> NN:.*:.*:V или NN:.*:P NN:.*:2R    исключение для "в учителя,... -->
-                <token>в<exception postag="&lt;ADV&gt;"/></token>
+                <token>в<exception postag="&lt;ADV&gt;"/><exception regexp="yes" scope="previous">[0-9IXVLCDM]*</exception></token>
                 <token postag="NN:.*:.*:.*|SENT_END|PARA_END" postag_regexp="yes"><exception regexp="yes">тысяча|миллион</exception><exception postag="NN:.*:.*:R" postag_regexp="yes" regexp="yes">.*y</exception><exception postag="NN:.*:.*:(P|V|2R|2P)" postag_regexp="yes"></exception><exception postag="NN:.*:.*:.*|SENT_END|PARA_END" negate_pos="yes" postag_regexp="yes"></exception><exception postag="NN:.*:PL:Nom" postag_regexp="yes"></exception></token> 
             </pattern>
             <message>Предлог «в» предполагает употребление существительного в винительном или предложном падеже: <suggestion><match no="1"></match> <match no="2" postag="NN:(.*):(.*):(.*):.*" postag_regexp="yes" postag_replace="NN:$1:$2:$3:P"></match></suggestion> или <suggestion><match no="1"></match> <match no="2" postag="NN:(.*):(.*):(.*):.*" postag_regexp="yes" postag_replace="NN:$1:$2:$3:V"></match></suggestion> </message>
@@ -8869,7 +9002,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <pattern>
                 <!--              PREP в -> NN:.*:.*:V или NN:.*:P NN:.*:2R    исключение для "в учителя,... -->
                 <token>в<exception postag="&lt;ADV&gt;"/></token>
-                <token postag="ADJ:.*:(V|P)" postag_regexp="yes" min="1" max="2"></token> 
+                <token postag="ADJ:.*:(V|P)" postag_regexp="yes" min="1" max="2"><exception postag="PT:.*" postag_regexp="yes"></exception></token> 
                 <marker>
                 <token postag="NN:.*:.*:.*" postag_regexp="yes">
                     <exception regexp="yes">тысяча|миллион</exception>
@@ -8883,6 +9016,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <message>Предлог «в» предполагает употребление существительного в винительном или предложном падеже: <suggestion><match no="3" postag="NN:(.*):(.*):(.*):.*" postag_regexp="yes" postag_replace="NN:$1:$2:$3:P"></match></suggestion></message>
             <short>Требуется винительный или предложный падеж.</short>
             <example>Он смотрел в новое окно.</example>
+            <example>В предусмотренных конституцией случаях.</example>
             <example>Он всегда смотрит в будущее.</example>
             <example>Это наблюдается в одной такой группе</example>
             <example correction="группе">Это наблюдается в одной такой <marker>группой</marker></example>
@@ -9035,12 +9169,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <pattern case_sensitive="yes">
                 <!--  PREP  с -> NN:.*:R or  NN:.*:T   -->
                 <token regexp="yes">с|со</token>
-                <token postag="NN:.*:.*:.*|SENT_END|PARA_END" postag_regexp="yes" ><exception regexp="yes">[а-я]*у</exception><exception postag="NN:.*:.*:R" postag_regexp="yes"></exception><exception postag="NN:.*:.*:T" postag_regexp="yes"></exception><exception postag="NN:.*:.*:.*|SENT_END|PARA_END" negate_pos="yes" postag_regexp="yes"></exception></token>
+                <token postag="NN:.*:.*:.*|SENT_END|PARA_END" postag_regexp="yes" ><exception regexp="yes">[а-я]*у|[!.?]</exception><exception postag="NN:.*:.*:R" postag_regexp="yes"></exception><exception postag="NN:.*:.*:T" postag_regexp="yes"></exception><exception postag="NN:.*:.*:.*|SENT_END|PARA_END" negate_pos="yes" postag_regexp="yes"></exception></token>
             </pattern>
             <message>Предлог «\1» предполагает употребление существительного в родительном или творительном падеже.</message>
             <short>Требуется родительный или творительный падеж.</short>
             <example>Егерь пошёл в лес с рысью.</example>
             <example>В конце концов они встретились с глазу на глаз.</example>
+            <example>М.: Прогресс, 1987. — 560 с.</example>
             <example correction="">Егерь пошёл в лес <marker>с рысь</marker>.</example>
         </rule>
         <rule default="on" id="PREP_C_and_ADJ" name="Предлог «с» и прилагательное">
@@ -9646,7 +9781,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                                  
         <rule id="PREP_ON_END" name="Предлог в конце предложения">
             <pattern case_sensitive="yes">
-                <token regexp="yes">для|на|к|от|по|в</token>
+                <token regexp="yes">для|на|к|от|по|в<exception regexp="yes" scope="previous">[0-9IXVLCDM]*</exception></token>
                 <token postag="SENT_END" spacebefore="no">.</token>
             </pattern>
             <message>Предлог в конце предложения не употребляется.</message>
@@ -9654,6 +9789,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <example correction=''>Не грубости ради, но порядка <marker>для.</marker></example>
             <example>Не грубости ради, но для порядка.</example>
             <example>А с XII в. — шнеккеры.</example>
+            <example>А с XII в.</example>
         </rule>
         <rule id="PNN_ON_END" name="Местоимение в конце предложения">
             <!--      Заканчивать предложение местоимением – дурной стиль, не для этого оно.  -->
@@ -9679,7 +9815,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <pattern>
                     <token>
                         <exception postag="NN:.*|ADV|ADJ:Comp|PNN:.*|PREP" postag_regexp="yes"></exception>
-                        <exception inflected="yes" regexp="yes">являться|быть</exception>
+                        <exception inflected="yes" regexp="yes">являться|быть|такой</exception>
                         <exception regexp="yes">–|-|—|очень|совсем|крайне</exception>
                     </token>
                     <marker>  
@@ -10405,6 +10541,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 	    <example correction=""><marker>B</marker> лесу тихо.</example>
 	    <example correction="">Буду <marker>c</marker> подарками.</example>
     </rule>
+    <rulegroup default="off" id="MissingYO" name="Пропущена буква «Ё»">
+        <rule>        
+            <pattern>
+                <marker>
+                    <token chunk="MayMissingYO"></token>
+                </marker>
+            </pattern>
+        <message>Пропущена буква «Ё»</message>
+        <short>Пропущена «Ё»</short>
+        <example>ёжик</example>
+        <example correction=""><marker>ежик</marker></example>
+        </rule>
+    </rulegroup>
     </category>
 
     <category id="CASING" name="Заглавные буквы">
@@ -11509,6 +11658,28 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 
             <rule>   
                 <pattern>
+                    <token inflected="yes">вздохнуть</token>
+                    <token inflected="yes">воздух</token>
+                </pattern>
+                <message>Необходимо различать паронимы – близкие по звучанию, но разные по смыслу слова. Вы имели в виду <suggestion><match no="1" regexp_match="([Вв]здох)(.*)" regexp_replace="вдох$2"></match> <match no="2"></match></suggestion>?</message>
+                <short>Правильно «вдохнуть воздух»</short>
+                <example correction="вдохнул воздух">Он <marker>вздохнул воздух</marker>.</example>
+                <example>Он вдохнул воздух.</example>
+            </rule>   
+
+            <rule>   
+                <pattern>
+                    <token inflected="yes">вздыхать</token>
+                    <token inflected="yes">воздух</token>
+                </pattern>
+                <message>Необходимо различать паронимы – близкие по звучанию, но разные по смыслу слова. Вы имели в виду «вдохнуть воздух»?</message>
+                <short>Правильно «вдохнуть воздух»</short>
+                <example correction="">Он <marker>вздыхал воздух</marker>.</example>
+                <example>Он вдохнул воздух.</example>
+            </rule>   
+
+            <rule>   
+                <pattern>
                     <token inflected="yes">различие</token>
                     <token>от</token>
                 </pattern>
@@ -11689,8 +11860,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 
 
         <rulegroup id="Dvojnoe_negate_s_NE" name="Двойное отрицание с частицей «НЕ»">
-
-
             <rule>   
                 <pattern>
                     <marker>
@@ -11702,45 +11871,20 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <token negate="yes">,</token>
                 <token negate="yes">ни</token>                         
                 </pattern>
-                <message>Двойное отрицание с частицей «не»:<suggestion>не \2 не \4</suggestion></message>
+                <message>Двойное отрицание с частицей «не»: <suggestion>не \2 не \4</suggestion></message>
                 <short>Правильно два «НЕ»</short>
                 <example correction="не мог не заметить">Он <marker>не мог ни заметить</marker> этого.</example>
                 <example>Он не мог не заметить этого.</example>
             </rule>   
-            <rule>   
-                <pattern>
-                        <token>нельзя</token>
-                        <token>ни</token>
-                        <token postag_regexp="yes" postag="VB:INF:.*" />
-                </pattern>
-                <message>Двойное отрицание с частицей «не»:<suggestion>не \2 не \3</suggestion></message>
-                <short>Правильно два «НЕ»</short>
-                <example correction="не ни не согласиться">С этим <marker>нельзя ни согласиться</marker>.</example>
-                <example>С этим нельзя не согласиться.</example>
-            </rule>   
-            <rule>   
-                <pattern>
-                    <marker>
-                        <token>не</token>
-                        <token inflected="yes">может</token>
-                        <token>ни</token>
-                        <token postag_regexp="yes" postag="VB:INF:.*" />
-                    </marker>
-                <token negate="yes">,</token>
-                <token negate="yes">ни</token> 
-                </pattern>
-                <message>Двойное отрицание с частицей «не»:<suggestion>не \2 не \4</suggestion></message>
-                <short>Правильно два «НЕ»</short>
-                <example correction="не может не узнать">Она <marker>не может ни узнать</marker> вас.</example>
-                <example>Она не может не узнать вас.</example>
-            </rule>   
+
+          
             <rule>   
                 <pattern>
                         <token>невозможно</token>
                         <token>ни</token>
                         <token postag_regexp="yes" postag="VB:INF:.*" />
                 </pattern>
-                <message>Двойное отрицание с частицей «не»:<suggestion>\1 не \3</suggestion></message>
+                <message>Двойное отрицание с частицей «не»: <suggestion>\1 не \3</suggestion></message>
                 <short>Правильно два «НЕ»</short>
                 <example correction="Невозможно не признать"><marker>Невозможно ни признать</marker> этого.</example>
                 <example>Невозможно не признать этого.</example>

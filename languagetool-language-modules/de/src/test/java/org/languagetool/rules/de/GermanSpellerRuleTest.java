@@ -339,6 +339,19 @@ public class GermanSpellerRuleTest {
     assertFirstSuggestion("beidiges", "beides", rule, lt);
     assertFirstSuggestion("Propagandierte", "Propagierte", rule, lt);
     assertFirstSuggestion("revolutioniesiert", "revolutioniert", rule, lt);
+    assertFirstSuggestion("Copyride", "Copyright", rule, lt);
+    assertFirstSuggestion("angesehende", "angesehene", rule, lt);
+    assertFirstSuggestion("angesehendsten", "angesehensten", rule, lt);
+    assertFirstSuggestion("frühstücksbüfé", "Frühstücksbuffet", rule, lt);
+    assertFirstSuggestion("deutsprachiger", "deutschsprachiger", rule, lt);
+    assertFirstSuggestion("gehäckelten", "gehäkelten", rule, lt);
+    assertFirstSuggestion("Alterego", "Alter Ego", rule, lt);
+    assertFirstSuggestion("Makeupstylistin", "Make-up-Stylistin", rule, lt);
+    assertFirstSuggestion("islamophobische", "islamophobe", rule, lt);
+    assertFirstSuggestion("Fedbäck", "Feedback", rule, lt);
+    assertFirstSuggestion("desöfterem", "des Öfteren", rule, lt);
+    assertFirstSuggestion("momentmal", "Moment mal", rule, lt);
+    assertFirstSuggestion("eingängliche", "eingängige", rule, lt);
   }
 
   @Test

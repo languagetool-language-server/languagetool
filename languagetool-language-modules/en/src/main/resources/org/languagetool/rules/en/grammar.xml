@@ -134,6 +134,16 @@ USA
                 <example correction="brothers-in-law">How many <marker>brother-in-laws</marker> do you have?</example>
             </rule>
         </rulegroup>
+        <rule id="SHOULD_VS_SHOULDER" name="looked over her should (shoulder)">
+            <pattern>
+                <token inflected='yes'>look</token>
+                <token>over</token>
+                <token postag='PRP$'/>
+                <marker><token>should</token></marker>
+            </pattern>
+            <message>Did you mean <suggestion>shoulder</suggestion>?</message>
+            <example correction='shoulder'>He looked over his <marker>should</marker>.</example>
+        </rule>
         <rule id="TRUE_TO_WORD" name="true to her words (word)">
             <pattern>
                 <token>true</token>
@@ -2627,13 +2637,14 @@ USA
                         <token>its</token>
                     </marker>
                     <token min="0">not</token>
-                    <token postag="JJ.?" postag_regexp="yes"/>
-                    <token regexp="yes">to|for</token>
+                    <token postag="JJ.?|VBG" postag_regexp="yes"/>
+                    <token regexp="yes">to|for|\.</token>
                 </pattern>
                 <message>Did you mean <suggestion><match no="3" regexp_match="s" regexp_replace=""/>'s</suggestion> (=<suggestion><match no="3" regexp_match="s" regexp_replace=""/> is</suggestion>) instead of 'its' (possessive pronoun)?</message>
                 <short>Possible typo</short>
                 <example correction="It's|It is"><marker>Its</marker> hard to explain.</example>
                 <example correction="It's|It is"><marker>Its</marker> better for him to go out.</example>
+                <example correction="It's|It is"><marker>Its</marker> not working.</example>
             </rule>
             <rule>
                 <pattern>
@@ -5059,7 +5070,7 @@ USA
         <!-- lead roll::word=lead role::pivots=roll,role::options=roll,role -->
         <rule id="LEAD_ROLL" name="lead roll (role)">
             <pattern>
-                <token regexp="yes">lead|leading|major|minor|starring|significant|large|small</token>
+                <token regexp="yes">lead(ing)?|major|minor|starring|(in)?significant|large|small</token>
                 <token>roll</token>
             </pattern>
             <message>Did you mean <suggestion>\1 role</suggestion>?</message>
@@ -5521,6 +5532,17 @@ USA
             <message>Did you mean <suggestion>of the</suggestion>?</message>
             <short>Possible typo</short>
             <example correction="of the">One <marker>oft he</marker> officers approached him quickly.</example>
+        </rule>
+        <rule  id="HAST_O" name="hast o (has to)">
+            <pattern case_sensitive="yes">
+                <marker>
+                    <token>hast</token>
+                    <token>o</token>
+                </marker>
+            </pattern>
+            <message>Did you mean <suggestion>has to</suggestion>?</message>
+            <short>Possible typo</short>
+            <example correction="has to">She <marker>hast o</marker> leave!</example>
         </rule>
         <rule id="GOON" name="goon (go on)">
             <pattern>
@@ -7304,6 +7326,20 @@ USA
             <message>Did you mean <suggestion><match no="2" postag="VB"/></suggestion>?</message>
             <example correction="answer">Please <marker>answers</marker> quickly!</example>
         </rule>
+        <rule id="BE_IS" name="inflected form of 'be'">
+            <antipattern>
+                <token postag="VB.?" postag_regexp="yes" skip="-1"/>
+                <token postag="VBG"></token>
+                <token>be</token>
+            </antipattern>
+            <pattern>
+                <token postag="VBG"></token>
+                <marker><token>be</token></marker>
+            </pattern>
+            <message>Did you mean <suggestion>is</suggestion> or <suggestion>can be</suggestion>?</message>
+            <example correction="is|can be">Grammar checking <marker>be</marker> difficult.</example>
+            <example>Can the meeting be finished within two hours?</example>
+        </rule>
         <rule id="BE_WILL" name="will follows be ('he is would')">
             <antipattern>
                 <token>those</token>
@@ -8019,7 +8055,7 @@ USA
                 <token>IT</token>
             </antipattern>
             <pattern>
-                <token><exception regexp="yes">a(?:m|re)|is|t|re|w(?:as|ere)|with|without|of|in|to|much|find</exception><exception postag="VBP|VBD|VB|VBZ|VBG|VBN" postag_regexp="yes"/></token>
+                <token><exception regexp="yes">a(?:m|re|t)|is|t|re|w(?:as|ere)|with(out)?|of|in|to|much|find</exception><exception postag="VB.?" postag_regexp="yes"/></token>
                 <token regexp="yes">I|you|[hw]e|she|it|they</token>
                 <token postag="RB" min="0"/>
                 <marker>
@@ -9270,6 +9306,12 @@ USA
                     <token regexp="yes">always|hardly|never|often|rarely|seldom|sometimes|usually</token>
                     <token regexp="yes">is|was</token>
                 </antipattern>
+                <antipattern><!-- https://github.com/languagetool-org/languagetool/issues/1175 -->
+                    <token regexp="yes">I|you|we|they</token>
+                    <token regexp="yes">always|never|often|rarely|seldom|sometimes|usually</token>
+                    <token regexp="yes">am|are|were</token>
+                    <token postag="SENT_END"/>
+                </antipattern>
                 <pattern>
                     <token postag="PRP"/>
                     <marker>
@@ -9281,6 +9323,7 @@ USA
                 <suggestion>\3 \2</suggestion>
                 <example correction="am sometimes">I am here and I <marker>sometimes am</marker> happy.</example>
                 <example>When it's valid (as it usually is), there's no problem.</example>
+                <example>They always are.</example>
             </rule>
             <rule>
                 <pattern>
@@ -10480,6 +10523,14 @@ USA
                 <example correction="prevent">This infrared radiation rises into the atmosphere where gases, such as carbon dioxide, <marker>prevents</marker> the infrared radiation from escaping into space.</example>
             </rule>
             <rule>
+                <antipattern><!-- MFU 2019/03/06 fix for 'bachelors and masters programs' probably caused by MFU disambiguation changes on 2019/03/06. -->
+                    <token regexp="yes">wh(ich|o)</token>
+                    <token postag="VBZ"/>
+                    <token postag="NNS"/>
+                    <token regexp="yes">and|or</token>
+                    <token postag="NNS"/>
+                    <token postag="NNS"/>
+                </antipattern>
                 <pattern>
                     <token><exception postag="SENT_START"/></token>
                     <token regexp="yes">wh(at|ich|o|ose|ere|en|ether)</token>
@@ -10489,6 +10540,8 @@ USA
                 <message>Possible agreement error. You should probably use: <suggestion><match no="4" postag="VBP"/></suggestion>.</message>
                 <short>Possible agreement error</short>
                 <example correction="prevent">This infrared radiation rises into the atmosphere where gases <marker>prevents</marker> the infrared radiation from escaping into space.</example>
+                <example>This infrared radiation rises into the atmosphere where gases <marker>prevent</marker> the infrared radiation from escaping into space.</example>
+                <example>... University of Aruba (UA) which offers <marker>bachelors</marker> and masters programs in law, finance and economic...</example>
             </rule>
             <!--rule>
                 <pattern>
@@ -11557,6 +11610,11 @@ USA
             <token regexp='yes'>block|level|century</token>
             <token>I</token>
           </antipattern>
+          <antipattern><!-- MFU 2019-03-29 I did not find definitive information about the correct capitalization. Thus, the term is here as an AP and not in disambiguation -->
+            <token>bipolar</token>
+            <token>I</token>
+            <token>disorder</token>
+          </antipattern>
           <antipattern>
             <token regexp='yes'>we|you</token>
               <token postag="CD|NN(S|:U)" postag_regexp='yes'/>
@@ -11564,6 +11622,7 @@ USA
           <pattern>
             <marker>
               <token regexp='yes'>It?|you|s?he|we|they
+                <exception case_sensitive='yes'>IT</exception>
                 <exception case_sensitive='yes'>i</exception></token>
               <token postag="N.+" postag_regexp='yes'>
                 <exception postag='V.+|RB|IN' postag_regexp='yes'/></token>
@@ -11702,6 +11761,8 @@ USA
           <example>...gyius, and had the Corinthians bring Thessalus to him in chains.</example>
           <example>...eities and believed that Alexander meant to deify himself by requiring it.</example>
           <example>The one exception was a call to arms by Spartan king Agis III in 33...</example>
+          <example>...primary reason behind this is Bangladeshi <marker>IT companies</marker> are providing high quality services at a...</example>
+          <example>The essential feature of <marker>bipolar I disorder</marker> is a clinical course characterized by the ...</example>
         </rule>
         <rulegroup id="TO_NON_BASE" name="'to' + non-base form">
             <rule>
@@ -16384,6 +16445,11 @@ USA
                 <token case_sensitive="yes">My</token>
                 <token case_sensitive="yes">Lai</token>
             </antipattern>
+            <antipattern>
+                <token case_sensitive="yes">I</token>
+                <token spacebefore="no">/</token>
+                <token spacebefore="no">O</token>
+            </antipattern>
             <pattern>
                 <token postag="DT" inflected="yes" regexp="yes">a|the</token>
                 <token postag="PRP\$?" postag_regexp="yes"><exception regexp="yes" case_sensitive="yes">US|IT|one|ONE</exception></token>
@@ -16407,6 +16473,7 @@ USA
             <example>And now, live on stage, <marker>the one</marker> and only, the incomparable, Kermit the Frog!</example>
             <example>This is your chance of a lifetime! For <marker>A ONE</marker> DAY ONLY SALE of exclusive jewellery, visit our store.</example>
             <example>The event is referred to as the My Lai Massacre in the United States</example>
+            <example>It's an I/O device.</example>
         </rule>
         <rule id="AN_ANOTHER" name="an another (an/another)">
             <pattern>
@@ -16955,6 +17022,142 @@ USA
 <!-- TODO: not found --><example>They <marker>don</marker> work.</example>
             </rule>
         </rulegroup>
+        <rule id="PRP_VB" name="Missing verb: PRONOUN + NOUN (VERB)">
+            <antipattern><!-- if I ask you anything -->
+                <token postag_regexp="yes" postag="VB.*"/>
+                <token regexp="yes">you|it</token>
+            </antipattern>
+            <antipattern><!-- to explain to you why; about it in -->
+                <token regexp="yes">you|it</token>
+                <token postag_regexp="yes" postag="CC|IN"/>
+            </antipattern>
+            <antipattern><!-- we robots will -->
+                <token regexp="yes">you|we</token>
+                <token postag="NNS"/>
+                <token postag_regexp="yes" postag="VB.*|MD"/>
+            </antipattern>
+            <antipattern><!-- you bastards -->
+                <token>you</token>
+                <token/>
+                <token postag="SENT_END"/>
+            </antipattern>
+            <antipattern><!-- you fool!," he shouted -->
+                <token>you</token>
+                <token/>
+                <token regexp="yes">[,!\.]</token>
+            </antipattern>
+            <antipattern case_sensitive="yes"><!-- Division I Basketball Championship -->
+                <token regexp="yes">[A-Z][a-z].+</token>
+                <token>I</token>
+                <token regexp="yes">[A-Z][a-z].+</token>
+            </antipattern>
+            <antipattern case_sensitive="yes"><!-- G.I Applications. This AP does not give the expected result, possibly because the full stop has postag SENT_END -->
+                <token regexp="yes">[A-Z]</token>
+                <token spacebefore="no">.</token>
+                <token spacebefore="no">I</token>
+                <token regexp="yes">[A-Z][a-z].+</token>
+            </antipattern>
+            <antipattern case_sensitive="yes"><!-- type I collagen fibrils; Charles I -->
+                <token postag_regexp="yes" postag="NN(P|:UN?)?|JJ"/>
+                <token chunk="E-NP-singular">I</token>
+            </antipattern>
+            <antipattern><!-- [T]he status -->
+                <token>[</token>
+                <token spacebefore="no">t</token>
+                <token spacebefore="no">]</token>
+                <token spacebefore="no">he</token>
+            </antipattern>
+            <antipattern>
+                <token regexp="yes">kind|sort</token>
+                <token>of</token>
+            </antipattern>
+            <antipattern><!-- the more of it producers will supply -->
+                <token>of</token>
+                <token regexp="yes">you|it</token>
+                <token postag="NNS"/>
+                <token postag_regexp="yes" postag="MD|VB[PD]?"/>
+            </antipattern>
+            <antipattern><!-- with it something of / in it nothing can -->
+                <token postag="IN"/>
+                <token regexp="yes">you|it</token>
+                <token postag_regexp="yes" postag="NN(S|:U)"/>
+                <token postag_regexp="yes" postag="IN|MD"/>
+            </antipattern>
+            <antipattern><!-- with bipolar I mania -->
+                <token postag="IN"/>
+                <token postag="JJ"/>
+                <token>I</token>
+            </antipattern>
+            <antipattern><!-- by it thou -->
+                <token postag="IN"/>
+                <token>it</token>
+                <token>thou</token>
+            </antipattern>
+            <antipattern><!-- we Argentinians -->
+                <token regexp="yes">we|you</token>
+                <token postag="NNPS"/>
+            </antipattern>
+            <antipattern><!-- has he permission -->
+                <token regexp="yes">ha[ds]</token>
+                <token regexp="yes">s?he|it</token>
+            </antipattern>
+            <pattern>
+                <token><exception inflected="yes">be</exception></token>
+                <or>
+                    <token regexp="yes">you|he|she|it|we|they<exception case_sensitive="yes">IT</exception></token>
+                    <token case_sensitive="yes">I</token>
+                </or>
+                <marker>
+                    <token postag_regexp="yes" postag="NN.*">
+                        <exception postag_regexp="yes" postag="VB.*|RB.*|JJR?|NNP"/>
+                        </token>
+                </marker>
+            </pattern>
+            <message>Do not use a noun immediately after the pronoun '\2'. Use a verb or an adverb, or possibly some other part of speech.</message>
+            <short>Possible grammar error</short>
+            <example correction="">… to which he <marker>response</marker>.</example>
+            <example correction="">Sometimes, problems occur when they <marker>disambiguation</marker> the text.</example>
+            <example correction="">I hope I <marker>can</marker> may say that one half of ...</example>
+            <example correction="">... (he <marker>status</marker> of the test is unknown).</example>
+            <example correction="">They <marker>boy</marker> and the girl felt awkward after they...</example>
+            <example>… to which he <marker>responds</marker>.</example>
+            <example>… to which he quickly <marker>responded</marker>.</example>
+            <example>She told me her secret.</example>
+            <example>Is it bad?</example>
+            <example>... if I ask you anything else today.</example>
+            <example>They sold you garbage!</example>
+            <example>It would take me too much time to explain to you why it's not going to work.</example>
+            <example>Who wrote 'The World As I See It'?</example>
+            <example>…success of the NCAA Men's Division I Basketball Championship.</example>
+            <example>The current proliferation of IT certifications...</example>
+            <example>We robots will create a new order.</example>
+            <example>The purpose of marriage in the <marker>Bahá'i</marker> faith is mainly to...</example>
+            <example>... time since you've given me one of these, <marker>you bastards</marker>!</example>
+            <example>... <marker>you fool!,</marker>" he shouted.</example>
+            <example>Dionysius Lardner wrote about <marker>it in</marker> 1834 in the Edinburgh Review.</example>
+            <example><marker>Were they lovers</marker> at that time?</example>
+            <example>... wrote, "<marker>[T]he status</marker> of priest among Christians is merely that of...</example>
+            <example>They <marker>kind of</marker> took me in.</example>
+            <example>And, so it <marker>sort of</marker> all ended up fitting together.</example>
+            <example>...in the gap and overlap regions of <marker>type I</marker> collagen fibrils with implications for bone...</example>
+            <example>... were indeed historical figures and <marker>they most probably taught</marker> Buddha two different forms of...</example>
+            <example>The essential feature of <marker>bipolar I disorder</marker> is a clinical course characterized by the ...</example>
+            <example>Following the execution of <marker>Charles I</marker> in 1649 and the establishment of the Commonwealth...</example>
+            <example>... which the good can be sold, the more <marker>of it producers will</marker> supply, as in the figure.</example>
+            <example>Archaic. ... and by it <marker>thou</marker> mayest judge his fairness, both in hair and ...</example>
+            <example>... pediatric and adult patients with <marker>bipolar I mania</marker>: a comparative analysis of...</example>
+            <example>Some say <marker>we Argentinians</marker> are arrogant, but that's just because we're ...</example>
+            <example>... but associates <marker>with it something of</marker> pusillanimity.</example>
+            <example>...has no articles of faith; accordingly, <marker>in it nothing can</marker> be assumed as existing except what is...</example>
+            <example>On no condition <marker>has he permission</marker> to touch it.</example>
+            <example>... but <marker>had she time</marker> to do it?</example>
+<!-- GUI shows a warning, but testrules does not complain. --><example>State Wise Registration Details of <marker>G.I Applications</marker></example>
+<!-- testrules gives an error when 'triggers_error' is used and when it is not used. 
+            <example type="triggers_error">We <marker>students</marker> all like baseball.</example>
+            <example type="triggers_error">publisher=<marker>iT News for Australian Business</marker>|accessdate=4 December...</example>
+            <example type="triggers_error">Even when a new century begins it is only we <marker>mortals</marker> who ring bells and fire off pistols.</example>
+            <example type="triggers_error">Upon <marker>you bishops</marker> and you state presidents rests the responsibility...</example> -->
+        </rule>
     </category>
 
     <!-- ====================================================================== -->
@@ -18985,14 +19188,16 @@ USA
       <example correction="interested in">I am not <marker>interested by</marker> this job.</example>
     </rule>
     <rule id="AT_THE_JOB" name="Collocation: at/on the job">
-    <!-- Created by Nicholas Walker (Bokomaru), 2018-05-16 -->
+    <!-- Created by Nicholas Walker (Bokomaru), 2018-05-16. Edited by MFU 2019-03-13 -->
       <pattern>
-          <token>at</token>
+          <token>at<exception scope="previous" inflected="yes">look</exception></token>
           <token>the</token>
           <token>job</token>
       </pattern>
       <message>In English, people don't say "\1 \2 \3". They say, 'on \2 \3' or 'at work'.  Did you mean <suggestion>on the job</suggestion> or <suggestion>at work</suggestion>?</message>
       <example correction="on the job|at work">He does personal stuff <marker>at the job</marker>.</example>
+      <example>He does personal stuff <marker>on the job</marker>.</example>
+      <example>I'd like to invite you to <marker>look at the job</marker> I've posted.</example>
     </rule>
     <rule id="ANALYSIS_ABOUT" name="Collocation: analysis about/of">
     <!-- Created by Nicholas Walker (Bokomaru), 2018-05-16 -->
@@ -21024,11 +21229,11 @@ USA
                     <token postag="SENT_START"/>
                     <!-- now, next, then and yet are not solely linking adverbs and result in too many false positives -->
                     <marker>
-                        <token regexp="yes">a(ccordingly|dditionally|l(so|as))|besides|c(omparatively|on(sequent|verse)ly)|e(lsewhere|qually)|f(inally|urther(more)?)|h(ence(forth)?|owever)|in(deed|stead)|likewise|m(eanwhile|oreover)|n(amely|(ever|one)theless)|otherwise|rather|s(imilarly|till|ubsequently)|t(here(after|fore)|hus|ypically)
+                        <token regexp="yes">a(ccordingly|dditionally|l(so|as))|anyhow|besides|c(omparatively|on(sequent|verse)ly)|currently|e(lsewhere|qually)|f(inally|urther(more)?)|h(ence(forth)?|owever)|in(deed|stead)|likewise|m(eanwhile|oreover)|n(amely|(ever|one)theless)|otherwise|rather|s(imilarly|till|ubsequently)|t(here(after|fore)|hus|ypically)
                             <exception negate_pos="yes" postag="RB">further</exception>
                         </token>
                     </marker>
-                    <token negate="yes" regexp="yes">[,!\.\?]</token>
+                    <token negate="yes" regexp="yes">[,!\.\?\(]</token>
                 </pattern>
                 <message>Did you forget a comma after a conjunctive/linking adverb?</message>
                 <suggestion>\2,</suggestion>
@@ -21052,8 +21257,12 @@ USA
                 <example><marker>However we go</marker>, we must get there by seven.</example>
                 <example><marker>However you do it</marker>, the result will be the same.</example>
                 <example><marker>Indeed</marker>. He is young, but smart for his age.</example>
+                <example><marker>Currently (2000 census)</marker> 57.71% of Alaska's area has this...</example>
+<!-- TODO -->   <example><marker>Anyway</marker> you look after the disambiguation, and I'll do the grammar rules.</example>
+                <example><marker>Anyway you look at it</marker>, the rule is good.</example>
                 <example type="triggers_error"><marker>Indeed he is rich</marker>, but he is not reliable.</example><!-- Comma is also correct. -->
                 <example type="triggers_error">Still others simply travel around America in recreation...</example><!-- Comma is also correct. -->
+                <example type="triggers_error"><marker>Currently under construction in Edmonton</marker> is the new...</example>
             </rule>
             <rule>
                 <pattern>
@@ -21714,6 +21923,7 @@ USA
                 </marker>
             </pattern>
             <message>Did you mean <suggestion>then</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/than</url>
             <short>Possible typo</short>
             <example correction="then">If we want to eat, <marker>than</marker> we need to get some money.</example>
             <example>It's not much more, in fact, than the return that is offered on U. S. Treasury bonds.</example>
@@ -21725,6 +21935,7 @@ USA
                 <token>on</token>
             </pattern>
             <message>Did you mean <suggestion>from then on</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/than</url>
             <short>Possible typo</short>
             <example correction="From then on"><marker>From than on</marker> I entered a period of dullness, nothing bothered me anymore.</example>
         </rule>
@@ -21736,6 +21947,7 @@ USA
                 </marker>
             </pattern>
             <message>Did you mean <suggestion>then</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/than</url>
             <short>Possible typo</short>
             <example correction="then">How to add equal values and <marker>than</marker> replace them with their sum?</example>
             <example correction="then">Since <marker>than</marker> we've released two new versions.</example>
@@ -21777,6 +21989,7 @@ USA
                 <token>,</token>
             </pattern>
             <message>Did you mean <suggestion>then</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/than</url>
             <short>Possible typo</short>
             <example correction="then">The genuinely interesting question, <marker>than</marker>, becomes...</example>
         </rule>
@@ -21788,11 +22001,13 @@ USA
                 </marker>
             </pattern>
             <message>Did you mean <suggestion>then</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/then</url>
             <short>Possible typo</short>
             <example correction="then">Please, who <marker>than</marker> can help!</example>
             <example>Please, who then can help?</example>
         </rule>
         <rulegroup id="RATHER_THEN" name="rather/other/different then (than)">
+            <url>https://en.wiktionary.org/wiki/than</url>
             <rule>
                 <pattern>
                     <token regexp="yes">rather|other</token>
@@ -21829,6 +22044,7 @@ USA
                 <token>of</token>
             </pattern>
             <message>Did you mean <suggestion>heart</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/heart</url>
             <example correction="heart">The questions of training and pay lie at the <marker>hard</marker> of the staffing problems.</example>
         </rule>
         <rule id="CONFUSION_AWAIT_WAIT" name="await (wait)">
@@ -21839,7 +22055,43 @@ USA
                 <token regexp="yes">until|till</token>
             </pattern>
             <message>Did you mean <suggestion><match no="1" regexp_match="^a" regexp_replace=""/></suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/await</url>
             <example correction="wait">I can hardly <marker>await</marker> until " Evidence " arrives at my home.</example>
+        </rule>
+        <rule id="CONFUSION_DUE_DO" name="due (do)">
+    <!--      Created by Tiago F. Santos, Portuguese rule, 2019-03-13      -->
+            <pattern>
+                <token postag="SENT_START|TO" postag_regexp='yes'/>
+                <token>due
+                  <exception scope='next' regexp='yes'>course|date|diligence|for|on|process|regard|respect|to|the</exception></token>
+            </pattern>
+            <message>Did you mean to use the verb <suggestion>\1 do</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/due</url>
+            <example correction="Do"><marker>Due</marker> you work this weekend?</example>
+            <example correction="to do">Unfortunately, I have work <marker>to due</marker>.</example>
+            <example>Due to its links to active workers' movements, the In...</example><!-- XXX All remaining FPs are in similar circumstances -->
+            <example>Due the unique climate in Azerbaijan, the flora is mu...</example>
+        </rule>
+        <rule id="CONFUSION_AWL_ALL" name="awl (all)">
+    <!--      Created by Tiago F. Santos, Portuguese rule, 2019-03-13      -->
+            <pattern>
+                <token>awl</token>
+                <token postag="PRP$"/>
+                <token postag="NNP?S" postag_regexp='yes'/>
+            </pattern>
+            <message>Did you mean <suggestion>all \2 \3</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/awl</url>
+            <example correction="all my things">I left <marker>awl my things</marker> there.</example>
+        </rule>
+        <rule id="CONFUSION_KNOT_NOT" name="knot (not)">
+    <!--      Created by Tiago F. Santos, Portuguese rule, 2019-03-13      -->
+            <pattern>
+                <token postag="MD|V.+" postag_regexp='yes'/>
+                <token>knot</token>
+            </pattern>
+            <message>Did you mean the negation <suggestion>\1 not</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/knot</url>
+            <example correction="should not">This <marker>should knot</marker> have happened.</example>
         </rule>
         <rule id="THAT_BEING_SAID" name="That being sad (said)">
             <pattern>
@@ -21849,6 +22101,7 @@ USA
                 <token regexp="yes">sa[dt]|aid</token>
             </pattern>
             <message>Did you mean <suggestion>That being said</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/said</url>
             <example correction="That being said"><marker>That being sad</marker> ...</example>
         </rule>
         <rule id="SAID_SAD" name="sad (said)">
@@ -21859,6 +22112,7 @@ USA
                 <marker><token>sad</token></marker>
             </pattern>
             <message>Did you mean <suggestion>said</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/said</url>
             <example correction="said">She <marker>sad</marker> that she was tired.</example>
             <example correction="said">This is exactly what you have <marker>sad</marker> yesterday.</example>
             <example>Are you sad?</example>
@@ -21872,6 +22126,7 @@ USA
                 <token regexp="yes">band|chase|Christmas|group|hell|X-?mas|ways?</token>
             </pattern>
             <message>Did you mean <suggestion><match no="1" regexp_match="a" regexp_replace="e"/></suggestion> (=jolly, festive)?</message>
+            <url>https://en.wiktionary.org/wiki/marry</url>
             <example correction="Merry"><marker>Marry</marker> Christmas!</example>
         </rule>
         <rule id="IN_ON_VACATION" name="in (on) vacation">
@@ -21919,6 +22174,7 @@ USA
                 <token><exception>course</exception><exception>necessity</exception></token>
             </pattern>
             <message>Did you mean <suggestion>most of</suggestion> or <suggestion>must have</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/must</url>
             <short>Confused word</short>
             <example correction="most of|must have">I do this <marker>must of</marker> the time.</example>
             <example>There must of course be a relationship between translating and making poems of your own.</example>
@@ -21944,6 +22200,7 @@ USA
                     <token regexp="yes">cake|work|information|(soft|hard)ware|paper|land|advice|art|equipment|music|furniture|wood|cloth|meat|writing|shit</token>
                 </pattern>
                 <message>Did you mean <suggestion>piece</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/peace</url>
                 <short>Possible typo</short>
                 <example correction="piece">It's a <marker>peace</marker> of cake!</example>
             </rule>
@@ -21957,6 +22214,7 @@ USA
                     <token postag="SENT_END">?</token>
                 </pattern>
                 <message>Did you mean <suggestion>all ready</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/already</url>
                 <example correction="all ready">Are you <marker>already</marker>?</example>
             </rule>
             <rule>
@@ -21968,10 +22226,12 @@ USA
                     <token postag="JJ"/>
                 </pattern>
                 <message>Did you mean <suggestion>already</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/already</url>
                 <example correction="already">The device is <marker>all ready</marker> available in Korea.</example>
             </rule>
         </rulegroup>
         <rulegroup id="QUIET_QUITE" name="quite / quiet">
+            <url>https://en.wiktionary.org/wiki/quite</url>
             <rule>
                 <pattern>
                     <marker>
@@ -22038,10 +22298,12 @@ USA
                 </marker>
             </pattern>
             <message>Did you mean <suggestion>knew</suggestion> (past of 'to know')?</message>
+            <url>https://en.wiktionary.org/wiki/new</url>
             <short>Possible typo</short>
             <example correction="knew">Ah, I <marker>new</marker> you would say that.</example>
         </rule>
         <rulegroup id="SOME_EXTEND" name="some/certain extend (extent)">
+            <url>https://en.wiktionary.org/wiki/extend</url>
             <rule>
                 <pattern>
                     <token regexp="yes">some|certain</token>
@@ -22067,6 +22329,7 @@ USA
             </rule>
         </rulegroup>
         <rulegroup id="THEIR_IS" name="their/they're (there) is/are">
+            <url>https://en.wiktionary.org/wiki/their</url>
             <rule>
                 <pattern>
                     <marker>
@@ -22106,6 +22369,7 @@ USA
             </rule>
         </rulegroup>
         <rulegroup id="MOTHER-IN-LOW" name="mother-in-low (mother-in-law)">
+            <url>https://en.wiktionary.org/wiki/mother-in-law</url>
             <rule>
                 <pattern>
                     <token regexp="yes">(mother|sister|brother|father|relative|son|daughter)s?-in-low</token>
@@ -22136,20 +22400,33 @@ USA
             <example correction="in the past">We succeeded <marker>in the passed</marker>.</example>
             <example>In the past, we had a number of successes.</example>
         </rule>
-        <rule id="TOO_TO" name="too go (to go)">
-            <pattern>
-                <token>too<exception scope="previous" regexp="yes">I|we|you|they</exception></token>
-                <token postag="VB"><exception postag="JJ|RB" postag_regexp="yes"/></token>
-            </pattern>
-            <message>Did you mean <suggestion>to \2</suggestion>?</message>
-            <short>Possible typo</short>
-            <example correction="to go">I want <marker>too go</marker> abroad.</example>
-            <example>He succeeded almost too well.</example>
-            <example>It is too narrow.</example>
-            <example>I too have a son; he's 40 now.</example>
-            <example>So this too <marker>can</marker>'t be used to prove the theory.</example>
-        </rule>
+        <rulegroup id="TOO_TO" name="too go (to go)">
+            <rule>
+                <pattern>
+                    <token>too<exception scope="previous" regexp="yes">I|we|you|they</exception></token>
+                    <token postag="VB"><exception postag="JJ|RB" postag_regexp="yes"/></token>
+                </pattern>
+                <message>Did you mean <suggestion>to \2</suggestion>?</message>
+                <url>https://en.wiktionary.org/wiki/too</url>
+                <short>Possible typo</short>
+                <example correction="to go">I want <marker>too go</marker> abroad.</example>
+                <example>He succeeded almost too well.</example>
+                <example>It is too narrow.</example>
+                <example>I too have a son; he's 40 now.</example>
+                <example>So this too <marker>can</marker>'t be used to prove the theory.</example>
+            </rule>
+            <rule>
+                <pattern>
+                    <token postag="PRP"></token>
+                    <marker><token>too</token></marker>
+                    <token postag="VB"></token>
+                </pattern>
+                <message>Did you mean <suggestion>to</suggestion>?</message>
+                <example correction="to">I would like her <marker>too</marker> do it now.</example>
+            </rule>
+        </rulegroup>
         <rulegroup id="TO_TOO" name="to/two (too) late/soon/much">
+            <url>https://en.wiktionary.org/wiki/too</url>
             <rule>
                 <pattern>
                     <token regexp="yes">comes|came|much|is|w(?:as|ere)|are|been|s|re|['´]</token>
@@ -22217,12 +22494,12 @@ USA
             </rule>
             <rule>
                 <pattern>
-                    <token regexp="yes">is|w(?:as|ere)|are|be(en)?|s|re|['´]</token>
+                    <token regexp="yes" inflected="yes">be|['´]</token>
                     <token min="0" regexp="yes">not|t</token>
                     <marker>
                         <token>to</token>
                     </marker>
-                    <token postag="JJ?" postag_regexp="yes"><exception postag="NNPS?|VB" postag_regexp="yes"/></token>
+                    <token postag="JJ.?" postag_regexp="yes"><exception postag="NNPS?|VB" postag_regexp="yes"/></token>
                     <token postag="SENT_END"/>
                 </pattern>
                 <message>Did you mean <suggestion>too</suggestion>?</message>
@@ -22310,6 +22587,7 @@ USA
             </rule>
         </rulegroup>
         <rulegroup id="YOUR" name="your (you're)">
+            <url>https://en.wiktionary.org/wiki/your</url>
             <rule>
                 <antipattern>
                     <token>your</token>
@@ -22387,6 +22665,7 @@ USA
                 <token regexp="yes">English|French|Spanish|Chinese|Russian</token>
             </pattern>
             <message>Did you mean <suggestion>pidgin</suggestion> (=simplified language)?</message>
+            <url>https://en.wiktionary.org/wiki/pidgin</url>
             <short>Possible typo</short>
             <example correction="Pidgin"><marker>Pigeon</marker> English is spoken widely across Nigeria.</example>
         </rule>
@@ -22398,6 +22677,7 @@ USA
                 </marker>
             </pattern>
             <message>Did you mean <suggestion>pole</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/telephone_pole</url>
             <short>Possible typo</short>
             <example correction="pole">As sort of life crises go, this is low on the totem <marker>poll</marker>.</example>
         </rule>
@@ -22409,10 +22689,12 @@ USA
                 </marker>
             </pattern>
             <message>Did you mean <suggestion>poll</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/opinion_poll</url>
             <short>Possible typo</short>
             <example correction="poll">Is it possible to add an opinion <marker>pole</marker> to my Myspace page?</example>
         </rule>
         <rulegroup id="SHELL_WE" name="shell (shall) we">
+            <url>https://en.wiktionary.org/wiki/shell</url>
             <rule>
                 <pattern case_sensitive="yes">
                     <token postag="SENT_START"/>
@@ -22462,6 +22744,7 @@ USA
                 </marker>
             </pattern>
             <message>Did you mean <suggestion>heard</suggestion> (past tense of 'hear')?</message>
+            <url>https://en.wiktionary.org/wiki/herd</url>
             <short>Possible typo</short>
             <example correction="heard">I <marker>herd</marker> of a new song by Madonna.</example>
         </rule>
@@ -22475,6 +22758,7 @@ USA
                     <token regexp="yes">key|connection|password</token>
                 </pattern>
                 <message>Did you mean <suggestion>lose</suggestion> (= miss, waste, suffer the loss etc.)?</message>
+            <url>https://en.wiktionary.org/wiki/loose</url>
                 <short>Possible typo</short>
                 <example correction="lose">I always <marker>loose</marker> the password.</example>
             </rule>
@@ -22554,7 +22838,7 @@ USA
             <url>https://www.grammar-monster.com/easily_confused/advice_advise.htm</url>
             <rule>
                 <pattern>
-                    <token regexp="yes">given?|gave</token>
+                    <token inflected="yes">give</token>
                     <token min="0" max="1" postag="PRP"/>
                     <marker>
                         <token>advise</token>
@@ -22623,6 +22907,7 @@ USA
             <example>I could offer you advice, Tomas, but you wouldn't heed it.</example>
         </rule>
         <rulegroup id="HERE_HEAR" name="here (hear)">
+            <url>https://en.wiktionary.org/wiki/here</url>
             <rule>
                 <pattern>
                     <token>can</token>
@@ -22696,16 +22981,18 @@ USA
             </rule>
         </rulegroup>
         <rule id="HEAR_HERE" name="hear (here)">
-            <pattern>
+            <pattern case_sensitive="yes">
                 <marker>
                     <token postag="SENT_START"/>
-                    <token>hear</token>
+                    <token regexp="yes">Hea?r</token>
                 </marker>
                 <token inflected="yes">be</token>
             </pattern>
-            <message>Did you mean <suggestion>here</suggestion>?</message>
+            <message>Did you mean <suggestion>Here</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/hear</url>
             <short>Possible typo</short>
             <example correction="Here"><marker>Hear</marker> is an entertainment fit for giants.</example>
+            <example correction="Here"><marker>Her</marker> is my room.</example>
         </rule>
         <rule id="WITCH_HAUNT" name="witch haunt (witch hunt)">
             <pattern>
@@ -22713,6 +23000,7 @@ USA
                 <token>haunt</token>
             </pattern>
             <message>Did you mean <suggestion>\1 hunt</suggestion> (=search for witches)?</message>
+            <url>https://en.wiktionary.org/wiki/haunt</url>
             <short>Possible typo</short>
             <example correction="witch hunt">An anti-Polish <marker>witch haunt</marker></example>
         </rule>
@@ -22722,6 +23010,7 @@ USA
                 <token>teem</token>
             </pattern>
             <message>Did you mean <suggestion>\1 team</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/teem</url>
             <short>Possible typo</short>
             <example correction="football team">This is my favorite <marker>football teem</marker>.</example>
             <example>The gardens teem with squawking parrots.</example>
@@ -22741,6 +23030,7 @@ USA
                 <token>words</token>
             </pattern>
             <message>Did you mean <suggestion>in other words</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/another</url>
             <example correction="in other words">Let me say this <marker>another words</marker>.</example>
         </rule>
         <rule id="CONFUSION_OF_SOBBER_SOBER" name="sobber (sober)">
@@ -23076,6 +23366,7 @@ USA
                 </marker>
             </pattern>
             <message>Did you mean <suggestion>whether</suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/wether</url>
             <short>Possible typo</short>
             <example>I asked whether it was true.</example>
             <example correction="whether">Don't ask me <marker>wether</marker> it is already decided!</example>
@@ -23151,6 +23442,7 @@ USA
                 <token regexp="yes">minuets?</token>
             </pattern>
             <message>Did you mean <suggestion><match no="1" regexp_match="minuet" regexp_replace="minute"/></suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/minuet</url>
             <example correction="minutes">The main plaza and town is located ten <marker>minuets</marker> walking distance from the beach.</example>
             <example correction="minute">The main plaza and town is located one <marker>minuet</marker> walking distance from the beach.</example>
             <example>Minuet for piano in G major, WoO 10/2 - Ludwig van Beethoven</example>
@@ -23161,6 +23453,7 @@ USA
                 <token inflected='yes' regexp="yes">suite?</token>
             </pattern>
             <message>Did you mean <suggestion>law<match no="2" regexp_match="suite" regexp_replace="suit"/></suggestion>?</message>
+            <url>https://en.wiktionary.org/wiki/lawsuit</url>
             <example correction="lawsuit">The plaintiff brought a <marker>law suit</marker> against the defendant</example>
         </rule>
         <rule id="DEPENDENT" name="Dependent">
@@ -23171,6 +23464,7 @@ USA
                 <token>on</token>
             </pattern>
             <message>Did you mean <suggestion>dependent</suggestion> on?</message>
+            <url>https://en.wiktionary.org/wiki/dependant</url>
             <example correction="dependent">They are <marker>dependant</marker> on the results</example>
         </rule>
         <rule id="BUY_VBG" name="buy (by) + gerund verb">
@@ -24856,6 +25150,12 @@ USA
         </rule>
         <rulegroup id="OVER_TIME" name="over time (overtime)">
             <rule>
+                <antipattern>
+                    <token inflected="yes">earn</token>
+                    <token>more</token>
+                    <token>over</token>
+                    <token>time</token>
+                </antipattern>
                 <pattern>
                     <token regexp="yes">in(to)?|less|more|of|working</token>
                     <marker>
@@ -24904,17 +25204,6 @@ USA
             <url>https://www.dictionary.com/browse/bar-b-que</url>
             <example correction="bar-b-que">A casual summer <marker>bar-b-queue</marker>.</example>
         </rule>
-    <!--rulegroup id='EASILY_CONFUSED_RARE_WORDS' name="Rare words easily confused with common words"-->
-    <!--      Created by Tiago F. Santos, Portuguese rule, 2018-11-26      -->
-      <!--rule>
-        <pattern>
-            <token inflected='yes'>nead</token>
-        </pattern>
-        <message>'\1' is a noun related to nests of beds. The verb is <suggestion><match no="1" regexp_match="nea" regexp_replace="nee"/></suggestion>.</message>
-        <url></url>
-        <example correction="needed">Every time I <marker>neaded</marker> it, it worked.</example>
-      </rule>
-    </rulegroup-->
     </category>
 
     <!-- ====================================================================== -->
@@ -27501,113 +27790,141 @@ USA
             <example correction="as well">You will buy some eggs <marker>also</marker>.</example>
         </rule>
         <rulegroup default="off" id="PASSIVE_VOICE" name="Passive voice">
-            <rule> <!-- Passive infinitive (1/2) -->
+            <url>https://www.ef.co.uk/english-resources/english-grammar/passive-voice/</url>
+            <short>Passive voice</short>
+            <rule>
                 <pattern>
                     <token>it</token>
-                    <token skip="1" inflected="yes">be</token>
-                    <!-- skip=1 to handle: it is not possible, it is also possible, etc. -->
-                    <token postag="VBN|JJ" postag_regexp="yes"/> <!--said|thought|believed|possible|necessary|impossible|known|argued -->
+                    <token skip="1" regexp="yes">is|was</token>
+                    <token min="0" max="3" postag="RB"/>
+                    <token postag="VBN"> <!--said|thought|believed|known|argued -->
+                        <exception>put</exception><!-- As an alternative to an exception, specify the VBN words --> 
+                        </token>
                     <token>that</token>
                 </pattern>
-                <message>Change from passive to active voice? Example: "It is possible that the sky is blue." can be changed to "The sky might be blue".</message>
-                <short>Passive voice</short>
-                <example correction=""><marker>It is possible that</marker> the sky is blue.</example>
-                <example correction=""><marker>It is also possible that</marker> the sky is blue.</example>
-                <example>The sky might be blue.</example>
+                <message>The text seems to be passive voice. To make the text clearer and easier to read, you can often use the active voice.</message>
+                <example correction=""><marker>It is also thought that</marker> tests are satisfactory.</example>
+                <example correction="">On 31 May 2013, <marker>it was announced that</marker> Andorra intended to legislate for the...</example>
+                <example correction="">While <marker>it was previously thought that</marker> the heavier alkali metals also...</example>
+                <example correction="">While <marker>it was not always generally thought that</marker> the the tests are...</example>
+                <example correction=""><marker>It is long known that</marker> aquifers in areas as diverse as northern...</example>
+                <example correction="">...guests made the confusion indescribable when <marker>it was found that</marker> scarcely anything of the costly building...</example>
+                <example correction=""><marker>It is disambiguated that</marker> text.</example><!-- Possibly, change the VBN token to permit only words such as thought/said -->
+                <example><marker>We think that</marker> tests are satisfactory.</example>
+                <example><marker>It is possible that</marker> the sky is blue.</example><!-- Not passive voice. 'Possible' is not a past participle verb. -->
+                <example><marker>It are</marker> thought that the sky is blue.</example><!-- Do not give a suggestion for incorrect grammar. -->
+                <example>When it was put <marker>that clearly</marker>, I was at a loss for a response.</example>
             </rule>
-            <rule> <!-- Passive infinitive (2/2) -->
+            <rule><!-- Passive infinitive (1/2): www.ef.co.uk/english-resources/english-grammar/passive-infinitive/ -->
                 <pattern>
                     <token skip="1" inflected="yes">be</token>
-                    <!-- skip to allow for: not, also, etc -->
+                    <token min="0" max="3" postag="RB"/>
                     <token postag="VBN"/> <!-- said, known, believed, thought, etc. -->
                     <token>to</token>
-                    <token skip="1">have</token>
-                    <!-- skip to allow for: not, also, etc -->
+                    <token>have</token>
+                    <token min="0" max="2" postag="RB"/>
                     <token>been</token>
                 </pattern>
-                <message>Change from passive to active voice? Example: "He is said to have been happy."  can be changed to "The people said that he was happy." if you can define who/what performed the action.</message>
-                <short>Passive voice</short>
+                <message>The text seems to be passive voice. To make the text clearer and easier to read, you can often use the active voice.</message>
                 <example correction="">He <marker>is said to have been</marker> happy.</example>
-                <example correction="">He <marker>is said to have not been</marker> happy.</example>
-                <example>The people said that he was happy.</example>
+                <example correction="">He <marker>is said to have not always been</marker> happy.</example>
                 <example correction="">He <marker>is not thought to have been</marker> happy.</example>
-                <example correction="">He <marker>was not thought to have been</marker> happy.</example>
+                <example correction="">He <marker>was not generally thought to have been</marker> happy.</example>
+                <example correction="">... by a litigation-funded study that has since <marker>been shown to have been</marker> 'an elaborate fraud'.</example>
+                <example correction="">Cult films have <marker>been falsely claimed to have been</marker> banned to increase their...</example>
+                <example correction="">Such mixtures <marker>are commonly thought to have first been</marker> prepared by Indian merchants for sale to...</example>
+                <example><marker>People said</marker> that he was happy.</example>
             </rule>
             <rule> <!-- Passive infinitive (2/2) -->
+                <antipattern><!-- https://dictionary.cambridge.org/dictionary/english/rules-are-made-to-be-broken -->
+                    <token regexp="yes">rules?|promises?</token>
+                    <token inflected="yes">be</token>
+                    <token min="0" max="3" postag="RB"/>
+                    <token>made</token>
+                </antipattern>
                 <pattern>
-                    <token skip="1" inflected="yes">be</token>
-                    <!-- skip to allow for: not, also, etc -->
-                    <token postag="VBN"/> <!-- said, known, believed, thought, etc. -->
+                    <token inflected="yes">be</token>
+                    <token min="0" max="3" postag="RB"/>
+                    <token postag="VBN"> <!-- said, known, believed, thought, etc. -->
+                        <exception regexp="yes">bound|meant|pleased|supposed</exception>
+                        <exception postag="JJ"/><!-- VBN_VBD removes JJ in "She was pleased to be treated. Cannot use raw_pos in the pattern, because the rule then does not find "were not usually considered. -->
+                        </token>
                     <token>to</token>
                     <token>be</token>
                 </pattern>
-                <message>Change from passive to active voice? Example: "He is said to be happy." could be changed to "The people said that he was happy." if you can define who/what performed the action.</message>
-                <short>Passive voice</short>
+                <message>The text seems to be passive voice. To make the text clearer and easier to read, you can often use the active voice.</message>
                 <example correction="">He <marker>is said to be</marker> happy.</example>
-                <example>People say that he is happy.</example>
+                <example correction="">They <marker>were not usually considered to be</marker> satisfactory.</example>
+                <example correction="">... forming the negative hydride ion, and <marker>is very occasionally considered to be</marker> a halogen on that basis.</example>
+                <example correction="">Premature births and stillbirths <marker>are generally not considered to be</marker> miscarriages although...</example>
+                <example correction="">The complexity of an algorithm <marker>is usually taken to be</marker> its worst-case complexity, unless specified ...</example>
+                <example><marker>People say</marker> that he is happy.</example>
+                <example>Let's find out what time we're supposed to be there.</example><!-- www.collinsdictionary.com/dictionary/english/be-supposed-to-do-something --> 
+                <example>Rules are made to be broken.</example>
+                <example>There's got to be another way.</example>
+                <example>That's got to be a good sign.</example>
+                <example>But serious music was never meant to be soporific.</example><!-- www.collinsdictionary.com/dictionary/english/be-meant-to -->
+                <example>The aggressors are bound to be defeated.</example><!-- www.ldoceonline.com/dictionary/be-bound-to -->
+                <example>She was <marker>pleased</marker> to be treated as a guest.</example><!-- Can parse 'pleased' as an adjective. Compare: She was happy to be treated... VBN_VBD removes JJ-->
+                <example>He is <marker>very confused</marker> to be in this situation.</example>
             </rule>
             <rule>
                 <pattern>
                     <token skip="-1" regexp="yes" inflected="yes">advise|insist|propose|recommend|suggest</token>
+                    <token postag="NN.*" postag_regexp="yes"/>
+                    <token postag="MD"/><!-- Without the modal verb, the sentence is subjunctive: https://en.oxforddictionaries.com/grammar/when-to-use-the-subjunctive -->
+                    <token min="0" max="3" postag="RB"/>
                     <marker>
-                        <token postag="NN.*" postag_regexp="yes" skip="1"/>
-                        <!-- skip must/could/should/etc -->
                         <token>be</token>
                         <token postag="VBN"/>
                     </marker>
                 </pattern>
-                <message>Change from passive to active voice? Example: "He insisted that red should be used." can be changed to "He insisted on using red."</message>
-                <short>Passive voice</short>
-                <example correction="">He insisted that <marker>red should be used</marker>.</example>
-                <example correction="">He insisted that <marker>red be used</marker>.</example>
-                <example>He insisted on using red.</example>
+                <message>The text seems to be passive voice. To make the text clearer and easier to read, you can often use the active voice.</message>
+                <example correction="">He insisted that red should <marker>be used</marker> by the designers.</example>
+                <example correction="">She suggests the designers might not always <marker>be considered</marker> the experts (by the managers), and that other people have much to offer.</example>
+                <example>He insisted that the designers <marker>should use</marker> red.</example>
+                <example>If he insists that red <marker>be used</marker>, then use red.</example><!-- Subjunctive -->
             </rule>
             <rule>
                 <pattern> <!-- future perfect tense -->
                     <token skip="1" regexp="yes">will|shall</token>
-                    <!-- skip to allow for "not", "also", etc. -->
+                    <token min="0" max="3" postag="RB"/>
                     <token>have</token>
                     <token>been</token>
-                    <token postag="VBN"/>
+                    <token postag="VBN">
+                        <exception regexp="yes">bound|married|meant|pleased|supposed</exception>
+                        <exception postag="JJ"/>
+                        </token>
                 </pattern>
-                <message>Change from passive to active voice? Example: "Her work will have been finished by tonight." can be changed to "She will have her work finished by tonight."</message>
-                <short>Passive voice</short>
-                <example correction="">Her work <marker>will have been finished</marker> by tonight.</example>
+                <message>The text seems to be passive voice. To make the text clearer and easier to read, you can often use the active voice.</message>
+                <example correction="">By now, the work <marker>will have been completed</marker> by the engineers.</example>
                 <example correction="">Her work <marker>will not have been finished</marker> by tonight.</example>
-                <example>She will have her work finished by tonight.</example>
+                <example correction="">Are you sure the carpets <marker>will not already have been cleaned</marker>?</example>
+                <example>By now, the engineers <marker>will have completed</marker> the work.</example>
+                <example>I think she will have been pleased by the admiration she received.</example>
+                <example>We will have been married for ten years on this day next week.</example><!-- VBN_VBD removes JJ -->
             </rule>
             <rule>
                 <pattern>
                     <token postag="NN.*" postag_regexp="yes"/>
-                    <token skip="1" inflected="yes">be</token>
-                    <!-- skip to allow for "not", "also", etc. -->
-                    <token>being</token>
-                    <token postag="VBN"/>
+                    <marker>
+                        <token inflected="yes">be</token>
+                        <token min="0" max="3" postag="RB"/>
+                        <token min="0" max="1">being</token>
+                        <token postag="VBN"/>
+                    </marker>
                 </pattern>
-                <message>Change from passive to active voice? Example: "A cake is being baked by him." can be changed to "He is baking a cake."</message>
-                <short>Passive voice</short>
-                <example correction="">A <marker>cake is being baked</marker> by him by tonight.</example>
-                <example>He is baking a cake.</example>
-                <example correction="">A <marker>cake is also being baked</marker> by him by tonight.</example>
-                <example correction="">A <marker>cake was also being baked</marker> by him by tonight.</example>
-                <example correction="">A dozen <marker>cookies were also being baked</marker> by him by tonight.</example>
-            </rule>
-            <rule>
-                <pattern>
-                    <token postag="NN.*" postag_regexp="yes"/>
-                    <token skip="1" inflected="yes">be</token>
-                    <!-- skip to allow for "not", "also", etc. -->
-                    <token skip="2" postag="VBN"/>
-                    <!-- skip to allow for "a noun" or "a adjective noun", etc. -->
-                    <token>by</token>
-                </pattern>
-                <message>Change from passive to active voice? Example: "Instruments are played by her." can be changed to "She plays instruments."</message>
-                <short>Passive voice</short>
-                <example correction=""><marker>Instruments are played by</marker> her.</example>
-                <example correction=""><marker>Instruments were played by</marker> her.</example>
-                <example correction=""><marker>Instruments are not played by</marker> her.</example>
-                <example correction=""><marker>John was given a book by</marker> her.</example>
-                <example>She plays instruments.</example>
+                <message>The text seems to be passive voice. To make the text clearer and easier to read, you can often use the active voice.</message>
+                <example correction="">A cake <marker>is being baked</marker> by him.</example>
+                <example correction="">Tests <marker>are also usually being done</marker> during the night.</example>
+                <example correction="">Those engineers <marker>were unfortunately not actually being considered</marker> by management for the project.</example>
+                <example correction="">Instruments <marker>are played</marker> by her.</example>
+                <example correction="">Instruments <marker>were played</marker> in most cultures.</example>
+                <example correction="">Instruments <marker>are not always played</marker> well.</example>
+                <example correction="">John <marker>was given</marker> a very large book with a green cover by her.</example>
+                <example correction="">The mined ore <marker>is washed</marker>, crushed, classified, and separated from quartz.</example>
+                <example correction="">... fried meat and fried cheese <marker>are very often eaten</marker> for lunch and served in most typical restaurants.</example>
+                <example>He <marker>is baking</marker> a cake.</example>
             </rule>
         </rulegroup> <!-- end passive voice rule -->
     </category>

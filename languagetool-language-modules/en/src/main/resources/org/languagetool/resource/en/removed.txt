@@ -47,7 +47,6 @@ enfranchize	enfranchize	VBP
 equalling	equalling	NNS
 et	et	CC
 excelling	excelling	NNS
-fathers	father	VBZ
 ferrying	ferrying	NNS
 filling	filling	NNS
 fold	fold	JJ
@@ -89,8 +88,8 @@ milling	milling	NNS
 mineralisation	mineralization	NNS
 mingling	mingling	NNS
 mislabelling	mislabelling	NNS
-negative	negative	VBG
 ne	ne	NN
+negative	negative	VBG
 oiling	oiling	NNS
 opsonised	opsonize	VBD
 opsonised	opsonize	VBN
@@ -118,6 +117,7 @@ sampling	sampling	NNS
 seal	seal	NNS
 sealing	sealing	NNS
 selling	selling	NNS
+setting	setting	JJ
 settling	settling	NNS
 shackling	shackling	NNS
 shan	shan	NN
@@ -141,6 +141,7 @@ sunday	sunday	VB
 sunday	sunday	VBP
 supersize	supersize	NN
 tackling	tackling	NNS
+teeth	teeth	RP
 televize	televize	VB
 televize	televize	VBP
 telling	telling	NNS
@@ -148,6 +149,7 @@ tenfold	tenfold	NN
 three-fold	three-fold	NN
 tooling	tooling	NNS
 townspeople	townspeople	NN
+traumatisation	traumatization	NNS
 traveling	traveling	NNS
 travelling	travelling	NNS
 trickling	trickling	NNS
@@ -161,6 +163,7 @@ underling	underling	NNS
 unravelling	unravelling	NNS
 unsightly	unsightly	RB
 utilisable	utilizable	JJ
+virtuosity	virtuosity	JJ
 word	word	NN:UN
 wrought	work	VBD
 wrought	work	VBN

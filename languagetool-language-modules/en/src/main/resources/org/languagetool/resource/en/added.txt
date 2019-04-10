@@ -4,6 +4,7 @@
 # Format: three tab-separated fields: fullform baseform postags
 3D	3D	JJ
 about	about	RB
+above	above	RB
 absolutise	absolutise	VB
 absolutise	absolutise	VBP
 absolutised	absolutise	VBD
@@ -456,6 +457,7 @@ arborised	arborise	VBD
 arborised	arborise	VBN
 arborises	arborise	VBZ
 arborising	arborise	VBG
+Arial	Arial	NNP
 armor-bearers	armour-bearer	NNS
 armour-bearers	armour-bearer	NNS
 aromatisation	aromatisation	NN:UN
@@ -465,6 +467,7 @@ aromatised	aromatise	VBD
 aromatised	aromatise	VBN
 aromatises	aromatise	VBZ
 aromatising	aromatise	VBG
+around	around	RB
 artificialise	artificialise	VB
 artificialise	artificialise	VBP
 artificialised	artificialise	VBD
@@ -616,6 +619,7 @@ attowatts	attowatt	NNS
 attoweber	attoweber	NN
 attowebers	attoweber	NNS
 AUGUST	August	NNP
+aurochs	aurochs	NNS
 Australianise	Australianise	VB
 Australianise	Australianise	VBP
 Australianised	Australianise	VBD
@@ -677,6 +681,7 @@ axiomatizing	axiomatize	VBG
 ayahuasca	ayahuasca	NN:U
 bachelorette	bachelorette	NN
 bachelorettes	bachelorette	NNS
+back	back	RB
 backup	backup	NN:U
 bacterisation	bacterisation	NN:UN
 balkanisation	balkanisation	NN:UN
@@ -699,6 +704,8 @@ bariatric	bariatric	JJ
 bastardised	bastardised	JJ
 battlecruiser	battlecruiser	NN
 battlecruisers	battlecruiser	NNS
+before	before	RB
+behind	behind	RB
 bellcrank	bellcrank	NN
 bellcranks	bellcrank	NNS
 belly-land	belly-land	VB
@@ -707,6 +714,7 @@ belly-landed	belly-land	VBD
 belly-landed	belly-land	VBN
 belly-landing	belly-land	VBG
 belly-lands	belly-land	VBZ
+below	below	RB
 bereaved	bereaved	JJ
 Betts	Betts	NNP
 biosynthesise	biosynthesise	VB
@@ -759,6 +767,7 @@ Brexit	Brexit	NNP
 Bridgend	Bridgend	NNP
 Bridgnorth	Bridgnorth	NNP
 Brissette	Brissette	NNP
+broken	broken	JJ
 bromise	bromise	VB
 bromise	bromise	VBP
 bromised	bromise	VBD
@@ -1307,6 +1316,7 @@ concretising	concretise	VBG
 conditionalisation	conditionalisation	NN:UN
 conditionalization	conditionalization	NN:UN
 confectionery	confectionery	NN:U
+confused	confused	JJ
 Congleton	Congleton	NNP
 connaturalise	connaturalise	VB
 connaturalise	connaturalise	VBP
@@ -2054,6 +2064,7 @@ delocalized	delocalize	VBD
 delocalized	delocalize	VBN
 delocalizes	delocalize	VBZ
 delocalizing	delocalize	VBG
+Deloitte	Deloitte	NNP
 dematerialise	dematerialise	VB
 dematerialise	dematerialise	VBP
 dematerialised	dematerialise	VBD
@@ -2648,6 +2659,7 @@ double-clicked	double-click	VBD
 double-clicked	double-click	VBN
 double-clicking	double-click	VBG
 double-clicks	double-click	VBZ
+down	down	RB
 download	download	NN
 downloads	download	NNS
 Doxygen	Doxygen	NNP
@@ -3267,6 +3279,7 @@ Finlandized	Finlandize	VBD
 Finlandized	Finlandize	VBN
 Finlandizes	Finlandize	VBZ
 Finlandizing	Finlandize	VBG
+fintech	fintech	NN:U
 Firefox	Firefox	NNP
 first	first	RB
 flamenco	flamenco	NN:U
@@ -4554,6 +4567,7 @@ jasperizing	jasperize	VBG
 Javadoc	Javadoc	NNP
 JavaHelp	JavaHelp	NNP
 Jimi	Jimi	NNP
+Jira	Jira	NNP
 Jobs	Jobs	NNP
 journalize	journalize	VB
 journalize	journalize	VBP
@@ -4653,6 +4667,7 @@ kiloteslas	kilotesla	NNS
 kiloweber	kiloweber	NN
 kilowebers	kiloweber	NNS
 Kirklees	Kirklees	NNP
+KPIs	KPIs	NNS
 Kremenchuk	Kremenchuk	NNP
 Kropyvnytskyi	Kropyvnytskyi	NNP
 kyanisation	kyanisation	NN:U
@@ -5857,6 +5872,7 @@ nativized	nativize	VBN
 nativizes	nativize	VBZ
 nativizing	nativize	VBG
 né	né	JJ
+near	near	RB
 nebulisations	nebulisation	NNS
 nebulise	nebulise	VB
 nebulise	nebulise	VBP
@@ -6261,6 +6277,7 @@ ovariectomized	ovariectomize	VBD
 ovariectomized	ovariectomize	VBN
 ovariectomizes	ovariectomize	VBZ
 ovariectomizing	ovariectomize	VBG
+over	over	RB
 overall	overall	RB
 overcentralise	overcentralise	VB
 overcentralise	overcentralise	VBP
@@ -6410,6 +6427,7 @@ paganise	paganise	VB
 paganise	paganise	VBP
 paganised	paganise	VBD
 paganised	paganise	VBN
+paganisers	paganiser	NNS
 paganises	paganise	VBZ
 paganising	paganise	VBG
 paganize	paganize	VB
@@ -9636,6 +9654,12 @@ Teutonized	Teutonize	VBD
 Teutonized	Teutonize	VBN
 Teutonizes	Teutonize	VBZ
 Teutonizing	Teutonize	VBG
+text	text	VB
+text	text	VBP
+texted	text	VBD
+texted	text	VBN
+texting	text	VBG
+texts	text	VBZ
 texturise	texturise	VB
 texturise	texturise	VBP
 texturised	texturise	VBD
@@ -10051,6 +10075,7 @@ untagging	untag	VBG
 untags	untag	VBZ
 unverbalised	unverbalised	JJ
 unwove	unwove	VBD
+up	up	RB
 upset	upset	JJ
 upsize	upsize	VB
 upsize	upsize	VBP
@@ -10203,6 +10228,7 @@ verticalizes	verticalize	VBZ
 verticalizing	verticalize	VBG
 viewport	viewport	NN
 viewports	viewport	NNS
+Vijay	Vijay	NNP
 villainize	villainize	VB
 villainize	villainize	VBP
 villainized	villainize	VBD

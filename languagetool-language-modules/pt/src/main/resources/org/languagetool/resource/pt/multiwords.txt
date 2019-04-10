@@ -167,6 +167,7 @@ ao todo	RG
 Ao todo	RG
 ao vivo	RG
 Ao vivo	RG
+a páginas tantas	RG
 a par de	SP000
 A par de	SP000
 a partir de	SP000
@@ -179,6 +180,8 @@ apesar disso	RG
 Apesar disso	RG
 a dada altura	RG
 A dada altura	RG
+à partida	RG
+À partida	RG
 a posteriori	RG
 A posteriori	RG
 a prazo	RG
@@ -287,6 +290,8 @@ dado que	CS
 Dado que	CS
 da parte de	SP000
 Da parte de	SP000
+daqui para a frente	RG
+Daqui para a frente	RG
 de algum modo	RG
 De algum modo	RG
 de alto a baixo	RG
@@ -303,6 +308,10 @@ de bom grado	RG
 De bom grado	RG
 de bruços	RG
 De bruços	RG
+de certa forma	RG
+De certa forma	RG
+de certo modo	RG
+De certo modo	RG
 de cima	RG
 De cima	RG
 de cor	RG
@@ -418,6 +427,16 @@ de vez em quando	RG
 De vez em quando	RG
 devido a	SP000
 Devido a	SP000
+devido ao	SP000
+Devido ao	SP000
+devido aos	SP000
+Devido aos	SP000
+devido as	SP000
+Devido as	SP000
+devido à	SP000
+Devido à	SP000
+devido às	SP000
+Devido às	SP000
 # dezenas de	RG
 # Dezenas de	RG
 dia a dia	RG
@@ -446,12 +465,16 @@ em breve	RG
 Em breve	RG
 em causa	RG
 Em causa	RG
+em curso	RG
+Em curso	RG
 em cima de	SP000
 Em cima de	SP000
 em cima	RG
 Em cima	RG
 em comum	RG
 Em comum	RG
+em conta	RG
+Em conta	RG
 em detrimento de	SP000
 Em detrimento de	SP000
 em evidência	RG
@@ -500,6 +523,8 @@ em seu favor	RG
 Em seu favor	RG
 em silêncio	RG
 Em silêncio	RG
+em simultâneo	RG
+Em simultâneo	RG
 em stock	RG
 Em stock	RG
 em tempo real	RG
@@ -708,6 +733,8 @@ por detrás de	SP000
 Por detrás de	SP000
 por entre	SP000
 Por entre	SP000
+por excelência	RG
+Por excelência	RG
 por exemplo	RG
 Por exemplo	RG
 por fora	RG
@@ -1158,6 +1185,7 @@ Port Louis	NPCSG00_
 Port Moresby	NPCSG00_
 Port Saïd	NPCSG00_
 Porto Alegre	NPCSG00_
+post mortem	RG_
 Post mortem	RG_
 Primo de Rivera	NPMNG00_
 Puerta del Sol	NPFSG00_
@@ -2030,7 +2058,7 @@ zut alors	I
 Zut alors	I
 
 #########################################################################
-###                        Nomes científicos                           ###
+###                        Nomes científicos                          ###
 #########################################################################
 
 Acacia baileyana	NPCN000_
@@ -10770,8 +10798,8 @@ vade retro	NCCN000
 
 ma non troppo	RG_
 Ma non troppo	RG_
-sex symbol	NCCS000
-Sex symbol	NCCS000
+sex symbol	NCCS000_
+Sex symbol	NCCS000_
 drag queens	NCFP000
 Drag queens	NCFP000
 crème de la crème	NCFS000
@@ -10923,10 +10951,14 @@ Crystal Palace	NPMS000_
 ####################################################
 
 a capella	RG_
-agente da autoridade	NCCS000
-Agente da autoridade	NCCS000
-agentes da autoridade	NCCS000
-Agentes da autoridade	NCCS000
+acampamento base	NCMS000
+Acampamento base	NCMS000
+acampamentos base	NCMP000
+Acampamentos base	NCMP000
+agente da autoridade	NCCS000_
+Agente da autoridade	NCCS000_
+agentes da autoridade	NCCS000_
+Agentes da autoridade	NCCS000_
 al dente	AQ0CN0_
 Al dente	AQ0CN0_
 Alcaria Ruiva	NPFS000_
@@ -10958,10 +10990,12 @@ bacalhau à Brás	NCMS000
 Bacalhau à Brás	NCMS000
 bacalhau à Gomes Sá	NCMS000
 Bacalhau à Gomes Sá	NCMS000
-bacalhau à Zé do Pipo	NCMS000
-Bacalhau à Zé do Pipo	NCMS000
+bacalhau à Zé	NCMS000
+Bacalhau à Zé	NCMS000
 batata rosti	NCFS000_
 Batata rosti	NCFS000_
+# bel prazer is "bel-prazer" but this allows the hiphenator to kick in
+bel prazer	NCMS000_
 Bear Stearns	NPMS000_
 Berkshire Hathaway	NPFS000_
 Bernard Arnault	NPMS000_
@@ -10977,14 +11011,18 @@ Bouquet garni	NCMS000
 Braga Jazz	NPMSO00_
 Braga Park	NPMSG00_
 Braga Parque	NPMSG00_
-cabeça de casal	NCCS000
-Cabeça de casal	NCCS000
-cabeças de casal	NCCP000
-Cabeças de casal	NCCP000
-cabeça de lista	NCCS000
-Cabeça de lista	NCCS000
-cabeças de lista	NCCP000
-Cabeças de lista	NCCP000
+cabeça de casal	NCCS000_
+Cabeça de casal	NCCS000_
+cabeças de casal	NCCP000_
+Cabeças de casal	NCCP000_
+cabeça de lista	NCCS000_
+Cabeça de lista	NCCS000_
+cabeças de lista	NCCP000_
+Cabeças de lista	NCCP000_
+cabeça de lista	NCCS000_
+Cabeça de lista	NCCS000_
+cabeças de lista	NCCP000_
+Cabeças de lista	NCCP000_
 Cais do Sodré	NPMS000_
 caixas multibanco	NCFP000
 caixas Multibanco	NCFP000
@@ -11004,6 +11042,7 @@ cenário base	NCMS000_
 cenários base	NCMP000_
 célula de Schwann	NCFS000_
 células de Schwann	NCFP000_
+células T	NCFP000_
 Champions League	NCFS000_
 Che Guevara	NPMS000_
 Chris Columbus	NPMS000_
@@ -11069,17 +11108,23 @@ Esquerda caviar	NCFS000
 Enrique Peña	NPMS000_
 Estado da União	NCMS000
 Estados Unidos	NPMP000
-estudantes Erasmus	NCCP000
+estudantes Erasmus	NCCP000_
 Evo Morales	NPMS000_
 faixa BUS	NCFS000
 faixas BUS	NCFP000
 fake news	NCFP000_
+feijoada de samos	NCFS000_
+Feijoada de samos	NCFS000_
 Feng Shui	NPMS000_
 Ferenc Liszt	NPMS000_
 Fidel Castro	NPMS000_
 Film Festival	NPMS000_
+flow learning	NCMS000_
+Flow learning	NCMS000_
 foie gras	NCFS000_
 Foie gras	NCFS000_
+fora da área	NCMS000
+foras da área	NCMP000
 Francisco Louçã	NPMS000_
 Francisco Moita	NPMSO00_
 Frei Montalva	NPMSO00_
@@ -11116,12 +11161,14 @@ Johann Goethe	NPMS000_
 José Maria	NPMSO00_
 Julio Borges	NPMS000_
 Kazuo Ishiguro	NPMS000_
+know how	NCMS000_
 Kofi Annan	NPMS000_
 La Salette	NPFS000_
 Le Pen	NPFS000_
 Lehman Brothers	NPMS000_
 Leonardo diCaprio	NPMS000_
 Lex Luthor	NPMS000_
+linfócitos T	NCMP000_
 lingua franca	NCFS000_
 linha SOS	NCFS000_
 linhas SOS	NCFP000_
@@ -11144,6 +11191,9 @@ Males necessários	NCMP000_
 manteiga noisette	NCFS000_
 Manteiga noisette	NCFS000_
 Manuel Maria	NPMSO00_
+máquinas multibanco	NCFP000
+máquinas Multibanco	NCFP000
+Máquinas Multibanco	NCFP000
 Margaret Atwood	NPFS000_
 Maria João	NPFSO00_
 Maria José	NPFSO00_
@@ -11154,6 +11204,10 @@ Mario Draghi	NPMS000_
 Matos Bravo	NPMSO00_
 melhorias incrementais	NCFP000
 Melhorias incrementais	NCFP000
+mercado chave	NCMS000
+Mercado chave	NCMS000
+mercados chave	NCMP000
+Mercados chave	NCMP000
 Michael Bay	NPMS000_
 mie goreng	NCMS000
 ministro da Economia	NPMS000_
@@ -11172,11 +11226,14 @@ Nikola Tesla	NPMS000_
 Nils Muiznieks	NPMS000_
 níveis recorde	NCMP000
 Novo México	NPMS000_
-Oliveira Neves	NPCS000_
 obesidade juvenil	NCFS000
+Oliveira Neves	NPCS000_
+operação STOP	NCFS000
+operações STOP	NCFS000
 panna cotta	NCFS000
 Panna cotta	NCFS000
 Paolo Duterte	NPMS000_
+Papua Nova Guiné	NPFS000_
 Passos Coelho	NPMS000
 Penã Nieto	NPMS000_
 Peneda Gerês	NPFS000_
@@ -11185,17 +11242,20 @@ Petit fours	NCMS000
 plano base	NCMS000
 planos base	NCMP000
 Plaza Mayor	NPMS000_
-Pólo Norte	NPMSO00_
-Pólo Sul	NPMSO00_
+# BUG: Replace rule is not triggered (AO90replace.txt) if 'Pólo' are disambiguated
+# Pólo Norte	NPMSO00
+# Pólo Sul	NPMSO00
 Pol Pot	NPMS000_
 polvo à lagareiro	NCMS000
 Polvo à lagareiro	NCMS000
-ponta de lança	NCCS000
-pontas de lança	NCCP000
-pontos base	NCMP000
+ponta de lança	NCCS000_
+pontas de lança	NCCP000_
+pontos base	NCMP000_
 Porto Rico	NPMSG00_
 Portugal Telecom	NPFS000_
 Praceta Teixeira	NPFSO00_
+preço base	NCMS000
+preços base	NCMP000
 presidente da República	NCCS000_
 presidentes da República	NCCP000_
 Presidente da República	NCCS000_
@@ -11212,17 +11272,21 @@ princípios base	NCMP000
 Princípios base	NCMP000
 programas base	NCMP000
 Programas base	NCMP000
+públicos alvo	NCMP000
 Raios Gama	NCMP000
 raios Gama	NCMP000
 raios gama	NCMP000
 Raspberry Pi	NPMS000_
 Raúl Castro	NPMS000_
+reality show	NCMS000_
+reality shows	NCMP000_
 rede social Facebook	NPMF000_
 Reino Unido	NPMS000
 Reggio Calabria	NPMS000_
 René Descartes	NPMS000_
 República Centro-Africana	NPFS000_
 República da Irlanda	NPFS000_
+retenções na fonte	NCFP000
 revista Nature	NCFS000
 Richard Dawkins	NPMS000_
 Rio de Janeiro	NPMSG00_
@@ -11231,7 +11295,13 @@ Robert Zemeckis	NPMS000_
 Roland Garros	NPMS000_
 Ron Howard	NPMS000_
 Saadeddine El Othmani	NPMS000_
+salário base	NCMS000
+Salário base	NCMS000
+salários base	NCMP000
+Salários base	NCMP000
 Salvador Dalí	NPMS000_
+samos suados	NCMS000_
+Samos suados	NCMS000_
 Santos Romão	NPMSO00_
 Satoshi Nakamoto	NPMS000_
 Scientific Reports	NPFS000_
@@ -11261,9 +11331,12 @@ sopa à Lavrador	NCMS000
 Sopa à lavrador	NCMS000
 Sopa à Lavrador	NCMS000
 sotto voce	AQCS00_
+Sri Lanka	NPMS000_
 Steve Wozniak	NPMS000_
+Tai Chi Chuan	NPMS000_
 TED talk	NPFS000_
 Tel Aviv	NPFS000_
+tempos padrão	NCMP000_
 terceira volta	NCFS000_
 Terceira volta	NCFS000_
 Tim Burton	NPMS000_
@@ -11279,6 +11352,10 @@ Umaro Sissoco Embaló	NPMS000_
 Ultimate Fighting Championship	NPMS000_
 União de Nações Sul-Americanas	NPMSO00_
 Universidade Complutense	NPMS000_
+valor base	NCMS000
+Valor base	NCMS000
+valores base	NCMP000
+Valores base	NCMP000
 vertentes este	NCFP000
 vertentes Este	NCFP000
 vertentes norte	NCFP000

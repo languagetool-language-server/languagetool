@@ -611,6 +611,8 @@ diabolize
 diabolized
 diabolizes
 diabolizing
+dialyzabilities
+dialyzability
 dialyzable
 dialyze
 dialyzed
@@ -842,6 +844,10 @@ geometrize
 geometrized
 geometrizes
 geometrizing
+geomorphologist
+geomorphologists
+geoscience
+geosciences
 Germanize
 Germanized
 Germanizes
@@ -1208,6 +1214,7 @@ micronize
 micronized
 micronizes
 micronizing
+millennials
 mineralize
 mineralized
 mineralizes
@@ -2264,6 +2271,7 @@ technologize
 technologized
 technologizes
 technologizing
+tectonically
 Tel Aviv
 telepathize
 telepathized

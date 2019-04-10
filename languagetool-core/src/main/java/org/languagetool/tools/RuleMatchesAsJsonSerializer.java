@@ -45,7 +45,7 @@ public class RuleMatchesAsJsonSerializer {
   private static final String START_MARKER = "__languagetool_start_marker";
 
   private final JsonFactory factory = new JsonFactory();
-  
+
   public String ruleMatchesToJson(List<RuleMatch> matches, String text, int contextSize, DetectedLanguage detectedLang) {
     return ruleMatchesToJson(matches, new ArrayList<>(), text, contextSize, detectedLang, null);
   }
@@ -150,8 +150,12 @@ public class RuleMatchesAsJsonSerializer {
       g.writeStringField("typeName", match.getType().toString());
       g.writeEndObject();
       writeRule(g, match);
-      g.writeBooleanField("ignoreForIncompleteSentence", RuleInformation.ignoreForIncompleteSentences(match.getRule().getId(), lang));
-      g.writeNumberField("contextForSureMatch", match.getRule().estimateContextForSureMatch());
+      // 3 is a guess - key 'ignoreForIncompleteSentence' isn't official and can hopefully be removed in the future
+      // now that we have 'contextForSureMatch':
+      int contextEstimate = match.getRule().estimateContextForSureMatch();
+      g.writeBooleanField("ignoreForIncompleteSentence",
+              RuleInformation.ignoreForIncompleteSentences(match.getRule().getId(), lang) || contextEstimate == -1 || contextEstimate > 3);
+      g.writeNumberField("contextForSureMatch", contextEstimate);
       g.writeEndObject();
     }
     g.writeEndArray();
@@ -163,11 +167,19 @@ public class RuleMatchesAsJsonSerializer {
   
   private void writeReplacements(JsonGenerator g, RuleMatch match) throws IOException {
     g.writeArrayFieldStart("replacements");
+    boolean autoCorrect = match.isAutoCorrect();
     for (SuggestedReplacement replacement : match.getSuggestedReplacementObjects()) {
       g.writeStartObject();
       g.writeStringField("value", replacement.getReplacement());
       if (replacement.getShortDescription() != null) {
         g.writeStringField("shortDescription", replacement.getShortDescription());
+      }
+      if (autoCorrect) {
+        g.writeBooleanField("autoCorrect", true);
+        autoCorrect = false; // only for first replacement
+      }
+      if (replacement.getConfidence() != null) {
+        g.writeNumberField("confidence", replacement.getConfidence());
       }
       g.writeEndObject();
     }

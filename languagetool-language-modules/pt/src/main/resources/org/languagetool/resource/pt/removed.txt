@@ -3,10 +3,12 @@
 # File Encoding: UTF-8
 # Format: fullform baseform postags (tab separated)
 #
+### TODO move valid POSs that are removed due to extremely rare usage to disambiguation.xml ###
 a	a	NCMS000
 # aceita/o: forma rara
 aceito	aceito	AQ0MS0
 aceita	aceito	AQ0FS0
+afazeres	afazeres	NCFP000
 álbum	álbum	NCFS000
 álbuns	álbum	NCFP000
 antecedência	antecedência	NCMS000
@@ -26,6 +28,9 @@ biliões	bilião	NCCP000
 Bairro	Bairro	NPCSG00
 Brasil	brasil	AQ0CS0
 Buda	Buda	NPFSS00
+#cabe forma rara como 'azo'
+cabe	cabe	NCMS000
+cabes	cabe	NCMS000
 Campos	Campos	NPCSG00
 # chega=repreensão : forma rara
 chega	chega	NCFS000
@@ -64,6 +69,7 @@ durante	durante	NCMS000
 estilo	estilar	VMIP1S0
 Estremadura	Estremadura	NPMS000
 e	e	NCMS000
+espionagem	espionagem	NCMS000
 eu	eu	NCMS000
 fã	fã	NCMS000
 fãs	fã	NCMP000
@@ -77,6 +83,9 @@ for	for	NCMS000
 fores	for	NCMP000
 # for/fores - demasiado raro em relação à forma verbal
 Gana	Gana	NPFS000
+# gera - uso demasiado raro como útero
+gera	gera	NCFS000
+geras	gera	NCFP000
 Germânia	Germânia	NPMS000
 glamour	glamour	NCFS000
 Graça	Graça	NPCSG00
@@ -100,6 +109,7 @@ imperadores	imperador	AQ0MS0
 imperadores	imperador	NCMS000
 irrealismo	irrealismo	NCFS000
 irrealismos	irrealismo	NCFP000
+Jordânia	Jordânia	NPMS000
 Jugoslávia	Jugoslávia	NPMS000
 laranja	laranjo	AQ0FS0
 laranjas	laranjo	AQ0FP0
@@ -172,6 +182,9 @@ regatas	regata	NCMP000
 rodrigues	rodrigar	VMM02S0
 rodrigues	rodrigar	VMSP2S0
 Ruanda	Ruanda	NPFSG00
+# sai exists as a zoological name but its usage is too rare when compared with the verb
+sai	sai	NCMS000
+sais	sai	NCMP000
 # são	são	AQ0MS0
 # são	são	NCMS000
 # São - Both forms are correct but will be dealt by disambiguation later
@@ -185,6 +198,9 @@ suas	seu	DP3FSP
 tal	tal	NCMS000
 tais	tal	NCMP000
 tais	tal	NCMN000
+telefoto	telefoto	NCMS000
+telefotos	telefoto	NCMP000
+temo	ter	VMIP1P0
 teorema	teorema	NCFS000
 teoremas	teorema	NCFP000
 # Number and possessornum interchanged
@@ -197,8 +213,11 @@ tiragem	tiragem	NCMS000
 tiragens	tiragem	NCMP000
 trauma	trauma	NCFS000
 traumas	trauma	NCFP000
+triangular	triangular	AQ0MS0
+triangulares	triangular	AQ0MP0
 trilião	trilião	NCCS000
 triliões	trilião	NCCP000
+Uganda	Uganda	NPFSG00
 uma	umar	VMIP3S0
 uma	umar	VMM02S0
 umas	umar	VMIP2S0

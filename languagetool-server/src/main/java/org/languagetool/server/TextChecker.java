@@ -25,6 +25,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.languagetool.*;
 import org.languagetool.language.LanguageIdentifier;
 import org.languagetool.markup.AnnotatedText;
@@ -135,7 +136,7 @@ abstract class TextChecker {
       for (JLanguageTool.Mode mode : addonModes) {
         QueryParams params = new QueryParams(Collections.emptyList(), Collections.emptyList(), addonDisabledRules,
           Collections.emptyList(), Collections.emptyList(), false, true,
-          false, false, mode);
+          false, false, mode, null);
         PipelinePool.PipelineSettings settings = new PipelinePool.PipelineSettings(language, null, params, user);
         prewarmSettings.put(settings, NUM_PIPELINES_PER_SETTING);
 
@@ -245,7 +246,7 @@ abstract class TextChecker {
     if ((disabledRules.size() > 0 || disabledCategories.size() > 0) && useEnabledOnly) {
       throw new IllegalArgumentException("You cannot specify disabled rules or categories using enabledOnly=true");
     }
-    if (enabledRules.size() == 0 && enabledCategories.size() == 0 && useEnabledOnly) {
+    if (enabledRules.isEmpty() && enabledCategories.isEmpty() && useEnabledOnly) {
       throw new IllegalArgumentException("You must specify enabled rules or categories when using enabledOnly=true");
     }
 
@@ -254,8 +255,9 @@ abstract class TextChecker {
     boolean allowIncompleteResults = "true".equals(parameters.get("allowIncompleteResults"));
     boolean enableHiddenRules = "true".equals(parameters.get("enableHiddenRules"));
     JLanguageTool.Mode mode = ServerTools.getMode(parameters);
+    String callback = parameters.get("callback");
     QueryParams params = new QueryParams(altLanguages, enabledRules, disabledRules, enabledCategories, disabledCategories,
-            useEnabledOnly, useQuerySettings, allowIncompleteResults, enableHiddenRules, mode);
+            useEnabledOnly, useQuerySettings, allowIncompleteResults, enableHiddenRules, mode, callback);
 
     Long textSessionId = null;
     try {
@@ -361,7 +363,7 @@ abstract class TextChecker {
         ResultExtender resultExtender = new ResultExtender(config.getHiddenMatchesServer(), config.getHiddenMatchesServerTimeout());
         try {
           long start = System.currentTimeMillis();
-          List<RemoteRuleMatch> extensionMatches = resultExtender.getExtensionMatches(aText.getPlainText(), lang);
+          List<RemoteRuleMatch> extensionMatches = resultExtender.getExtensionMatches(aText.getPlainText(), parameters);
           hiddenMatches = resultExtender.getFilteredExtensionMatches(matches, extensionMatches);
           long end = System.currentTimeMillis();
           print("Hidden matches: " + extensionMatches.size() + " -> " + hiddenMatches.size() + " in " + (end - start) + "ms");
@@ -373,6 +375,11 @@ abstract class TextChecker {
       }
     }
     String response = getResponse(aText, detLang, motherTongue, matches, hiddenMatches, incompleteResultReason);
+    if (params.callback != null) {
+      // JSONP - still needed today for the special case of hosting your own on-premise LT without SSL
+      // and using it from a local MS Word (not Online Word) - issue #89 in the add-in repo:
+      response = params.callback + "(" + response + ");";
+    }
     String messageSent = "sent";
     String languageMessage = lang.getShortCodeWithCountryAndVariant();
     try {
@@ -439,7 +446,7 @@ abstract class TextChecker {
 
     if (parameters.get("sourceText") != null) {
       if (parameters.get("sourceLanguage") == null) {
-        throw new RuntimeException("'sourceLanguage' parameter missing - must be set when 'sourceText' is set");
+        throw new IllegalArgumentException("'sourceLanguage' parameter missing - must be set when 'sourceText' is set");
       }
       Language sourceLanguage = Languages.getLanguageForShortCode(parameters.get("sourceLanguage"));
       JLanguageTool sourceLt = new JLanguageTool(sourceLanguage);
@@ -521,9 +528,10 @@ abstract class TextChecker {
     final boolean allowIncompleteResults;
     final boolean enableHiddenRules;
     final JLanguageTool.Mode mode;
+    final String callback;
 
     QueryParams(List<Language> altLanguages, List<String> enabledRules, List<String> disabledRules, List<CategoryId> enabledCategories, List<CategoryId> disabledCategories,
-                boolean useEnabledOnly, boolean useQuerySettings, boolean allowIncompleteResults, boolean enableHiddenRules, JLanguageTool.Mode mode) {
+                boolean useEnabledOnly, boolean useQuerySettings, boolean allowIncompleteResults, boolean enableHiddenRules, JLanguageTool.Mode mode, @Nullable String callback) {
       this.altLanguages = Objects.requireNonNull(altLanguages);
       this.enabledRules = enabledRules;
       this.disabledRules = disabledRules;
@@ -534,6 +542,10 @@ abstract class TextChecker {
       this.allowIncompleteResults = allowIncompleteResults;
       this.enableHiddenRules = enableHiddenRules;
       this.mode = Objects.requireNonNull(mode);
+      if (callback != null && !callback.matches("[a-zA-Z]+")) {
+        throw new IllegalArgumentException("'callback' value must match [a-zA-Z]+: '" + callback + "'");
+      }
+      this.callback = callback;
     }
 
     @Override
@@ -549,6 +561,7 @@ abstract class TextChecker {
         .append(allowIncompleteResults)
         .append(enableHiddenRules)
         .append(mode)
+        .append(callback)
         .toHashCode();
     }
 
@@ -570,6 +583,7 @@ abstract class TextChecker {
         .append(allowIncompleteResults, other.allowIncompleteResults)
         .append(enableHiddenRules, other.enableHiddenRules)
         .append(mode, other.mode)
+        .append(callback, other.callback)
         .isEquals();
     }
 
@@ -586,6 +600,7 @@ abstract class TextChecker {
         .append("allowIncompleteResults", allowIncompleteResults)
         .append("enableHiddenRules", enableHiddenRules)
         .append("mode", mode)
+        .append("callback", mode)
         .build();
     }
   }
