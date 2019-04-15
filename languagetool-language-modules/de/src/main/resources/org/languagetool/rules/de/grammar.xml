@@ -6017,6 +6017,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                     <token skip="-1">das</token>
                     <token>zu</token>
                     <token postag="VER:INF.*|UNKNOWN" postag_regexp="yes"/>
+                    <token><exception inflected="yes">haben</exception></token>
                 </antipattern>
                 <antipattern>
                     <token>,</token>
@@ -6049,6 +6050,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <example>Ich konnte dich sehen, das allein macht mich froh.</example>
                 <example>Ich glaube, das mit uns hat einfach keinen Sinn.</example>
                 <example>Ich weigere mich, das von Tom abgegebene Geschmiere, das er seine Bearbeitung nennt, anzunehmen.</example>
+                <example correction="dass">Ich weiß, <marker>das</marker> sie dort festhängt.</example>
+                <example correction="dass">Ich wüsste nicht, <marker>das</marker> er was damit zu tun hat.</example>
             </rule>
             <rule>
                 <antipattern>
@@ -6180,7 +6183,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                     <marker>
                         <token>dass</token>
                     </marker>
-                    <token><exception>das</exception></token>
+                    <token>
+                       <exception>das</exception>
+                       <exception postag="PRO:P(ER|OS):NOM:SIN:.+" postag_regexp="yes"/>
+                    </token>
                 </pattern>
                 <message>Meinten Sie das Relativpronomen <suggestion>das</suggestion>?</message>
                 <example correction="das">Das Kind, <marker>dass</marker> dort spielt.</example>
@@ -6188,12 +6194,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <example>Ein Segen, dass das Glück auf meiner Seite war!</example>
             </rule>
             <rule>
-                <pattern>
+                <pattern case_sensitive="yes">
                     <token postag="SENT_START"/>
                     <marker>
                         <token>Das</token>
                     </marker>
-                    <token regexp="yes">man|e[rs]|sie|du</token>
+                    <token regexp="yes">man|e[rs]|sie|du|ich|wir|unsere?|ihre?</token>
                 </pattern>
                 <message>Meinten Sie die Konjunktion <suggestion>dass</suggestion>?</message>
                 <example correction="Dass"><marker>Das</marker> es zu dieser Jahreszeit schneit, ist ungewöhnlich.</example>

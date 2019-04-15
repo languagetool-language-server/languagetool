@@ -221,7 +221,7 @@ USA
           <rule>
             <pattern>
               <marker>
-                <token regexp="yes">isn|aren|wasn|weren|don|doesn|didn|can|couldn|mayn|mightn|mustn|needn|oughtn|shan|shouldn|usedn|won|wouldn<exception regexp="yes">\p{Lu}+</exception></token>
+                <token regexp="yes">isn|aren|wasn|weren|don|doesn|didn|can|couldn|mayn|mightn|mustn|needn|oughtn|shan|shouldn|usedn|won|wouldn|haven<exception regexp="yes">\p{Lu}+</exception></token>
                 <token regexp="yes">['’]</token>
                 <token case_sensitive="yes">T</token>
               </marker>
@@ -235,7 +235,7 @@ USA
           <rule>
             <pattern case_sensitive="yes">
               <marker>
-                <token postag_regexp="yes" postag="PRP|NN(:UN?)?"><exception regexp="yes">\p{Lu}+</exception></token>
+                <token postag_regexp="yes" postag="PRP|NN(:UN?)?|WP|WDT"><exception regexp="yes">\p{Lu}+</exception></token>
                 <token regexp="yes">['’]</token>
                 <token>S</token>
               </marker>
@@ -245,6 +245,7 @@ USA
             <example correction='it&apos;s'>… because <marker>it'S</marker> an example.</example>
             <example correction='document&apos;s'>If the <marker>document'S</marker> too long, people won't read it.</example>
             <example correction='Example&apos;s'>This <marker>Example'S</marker> not correct.</example>
+            <example correction='that&apos;s'>... and <marker>that'S</marker> not correct.</example>
             <example>… because <marker>it's</marker> an example.</example>
             <example>… but <marker>IT'S</marker> AN EXAMPLE!</example>
           </rule>
@@ -7106,6 +7107,11 @@ USA
             <example>although it's <marker>event horizon</marker> is more than...</example><!-- TODO. Not correct English, but out of scope. -->
         </rule>
         <rule id="WORD_CONTAINS_UNDERSCORE" name="A word contains an underscore"><!-- Refer to https://github.com/languagetool-org/languagetool/issues/1204#issuecomment-443842446 -->
+            <antipattern><!-- file name: https://github.com/languagetool-org/languagetool/issues/1535 -->
+                <token regexp="yes" spacebefore="no">[a-z-]+</token>
+                <token spacebefore="no">.</token>
+                <token spacebefore="no" regexp="yes">asp|aspx|avi|bak|bat|bmp|cab|cfg|cgi|com|cs[sv]|dat|dbf?|dll|eps|exe|flv|gif|htm|html|ibooks|ico|ini|jar|jpg|js|jsp|lnk|md|mdb|mid|mov|mp3|mp4|mpa|mpg|pdf|php|pl|png|pps|ppt|pptx|ps|psd|py|rss|sh|sql|svg|sys|tar|tif|tiff|tmp|txt|wav|wma|xhtml|xls|xlsx|xsl|xml|zip|zipx</token><!-- For more extensions, refer to https://fileinfo.com -->
+            </antipattern>
             <pattern>
                 <token regexp="yes">[a-z-]+</token>
                 <token spacebefore="no" min="1" max="-1">_<exception postag="NNP"/></token>
@@ -7121,6 +7127,7 @@ USA
             <example type="correct">Language Tests<marker>______________________</marker> 37</example>
             <example type="correct">Some More Language Tests <marker>_</marker> Appendix B</example>
             <example type="correct">Do only <marker>_this_</marker> test.</example>
+            <example type="correct">Check out the attached file <marker>country_codes.csv</marker> before…</example>
             <example type="correct">But <marker>these_</marker> unlike other tests...</example><!-- TODO -->
             <example type="correct">Refer to <marker>_TESTS</marker>' on page 33.</example><!-- TODO -->
         </rule>
@@ -21233,7 +21240,7 @@ USA
                             <exception negate_pos="yes" postag="RB">further</exception>
                         </token>
                     </marker>
-                    <token negate="yes" regexp="yes">[,!\.\?\(]</token>
+                    <token negate="yes" regexp="yes">[,!\.\?]</token>
                 </pattern>
                 <message>Did you forget a comma after a conjunctive/linking adverb?</message>
                 <suggestion>\2,</suggestion>
@@ -21257,7 +21264,7 @@ USA
                 <example><marker>However we go</marker>, we must get there by seven.</example>
                 <example><marker>However you do it</marker>, the result will be the same.</example>
                 <example><marker>Indeed</marker>. He is young, but smart for his age.</example>
-                <example><marker>Currently (2000 census)</marker> 57.71% of Alaska's area has this...</example>
+                <example correction="Currently,"><marker>Currently</marker> (2000 census) 57.71% of Alaska's area has this...</example>
 <!-- TODO -->   <example><marker>Anyway</marker> you look after the disambiguation, and I'll do the grammar rules.</example>
                 <example><marker>Anyway you look at it</marker>, the rule is good.</example>
                 <example type="triggers_error"><marker>Indeed he is rich</marker>, but he is not reliable.</example><!-- Comma is also correct. -->
@@ -22417,12 +22424,13 @@ USA
             </rule>
             <rule>
                 <pattern>
-                    <token postag="PRP"></token>
+                    <token postag="PRP"><exception>one</exception></token>
                     <marker><token>too</token></marker>
                     <token postag="VB"></token>
                 </pattern>
                 <message>Did you mean <suggestion>to</suggestion>?</message>
                 <example correction="to">I would like her <marker>too</marker> do it now.</example>
+                <example>Don't mourn over the loss of your loved one too long.</example>
             </rule>
         </rulegroup>
         <rulegroup id="TO_TOO" name="to/two (too) late/soon/much">
@@ -30874,7 +30882,7 @@ USA
       <pattern case_sensitive='yes'>
           <token>H4</token>
       </pattern>
-      <message>Prefira o símbolo tipográfico.</message>
+      <message>Replace by the typographical symbol.</message>
         <suggestion>H₄</suggestion>
       <example correction='H₄'><marker>H4</marker>: There are significant effects in the absence of compound C.</example>
     </rule>
@@ -30956,7 +30964,7 @@ USA
     </rule>
     <rule>
       <regexp>([\d\.,⁻¹²³⁴⁵⁶⁷⁸⁹⁰]+?)[x\*]([\d\.,⁻¹²³⁴⁵⁶⁷⁸⁹⁰]+)</regexp>
-      <message>Prefira o símbolo de multiplicação.</message>
+      <message>Replace by the typographical symbol.</message>
         <suggestion>\1×\2</suggestion>
         <suggestion>\1·\2</suggestion>
       <example correction='2,998×10⁸|2,998·10⁸'>c=<marker>2,998x10⁸</marker> m/s</example>

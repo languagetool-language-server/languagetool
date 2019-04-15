@@ -939,7 +939,7 @@ Copyright © 2013 Markus Brenneis, Daniel Naber, Jan Schreiber
     <rulegroup id="RETTUNGSWAGEN" name="Rettungswagen keine Verbform">
         <rule>
             <pattern case_sensitive="yes">
-                <token regexp="yes">(Rettungs|Kranken)wagen|[A-Z][a-zäöüß]{4,}schmerzen</token>
+                <token regexp="yes">(Rettungs|Kranken)wagen|[A-Z][a-zäöüß]{4,}(schmerzen|strecken)</token>
             </pattern>
             <disambig action="remove" postag="SUB:.+:SIN:NEU:INF"/>
         </rule>
@@ -1319,7 +1319,7 @@ Copyright © 2013 Markus Brenneis, Daniel Naber, Jan Schreiber
     <rule name="Social Media" id="SOCIAL_MEDIA">
         <pattern case_sensitive="yes">
             <token>Social</token>
-            <token regexp="yes">Bot|Media</token>
+            <token regexp="yes">Bot|Media|Engineering</token>
         </pattern>
         <disambig action="ignore_spelling"/>
     </rule>
@@ -1434,13 +1434,6 @@ Copyright © 2013 Markus Brenneis, Daniel Naber, Jan Schreiber
         <pattern>
             <token>Open</token>
             <token>Source</token>
-        </pattern>
-        <disambig action="ignore_spelling"/>
-    </rule>
-
-    <rule name="Open-Source-Software" id="OPEN_SOURCE_SOFTWARE">
-        <pattern>
-            <token>Open-Source-Software</token>
         </pattern>
         <disambig action="ignore_spelling"/>
     </rule>

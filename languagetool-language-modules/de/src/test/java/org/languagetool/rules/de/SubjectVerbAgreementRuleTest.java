@@ -300,7 +300,8 @@ public class SubjectVerbAgreementRuleTest {
         "Das Bündnis zwischen der Sowjetunion und Kuba war für beide vorteilhaft.",
         "Knapp acht Monate ist die Niederlage nun her.",
         "Vier Monate ist die Niederlage nun her.",
-        "Sie liebt Kunst und Kunst war auch kein Problem, denn er würde das Geld zurückkriegen."
+        "Sie liebt Kunst und Kunst war auch kein Problem, denn er würde das Geld zurückkriegen.",
+        "Bei komplexen und andauernden Störungen ist der Stress-Stoffwechsel des Hundes entgleist."
     );
     for (String sentence : sentences) {
       assertGood(sentence);
@@ -411,7 +412,8 @@ public class SubjectVerbAgreementRuleTest {
         "Der See und das Marschland sind ein Naturschutzgebiet",
         "Details, Dialoge, wie auch die Typologie der Charaktere sind frei erfunden.",
         "Die internen Ermittler und auch die Staatsanwaltschaft sind nun am Zug.",
-        "Sie sind so erfolgreich, weil sie eine Einheit sind."
+        "Sie sind so erfolgreich, weil sie eine Einheit sind.",
+        "Auch Polizisten zu Fuß sind unterwegs."
     );
     for (String sentence : sentences) {
       assertGood(sentence);
