@@ -43,8 +43,20 @@ public class RuleMatchesAsJsonSerializer {
   private static final String STATUS = "";
   private static final String PREMIUM_HINT = "You might be missing errors only the Premium version can find. Contact us at support<at>languagetoolplus.com.";
   private static final String START_MARKER = "__languagetool_start_marker";
+  private static final JsonFactory factory = new JsonFactory();
+  
+  private final int compactMode;
 
-  private final JsonFactory factory = new JsonFactory();
+  public RuleMatchesAsJsonSerializer() {
+    this.compactMode = 0;
+  }
+
+  /**
+   * @since 4.7
+   */
+  public RuleMatchesAsJsonSerializer(int compactMode) {
+    this.compactMode = compactMode;
+  }
 
   public String ruleMatchesToJson(List<RuleMatch> matches, String text, int contextSize, DetectedLanguage detectedLang) {
     return ruleMatchesToJson(matches, new ArrayList<>(), text, contextSize, detectedLang, null);
@@ -92,6 +104,9 @@ public class RuleMatchesAsJsonSerializer {
   }
 
   private void writeSoftwareSection(JsonGenerator g) throws IOException {
+    if (compactMode == 1) {
+      return;
+    }
     g.writeObjectFieldStart("software");
     g.writeStringField("name", "LanguageTool");
     g.writeStringField("version", JLanguageTool.VERSION);
@@ -106,6 +121,9 @@ public class RuleMatchesAsJsonSerializer {
   }
 
   private void writeWarningsSection(JsonGenerator g, String incompleteResultsReason) throws IOException {
+    if (compactMode == 1 && incompleteResultsReason == null) {
+      return;
+    }
     g.writeObjectFieldStart("warnings");
     if (incompleteResultsReason != null) {
       g.writeBooleanField("incompleteResults", true);
@@ -190,13 +208,15 @@ public class RuleMatchesAsJsonSerializer {
     String context = contextTools.getContext(match.getFromPos(), match.getToPos(), text.getTextWithMarkup());
     int contextOffset = context.indexOf(START_MARKER);
     context = context.replaceFirst(START_MARKER, "");
-    g.writeObjectFieldStart("context");
-    g.writeStringField("text", context);
-    g.writeNumberField("offset", contextOffset);
-    g.writeNumberField("length", match.getToPos()-match.getFromPos());
-    g.writeEndObject();
-    if (match.getSentence() != null) {
-      g.writeStringField("sentence", match.getSentence().getText().trim());
+    if (compactMode != 1) {
+      g.writeObjectFieldStart("context");
+      g.writeStringField("text", context);
+      g.writeNumberField("offset", contextOffset);
+      g.writeNumberField("length", match.getToPos()-match.getFromPos());
+      g.writeEndObject();
+      if (match.getSentence() != null) {
+        g.writeStringField("sentence", match.getSentence().getText().trim());
+      }
     }
   }
 

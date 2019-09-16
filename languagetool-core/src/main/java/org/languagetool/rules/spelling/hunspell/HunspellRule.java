@@ -51,22 +51,23 @@ import java.util.stream.Collectors;
  */
 public class HunspellRule extends SpellingCheckRule {
 
-  private static final ConcurrentLinkedQueue<String> activeChecks = new ConcurrentLinkedQueue<>();
+  public static final String RULE_ID = "HUNSPELL_RULE";
+
+  protected static final String FILE_EXTENSION = ".dic";
+
   protected final SuggestionsOrderer suggestionsOrderer;
+  protected boolean needsInit = true;
+  protected Hunspell.Dictionary hunspellDict = null;
+
+  private static final ConcurrentLinkedQueue<String> activeChecks = new ConcurrentLinkedQueue<>();
+  private static final String NON_ALPHABETIC = "[^\\p{L}]";
+
   private final boolean monitorRules;
   private final boolean runningExperiment;
 
   public static Queue<String> getActiveChecks() {
     return activeChecks;
   }
-
-  public static final String RULE_ID = "HUNSPELL_RULE";
-
-  protected boolean needsInit = true;
-  protected Hunspell.Dictionary hunspellDict = null;
-
-  private static final String NON_ALPHABETIC = "[^\\p{L}]";
-  protected static final String FILE_EXTENSION = ".dic";
 
   private static final String[] WHITESPACE_ARRAY = new String[20];
   static {
@@ -90,12 +91,10 @@ public class HunspellRule extends SpellingCheckRule {
    }
    public HunspellRule(ResourceBundle messages, Language language, UserConfig userConfig, List<Language> altLanguages,
                        LanguageModel languageModel) {
-    super(messages, language, userConfig, altLanguages, languageModel);
-    super.setCategory(Categories.TYPOS.getCategory(messages));
-    this.userConfig = userConfig;
-    this.monitorRules = System.getProperty("monitorActiveRules") != null;
-
-
+     super(messages, language, userConfig, altLanguages, languageModel);
+     super.setCategory(Categories.TYPOS.getCategory(messages));
+     this.userConfig = userConfig;
+     this.monitorRules = System.getProperty("monitorActiveRules") != null;
      if (SuggestionsChanges.isRunningExperiment("NewSuggestionsOrderer")) {
        suggestionsOrderer = new SuggestionsOrdererFeatureExtractor(language, this.languageModel);
        runningExperiment = true;
@@ -148,9 +147,11 @@ public class HunspellRule extends SpellingCheckRule {
       } else {
         len = sentence.getTokens()[0].getStartPos();
       }
+      int prevStartPos = -1;
       for (int i = 0; i < tokens.length; i++) {
         String word = tokens[i];
         if ((ignoreWord(Arrays.asList(tokens), i) || ignoreWord(word)) && !isProhibited(removeTrailingDot(word))) {
+          prevStartPos = len;
           len += word.length() + 1;
           continue;
         }
@@ -159,6 +160,25 @@ public class HunspellRule extends SpellingCheckRule {
           if (word.endsWith(".")) {
             cleanWord = word.substring(0, word.length()-1);
           }
+          
+          if (i > 0 && prevStartPos != -1) {
+            String prevWord = tokens[i-1];
+            if (prevWord.length() > 0) {
+              // "thanky ou" -> "thank you"
+              String sugg1a = prevWord.substring(0, prevWord.length()-1);
+              String sugg1b = cutOffDot(prevWord.substring(prevWord.length()-1) + word);
+              if (!isMisspelled(sugg1a) && !isMisspelled(sugg1b)) {
+                ruleMatches.add(createWrongSplitMatch(sentence, ruleMatches, len, cleanWord, sugg1a, sugg1b, prevStartPos));
+              }
+              // "than kyou" -> "thank you"
+              String sugg2a = prevWord + word.substring(0, 1);
+              String sugg2b = cutOffDot(word.substring(1));
+              if (!isMisspelled(sugg2a) && !isMisspelled(sugg2b)) {
+                ruleMatches.add(createWrongSplitMatch(sentence, ruleMatches, len, cleanWord, sugg2a, sugg2b, prevStartPos));
+              }
+            }
+          }
+          
           RuleMatch ruleMatch = new RuleMatch(this, sentence,
             len, len + cleanWord.length(),
             messages.getString("spelling"),
@@ -178,7 +198,7 @@ public class HunspellRule extends SpellingCheckRule {
             List<String> additionalTopSuggestions = getAdditionalTopSuggestions(suggestions, cleanWord);
             if (additionalTopSuggestions.isEmpty() && word.endsWith(".")) {
               additionalTopSuggestions = getAdditionalTopSuggestions(suggestions, word).
-                stream().map(k -> k + ".").collect(Collectors.toList());
+                stream().map(k -> k.endsWith(".") ? k : k + ".").collect(Collectors.toList());
             }
             Collections.reverse(additionalTopSuggestions);
             for (String additionalTopSuggestion : additionalTopSuggestions) {
@@ -195,6 +215,9 @@ public class HunspellRule extends SpellingCheckRule {
             Language acceptingLanguage = acceptedInAlternativeLanguage(cleanWord);
             boolean isSpecialCase = cleanWord.matches(".+-[A-ZÖÄÜ].*");
             if (acceptingLanguage != null && !isSpecialCase) {
+              if (isAcceptedWordFromLanguage(acceptingLanguage, cleanWord)) {
+                break;
+              }
               // e.g. "Der Typ ist in UK echt famous" -> could be German 'famos'
               ruleMatch = new RuleMatch(this, sentence,
                 len, len + cleanWord.length(),
@@ -230,6 +253,7 @@ public class HunspellRule extends SpellingCheckRule {
           }
           ruleMatches.add(ruleMatch);
         }
+        prevStartPos = len;
         len += word.length() + 1;
       }
     } finally {
@@ -238,6 +262,10 @@ public class HunspellRule extends SpellingCheckRule {
       }
     }
     return toRuleMatchArray(ruleMatches);
+  }
+
+  private String cutOffDot(String s) {
+    return s.endsWith(".") ? s.substring(0, s.length()-1) : s;
   }
 
   /**
@@ -260,10 +288,7 @@ public class HunspellRule extends SpellingCheckRule {
   }
 
   private String removeTrailingDot(String word) {
-    if (word.endsWith(".")) {
-      return word.substring(0, word.length()-1);
-    }
-    return word;
+    return StringUtils.removeEnd(word, ".");
   }
 
   public List<String> getSuggestions(String word) throws IOException {
@@ -406,4 +431,13 @@ public class HunspellRule extends SpellingCheckRule {
     }
   }
 
+  /**
+   * Used in combination with <code>acceptedInAlternativeLanguage</code> to surpress spelling
+   * errors for words from a foreign language
+   * @since 4.6
+   * @return true if the {@code word} from {@code language} can be considered as correctly spelled
+   */
+  protected boolean isAcceptedWordFromLanguage(Language language, String word) {
+    return false;
+  }
 }

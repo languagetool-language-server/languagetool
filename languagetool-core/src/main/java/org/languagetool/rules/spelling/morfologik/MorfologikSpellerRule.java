@@ -19,8 +19,22 @@
 
 package org.languagetool.rules.spelling.morfologik;
 
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.jetbrains.annotations.Nullable;
-import org.languagetool.*;
+import org.languagetool.AnalyzedSentence;
+import org.languagetool.AnalyzedTokenReadings;
+import org.languagetool.JLanguageTool;
+import org.languagetool.Language;
+import org.languagetool.UserConfig;
 import org.languagetool.languagemodel.LanguageModel;
 import org.languagetool.rules.Categories;
 import org.languagetool.rules.ITSIssueType;
@@ -31,13 +45,6 @@ import org.languagetool.rules.spelling.suggestions.SuggestionsOrderer;
 import org.languagetool.rules.spelling.suggestions.SuggestionsOrdererFeatureExtractor;
 import org.languagetool.rules.spelling.suggestions.XGBoostSuggestionsOrderer;
 import org.languagetool.tools.Tools;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public abstract class MorfologikSpellerRule extends SpellingCheckRule {
 
@@ -116,9 +123,7 @@ public abstract class MorfologikSpellerRule extends SpellingCheckRule {
     //lazy init
     if (speller1 == null) {
       String binaryDict = null;
-      if (JLanguageTool.getDataBroker().resourceExists(getFileName())) {
-        binaryDict = getFileName();
-      } else if (Files.exists(Paths.get(getFileName()))) {
+      if (JLanguageTool.getDataBroker().resourceExists(getFileName()) || Paths.get(getFileName()).toFile().exists()) {
         binaryDict = getFileName();
       }
       if (binaryDict != null) {
@@ -135,26 +140,44 @@ public abstract class MorfologikSpellerRule extends SpellingCheckRule {
       if (canBeIgnored(tokens, idx, token)) {
         continue;
       }
+      int startPos = token.getStartPos();
       // if we use token.getToken() we'll get ignored characters inside and speller will choke
       String word = token.getAnalyzedToken(0).getToken();
-      int startPos = token.getStartPos();
+      int newRuleIdx = ruleMatches.size();
       if (tokenizingPattern() == null) {
-        ruleMatches.addAll(getRuleMatches(word, startPos, sentence, ruleMatches));
+        ruleMatches.addAll(getRuleMatches(word, startPos, sentence, ruleMatches, idx, tokens));
       } else {
         int index = 0;
         Matcher m = tokenizingPattern().matcher(word);
         while (m.find()) {
           String match = word.subSequence(index, m.start()).toString();
-          ruleMatches.addAll(getRuleMatches(match, startPos + index, sentence, ruleMatches));
+          ruleMatches.addAll(getRuleMatches(match, startPos + index, sentence, ruleMatches, idx, tokens));
           index = m.end();
         }
         if (index == 0) { // tokenizing char not found
-          ruleMatches.addAll(getRuleMatches(word, startPos, sentence, ruleMatches));
+          ruleMatches.addAll(getRuleMatches(word, startPos, sentence, ruleMatches, idx, tokens));
         } else {
-          ruleMatches.addAll(getRuleMatches(word.subSequence(index, word.length()).toString(), startPos + index, sentence, ruleMatches));
+          ruleMatches.addAll(getRuleMatches(word.subSequence(index, word.length()).toString(), startPos + index, sentence, ruleMatches, idx, tokens));
         }
       }
+
+      if (ruleMatches.size() > newRuleIdx) {
+        // matches added for current token - need to adjust for hidden characters
+        int hiddenCharOffset = token.getToken().length() - word.length();
+        if (hiddenCharOffset > 0) {
+          for (int i = newRuleIdx; i < ruleMatches.size(); i++) {
+            RuleMatch ruleMatch = ruleMatches.get(i);
+
+            if( token.getEndPos() < ruleMatch.getToPos() ) // done by multi-token speller, no need to adjust
+              continue;
+
+            ruleMatch.setOffsetPosition(ruleMatch.getFromPos(), ruleMatch.getToPos()+hiddenCharOffset);
+          }
+        }
+      }
+
     }
+
     return toRuleMatchArray(ruleMatches);
   }
 
@@ -179,7 +202,7 @@ public abstract class MorfologikSpellerRule extends SpellingCheckRule {
            token.isIgnoredBySpeller() ||
            isUrl(token.getToken()) ||
            isEMail(token.getToken()) ||
-           (ignoreTaggedWords && token.isTagged()) ||
+           (ignoreTaggedWords && token.isTagged() && !isProhibited(token.getToken())) ||
            ignoreToken(tokens, idx);
   }
 
@@ -205,11 +228,102 @@ public abstract class MorfologikSpellerRule extends SpellingCheckRule {
 
     return true;
   }
+  
+  protected int getFrequency(MorfologikMultiSpeller speller, String word) {
+    return speller.getFrequency(word);
+  }
 
-  protected List<RuleMatch> getRuleMatches(String word, int startPos, AnalyzedSentence sentence, List<RuleMatch> ruleMatchesSoFar) throws IOException {
+  protected List<RuleMatch> getRuleMatches(String word, int startPos, AnalyzedSentence sentence, List<RuleMatch> ruleMatchesSoFar, int idx, AnalyzedTokenReadings[] tokens) throws IOException {
     List<RuleMatch> ruleMatches = new ArrayList<>();
+    RuleMatch ruleMatch = null;
     if (isMisspelled(speller1, word) || isProhibited(word)) {
-      RuleMatch ruleMatch;
+      if (ruleMatchesSoFar.size() > 0 &&ruleMatchesSoFar.get(ruleMatchesSoFar.size() - 1).getToPos() > startPos) {
+        return ruleMatches; // the current word is already dealt with in the previous match, so do nothing
+      }
+      if (idx > 0) {
+        String prevWord = tokens[idx-1].getToken();
+        if (prevWord.length() > 0 && !prevWord.matches(".*\\d.*")) {
+          int prevStartPos = tokens[idx - 1].getStartPos();
+          // "thanky ou" -> "thank you"
+          String sugg1a = prevWord.substring(0, prevWord.length() - 1);
+          String sugg1b = prevWord.substring(prevWord.length() - 1) + word;
+          if (sugg1a.length() > 1 && sugg1b.length() > 2 && !isMisspelled(speller1, sugg1a) && !isMisspelled(speller1, sugg1b) &&
+          		getFrequency(speller1, sugg1a) + getFrequency(speller1, sugg1b) > getFrequency(speller1, prevWord)) {
+            ruleMatch = createWrongSplitMatch(sentence, ruleMatchesSoFar, startPos, word, sugg1a, sugg1b, prevStartPos);
+          }
+          // "than kyou" -> "thank you" ; but not "She awaked" -> "Shea waked"
+          String sugg2a = prevWord + word.substring(0, 1);
+          String sugg2b = word.substring(1);
+          if (sugg2a.length() > 1 && sugg2b.length() > 2 && !isMisspelled(speller1, sugg2a) && !isMisspelled(speller1, sugg2b)) {
+            if (ruleMatch == null) {
+              if (getFrequency(speller1, sugg2a) + getFrequency(speller1, sugg2b) > getFrequency(speller1, prevWord)) {
+                ruleMatch = createWrongSplitMatch(sentence, ruleMatchesSoFar, startPos, word, sugg2a, sugg2b, prevStartPos);
+              }
+            } else {
+              ruleMatch.addSuggestedReplacement((sugg2a + " " + sugg2b).trim());
+            }
+          }
+          // "g oing-> "going"
+          String sugg = prevWord + word;
+          if (word.equals(word.toLowerCase()) && !isMisspelled(speller1, sugg)) {
+            if (ruleMatch == null) {
+              if (getFrequency(speller1, sugg) >= getFrequency(speller1, prevWord)) {
+                ruleMatch = new RuleMatch(this, sentence, prevStartPos, startPos + word.length(),
+                    messages.getString("spelling"), messages.getString("desc_spelling_short"));
+                ruleMatch.setSuggestedReplacement(sugg);  
+              }
+            } else {
+              ruleMatch.addSuggestedReplacement(sugg);
+            }
+          }
+        }
+      }
+      if (ruleMatch != null) {
+        ruleMatches.add(ruleMatch);
+        return ruleMatches;
+      }
+      // the same with the next word
+      if (idx < tokens.length - 1) {
+        String nextWord = tokens[idx + 1].getToken();
+        if (nextWord.length() > 0 && !nextWord.matches(".*\\d.*")) {
+          int nextStartPos = tokens[idx + 1].getStartPos();
+          String sugg1a = word.substring(0, word.length() - 1);
+          String sugg1b = word.substring(word.length() - 1) + nextWord;
+          if (sugg1a.length() > 1 && sugg1b.length() > 2 && !isMisspelled(speller1, sugg1a) && !isMisspelled(speller1, sugg1b) &&
+              getFrequency(speller1, sugg1a) + getFrequency(speller1, sugg1b) > getFrequency(speller1, nextWord)) {
+            ruleMatch = createWrongSplitMatch(sentence, ruleMatchesSoFar, nextStartPos, nextWord, sugg1a, sugg1b, startPos);
+          }
+          String sugg2a = word + nextWord.substring(0, 1);
+          String sugg2b = nextWord.substring(1);
+          if (sugg2a.length() > 1 && sugg2b.length() > 2 && !isMisspelled(speller1, sugg2a) && !isMisspelled(speller1, sugg2b)) {
+            if (ruleMatch == null) {
+              if (getFrequency(speller1, sugg2a) + getFrequency(speller1, sugg2b) > getFrequency(speller1, nextWord)) {
+                ruleMatch = createWrongSplitMatch(sentence, ruleMatchesSoFar, nextStartPos, nextWord, sugg2a, sugg2b, startPos);
+              }
+            } else {
+              ruleMatch.addSuggestedReplacement((sugg2a + " " + sugg2b).trim());
+            }
+          }
+          String sugg = word + nextWord;
+          if (nextWord.equals(nextWord.toLowerCase()) && !isMisspelled(speller1, sugg)) {
+            if (ruleMatch == null) {
+              if (getFrequency(speller1, sugg) >= getFrequency(speller1, nextWord)) {
+                ruleMatch = new RuleMatch(this, sentence, startPos, nextStartPos + nextWord.length(),
+                    messages.getString("spelling"), messages.getString("desc_spelling_short"));
+                ruleMatch.setSuggestedReplacement(sugg);
+              }
+            } else {
+              ruleMatch.addSuggestedReplacement(sugg);
+            }
+          }
+        }
+      }
+      
+      if (ruleMatch != null) {
+        ruleMatches.add(ruleMatch);
+        return ruleMatches;
+      }
+
       Language acceptingLanguage = acceptedInAlternativeLanguage(word);
       if (acceptingLanguage != null) {
         // e.g. "Der Typ ist in UK echt famous" -> could be German 'famos'

@@ -27,10 +27,7 @@ import org.languagetool.tokenizers.CompoundWordTokenizer;
 import org.languagetool.tools.StringTools;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.IntStream;
 
 /**
@@ -81,6 +78,7 @@ public abstract class CompoundAwareHunspellRule extends HunspellRule {
     //System.out.println("Computing suggestions for " + word);
     List<String> candidates = getCandidates(word);
     List<String> simpleSuggestions = getCorrectWords(candidates);
+    simpleSuggestions = getFilteredSuggestions(simpleSuggestions);
     //System.out.println("simpleSuggestions: " + simpleSuggestions);
 
     List<String> noSplitSuggestions = morfoSpeller.getSuggestions(word);  // after getCorrectWords() so spelling.txt is considered
@@ -191,6 +189,21 @@ public abstract class CompoundAwareHunspellRule extends HunspellRule {
     return candidates;
   }
 
+  @Override
+  protected List<String> sortSuggestionByQuality(String misspelling, List<String> suggestions) {
+    List<String> result = new ArrayList<>();
+    for (String suggestion : suggestions) {
+      if (StringUtils.remove(suggestion, ' ').equals(misspelling)
+          && Arrays.stream(StringUtils.split(suggestion, ' ')).noneMatch(k -> k.length() == 1)) {
+        // prefer run-on words unless a single letter is split off:
+        result.add(0, suggestion);
+      } else {
+        result.add(suggestion);
+      }
+    }
+    return result;
+  }
+
   // avoid over-accepting words, as the Morfologik approach above might construct
   // compound words with parts that are correct but the compound is not correct (e.g. "Arbeit + Amt = Arbeitamt"):
   private List<String> getCorrectWords(List<String> wordsOrPhrases) {
@@ -212,4 +225,11 @@ public abstract class CompoundAwareHunspellRule extends HunspellRule {
     return result;
   }
 
+  /**
+   * @since 4.7
+   */
+  protected List<String> getFilteredSuggestions(List<String> wordsOrPhrases) {
+    return wordsOrPhrases;
+  }
+  
 }

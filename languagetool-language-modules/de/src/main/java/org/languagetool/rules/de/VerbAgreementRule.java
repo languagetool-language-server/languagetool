@@ -62,6 +62,11 @@ public class VerbAgreementRule extends TextLevelRule {
 
   private static final List<List<PatternToken>> ANTI_PATTERNS = Arrays.asList(
     Arrays.asList(
+      // "Kannst mich gerne anrufen" (ugs.)
+      new PatternTokenBuilder().pos("VER:MOD:2:SIN:PRÄ").build(),
+      new PatternTokenBuilder().posRegex("PRO:PER:.*").build()
+    ),
+    Arrays.asList(
       new PatternTokenBuilder().tokenRegex("die|welche").build(),
       new PatternTokenBuilder().tokenRegex(".*").build(),
       new PatternTokenBuilder().tokenRegex("mehr|weniger").build(),
@@ -72,6 +77,10 @@ public class VerbAgreementRule extends TextLevelRule {
       new PatternTokenBuilder().token("wenn").build(),
       new PatternTokenBuilder().token("du").build(),
       new PatternTokenBuilder().token("anstelle").build()
+    ),
+    Arrays.asList( // "Ok bin ab morgen bei euch." (umgangssprachlich, benötigt eigene Regel)
+      new PatternTokenBuilder().tokenRegex("ok|okay|ja|nein|vielleiecht|oh").build(),
+      new PatternTokenBuilder().tokenRegex("bin|sind").build()
     ),
     Arrays.asList(
       new PatternTokenBuilder().token("das").build(),
@@ -89,6 +98,14 @@ public class VerbAgreementRule extends TextLevelRule {
     Arrays.asList(
       new PatternTokenBuilder().csToken("Solltest").build(),
       new PatternTokenBuilder().token("du").build()
+    ),
+    Arrays.asList(
+      new PatternTokenBuilder().csToken("Müsstest").build(), // Müsstest dir das mal genauer anschauen.
+      new PatternTokenBuilder().token("dir").build()
+    ),
+    Arrays.asList(
+      new PatternTokenBuilder().csToken("Könntest").build(), // Könntest dir mal eine Scheibe davon abschneiden!
+      new PatternTokenBuilder().token("dir").build()
     ),
     Arrays.asList(
       new PatternTokenBuilder().csToken("Sollte").build(),
@@ -224,7 +241,7 @@ public class VerbAgreementRule extends TextLevelRule {
   
   @Override
   public String getDescription() {
-    return "Kongruenz von Subjekt und Prädikat (nur 1. u. 2. Pers. od. m. Personalpronomen), z.B. 'Er bist (ist)'";
+    return "Kongruenz von Subjekt und Prädikat (nur 1. u. 2. Person oder m. Personalpronomen), z.B. 'Er bist (ist)'";
   }
   
   @Override
@@ -593,5 +610,10 @@ public class VerbAgreementRule extends TextLevelRule {
       this.verbDoesMatchPersonAndNumber = verbDoesMatchPersonAndNumber;
       this.finiteVerb = finiteVerb;
     }
+  }
+
+  @Override
+  public int minToCheckParagraph() {
+    return 0;
   }
 }

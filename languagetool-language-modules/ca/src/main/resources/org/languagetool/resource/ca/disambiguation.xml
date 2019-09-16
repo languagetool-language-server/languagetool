@@ -10,7 +10,7 @@ Copyright (C) 2012 Jaume Ortolà i Font
     <!ENTITY exceptions_TE "aigua|arròs|cacau|cacauet|caf[èé]|cautxú|cervesa|cítric|coca-cola|cotó|espècies|farigola|fruita|infusió|llet|malta?|melmelada|mill|oli|ordi|pastes|pastís|pastisset|poliol|quina|raïm|sucre|tabac|torrada|xocolat[ae]">
     <!ENTITY femeni_inusual "amor|ardor|candor|clamor|color|dolor|error|estridor|estupor|fervor|fragor|fulgor|furor|honor|horror|humor|rigor|rubor|rumor|sabor|sopor|temor|terror|valor|vigor">
     <!ENTITY masculi_inusual "policia|justícia|part[123]">
-    <!ENTITY nom_o_verb "mofa|força|crani|imperi|consum|forma|revenja|col·loqui|poeta|dejuni|escultura|escola|vaticini|queixa|tinta|plaga|cometa2|cursa|país|domini|equilibri|termini|cap|dosi|tema|barri|sonda|porta|resta|ment|capa|demanda|esperança|manca|marca|marxa|mida|mostra|obra|ou|orquestra|profeta|programa|terra|meta|veu|copa|extermini|dona|esquerra|roba">
+    <!ENTITY nom_o_verb "mofa|força|crani|imperi|consum|forma|revenja|col·loqui|poeta|dejuni|escultura|escola|vaticini|queixa|tinta|plaga|cometa2|cursa|país|domini|equilibri|termini|cap|dosi|tema|barri|sonda|porta|resta|ment|capa|demanda|esperança|manca|marca|marxa|mida|mostra|obra|ou|orquestra|profeta|programa|terra|meta|veu|copa|extermini|dona|esquerra|roba|bot">
     <!ENTITY nom_seguitde_nompropi "copa|casa|abat|informe|senyor|estàndard|tipus|adreça|imperi|profeta|balneari|projecte|corrent|estany|cometa2|mont|pare|premi|cas|cursa|concurs|quadre|taula|novel·la|obra|riu|estil|programa|orquestra|escola|registre|finca|sonda|rosa|tema">
     <!ENTITY unitats_temps "molt|poc|temps|temporada|jornada|estona|mil·lisegon|segon|minut|hora|dia|jorn|setmana|mes|any|lustre|dècada|decenni|segle|mil·lenni">
     <!ENTITY verbs_TE_INFUSIO "produir|prendre|servir|preparar|voler|beure|consumir|importar|vendre|exportar|llançar">
@@ -54,9 +54,9 @@ Copyright (C) 2012 Jaume Ortolà i Font
         </rule>
         <rule>
             <pattern>
-                <token inflected="yes">fluïdal</token>
+                <token>legibilitat</token>
             </pattern>
-            <disambig action="remove"><wd lemma="fluïdal"/></disambig>
+            <disambig action="remove"><wd lemma="legibilitat"/></disambig>
         </rule>
     </rulegroup>
     <rulegroup id="FIX_SENTENCE_TOKENIZATION" name="fix problems with sentence tokenization">
@@ -2964,6 +2964,15 @@ Copyright (C) 2012 Jaume Ortolà i Font
         </rule>
         <rule>
             <pattern>
+                <token inflected="yes" regexp="yes">vaixell|nau</token>
+                <marker>
+                    <token regexp="yes">escola|factoria|almirall|insígnia</token>
+                </marker>
+            </pattern>
+            <disambig action="replace" postag="AQ0CN0" />
+        </rule>
+        <rule>
+            <pattern>
                 <token inflected="yes" regexp="yes">esdeveniment|escola|planta|centre|projecte|proposta|pis|apartament|casa</token>
                 <marker>
                     <token>pilot</token>
@@ -3305,9 +3314,7 @@ Copyright (C) 2012 Jaume Ortolà i Font
             </pattern>
             <disambig action="filter" postag="NC.*"/>
         </rule>
-        <rule> <!--  hauria d'anar a Multiwords:
-            acord marc, infant cantor/prodigi, raïm moscatell, ball espectacle, ciutat jardí, pedra capitell,
-            cardenal arquebisbe, cardenal prevere, granja escola  -->
+        <rule>
             <pattern>
                 <token>sal</token>
                 <marker>
@@ -3349,6 +3356,16 @@ Copyright (C) 2012 Jaume Ortolà i Font
                 <token regexp="yes">de|d'</token>
             </pattern>
             <disambig action="replace" postag="AQ0CN0" />
+        </rule>
+        <rule>
+            <pattern>
+                <!--<token postag="D..MS." postag_regexp="yes"/>-->
+                <marker>
+                    <token regexp="yes">objectes?</token>
+                </marker>
+                <token postag="N.*" postag_regexp="yes"/>
+            </pattern>
+            <disambig action="remove" postag="V.*"/>
         </rule>
         <rule>
             <pattern>
@@ -4410,6 +4427,12 @@ Copyright (C) 2012 Jaume Ortolà i Font
             <token postag="V.N.*" postag_regexp="yes"/>
         </pattern>
         <disambig action="filterall"/>
+    </rule>
+    <rule id="mesos" name="mesos no participi del verb metre">
+        <pattern>
+            <token>mesos</token>
+        </pattern>
+        <disambig action="filter" postag="N.*"></disambig>
     </rule>
     <!-- haver + participi. mogut per "han després/desprès"-->
     <rulegroup id="haver_participi" name="haver + participi">
@@ -6030,19 +6053,36 @@ Copyright (C) 2012 Jaume Ortolà i Font
         <disambig action="filter" postag="[^V].*"></disambig>
     </rule>
     <!-- hi haver + nom/verb   Hi ha alzines-->
-    <rule id="haver_nom" name="haver + nom">
-        <pattern>
-            <token>hi</token>
-            <token inflected="yes">haver</token>
-            <marker>
-                <and>
-                    <token postag="V.*" postag_regexp="yes"></token>
-                    <token postag="N.*" postag_regexp="yes"><exception>era</exception></token>
-                </and>
-            </marker>
-        </pattern>
-        <disambig action="filter" postag="[^V].*"></disambig>
-    </rule>
+    <rulegroup id="haver_nom" name="haver + nom">
+        <rule>
+            <pattern>
+                <token>hi</token>
+                <token inflected="yes">haver</token>
+                <marker>
+                    <and>
+                        <token postag="V.*" postag_regexp="yes"></token>
+                        <token postag="N.*" postag_regexp="yes"><exception>era</exception></token>
+                    </and>
+                </marker>
+            </pattern>
+            <disambig action="filter" postag="[^V].*"></disambig>
+        </rule>
+        <rule> <!-- no hi haurà mai poder-->
+            <pattern>
+                <token>hi</token>
+                <token inflected="yes">haver</token>
+                <token postag="RG"><exception postag="[CP].*" postag_regexp="yes"/></token>
+                <marker>
+                    <and>
+                        <token postag="V.*" postag_regexp="yes"></token>
+                        <token postag="N.*" postag_regexp="yes"><exception>era</exception></token>
+                    </and>
+                </marker>
+            </pattern>
+            <disambig action="filter" postag="[^V].*"></disambig>
+            <example type="untouched">El que hi ha quan toca de peus a terra.</example>
+        </rule>
+    </rulegroup>
     <rulegroup id="tens" name="tens (verb/adjectiu)">
         <rule>
             <pattern>
@@ -6962,6 +7002,16 @@ Copyright (C) 2012 Jaume Ortolà i Font
             <disambig action="filter" postag="[^V].*"/>
         </rule>
     </rulegroup>
+    <rule id="SET" name="set">
+        <pattern>
+            <token postag="D...P.*" postag_regexp="yes"/>
+            <token postag="A...P.*" postag_regexp="yes" min="0"/>
+            <marker>
+                <token>set</token>
+            </marker>
+        </pattern>
+        <disambig action="remove" postag="NC.S.*"/>
+    </rule>
     <rulegroup id="ALTRE" name="l'altre determinant/adjectiu/pronom">
         <rule>
             <pattern>
@@ -7698,7 +7748,7 @@ Copyright (C) 2012 Jaume Ortolà i Font
                 <token postag="PR.*" postag_regexp="yes"><exception>com</exception></token>
                 <marker>
                     <and>
-                        <token postag="N.*" postag_regexp="yes"><exception regexp="yes">nous?|reis</exception></token>
+                        <token postag="N.*" postag_regexp="yes"><exception regexp="yes">nous?|reis|deu</exception></token>
                         <token postag="VM.*" postag_regexp="yes"><exception postag="VMIP1S0.?" postag_regexp="yes"/></token>
                     </and>
                 </marker>
@@ -9357,7 +9407,7 @@ Copyright (C) 2012 Jaume Ortolà i Font
                 <marker>
                     <and>
                         <token postag="A.*" postag_regexp="yes"><exception postag="_GN.*" postag_regexp="yes"/></token>
-                        <token postag="N.*" postag_regexp="yes"><exception inflected="yes" regexp="yes" postag="N.*" postag_regexp="yes">reflex|desert|motiu|foguera|mestre|director</exception></token>
+                        <token postag="N.*" postag_regexp="yes"><exception inflected="yes" regexp="yes" postag="N.*" postag_regexp="yes">reflex|desert|motiu|foguera|mestre|director|corba</exception></token>
                     </and>
                 </marker>
                 <!--<token><exception inflected="yes">de</exception></token>-->
@@ -10139,7 +10189,7 @@ Copyright (C) 2012 Jaume Ortolà i Font
                 </and>
             </marker>
         </pattern>
-        <disambig action="filter" postag="A.*|V.P.*"></disambig>
+        <disambig action="remove" postag="V.[SI].*"></disambig>
     </rule>
     <rule id="verbadj_verb" name="verb/adj + verb">
         <pattern>
@@ -12278,7 +12328,7 @@ Copyright (C) 2012 Jaume Ortolà i Font
         <rule>
             <pattern>
                 <token regexp="yes">en|per</token>
-                <token>comparació</token>
+                <token regexp="yes">comparació|contraposició</token>
                 <marker>
                     <token regexp="yes">amb|de|d'|a</token>
                 </marker>

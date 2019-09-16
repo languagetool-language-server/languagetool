@@ -129,7 +129,7 @@ public abstract class SpellingCheckRule extends Rule {
                                                   @Nullable SuggestionsOrderer orderer, RuleMatch match) {
     AnalyzedSentence sentence = match.getSentence();
     int startPos = match.getFromPos();
-    long startTime = System.currentTimeMillis();
+    //long startTime = System.currentTimeMillis();
     if (orderer != null && orderer.isMlAvailable()) {
       if (orderer instanceof SuggestionsRanker) {
         // don't rank words form user dictionary, assign confidence 0.0, but add at start
@@ -181,8 +181,22 @@ public abstract class SpellingCheckRule extends Rule {
       combinedSuggestions.addAll(candidates);
       match.setSuggestedReplacements(combinedSuggestions);
     }
-    long timeDelta = System.currentTimeMillis() - startTime;
-    //System.out.printf("Reordering %d suggestions took %d ms.%n", result.getSuggestedReplacements().size(), timeDelta);
+    /*long timeDelta = System.currentTimeMillis() - startTime;
+    System.out.printf("Reordering %d suggestions took %d ms.%n", result.getSuggestedReplacements().size(), timeDelta);*/
+  }
+
+  protected RuleMatch createWrongSplitMatch(AnalyzedSentence sentence, List<RuleMatch> ruleMatchesSoFar, int pos, String coveredWord, String suggestion1, String suggestion2, int prevPos) {
+    if (ruleMatchesSoFar.size() > 0) {
+      RuleMatch prevMatch = ruleMatchesSoFar.get(ruleMatchesSoFar.size() - 1);
+      if (prevMatch.getFromPos() == prevPos) {
+        // we'll later create a new match that covers the previous misspelled word and the current one:
+        ruleMatchesSoFar.remove(ruleMatchesSoFar.size()-1);
+      }
+    }
+    RuleMatch ruleMatch = new RuleMatch(this, sentence, prevPos, pos + coveredWord.length(),
+            messages.getString("spelling"), messages.getString("desc_spelling_short"));
+    ruleMatch.setSuggestedReplacement((suggestion1 + " " + suggestion2).trim());
+    return ruleMatch;
   }
 
   @Override
@@ -442,7 +456,7 @@ public abstract class SpellingCheckRule extends Rule {
     for (Language altLanguage : alternativeLanguages) {
       List<Rule> rules;
       try {
-        rules = new ArrayList<>(altLanguage.getRelevantRules(messages, userConfig, Collections.emptyList()));
+        rules = new ArrayList<>(altLanguage.getRelevantRules(messages, userConfig, null, Collections.emptyList()));
         rules.addAll(altLanguage.getRelevantLanguageModelCapableRules(messages, null,
           userConfig, null, Collections.emptyList()));
       } catch (IOException e) {
@@ -472,9 +486,9 @@ public abstract class SpellingCheckRule extends Rule {
         return altRule.getLanguage();
       } else {
         if (word.endsWith(".")) {
-          Language language = acceptedInAlternativeLanguage(word.substring(0, word.length() - 1));
-          if (language != null) {
-            return language;
+          Language altLanguage = acceptedInAlternativeLanguage(word.substring(0, word.length() - 1));
+          if (altLanguage != null) {
+            return altLanguage;
           }
         }
       }

@@ -49,7 +49,7 @@ import static java.util.Comparator.comparing;
 @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
 public final class RuleOverview {
 
-  private final static List<String> langSpecificWebsites = Arrays.asList(
+  private static final List<String> langSpecificWebsites = Arrays.asList(
           "br", "ca", "zh", "da", "nl", "eo", "fr", "gl", "de", "it", "pl", "pt", "ru", "es", "uk"
   );
 
@@ -257,8 +257,7 @@ public final class RuleOverview {
     }
     return count;
   }
-
-
+  
   private SpellcheckSupport spellcheckSupport(Language lang, List<Language> allLanguages) throws IOException {
     if (spellcheckSupport(lang) != SpellcheckSupport.None) {
       return spellcheckSupport(lang);
@@ -274,7 +273,7 @@ public final class RuleOverview {
 
   private SpellcheckSupport spellcheckSupport(Language lang) throws IOException {
     List<Rule> rules = new ArrayList<>(lang.getRelevantRules(JLanguageTool.getMessageBundle(),
-      null, Collections.emptyList()));
+      null, null, Collections.emptyList()));
     rules.addAll(lang.getRelevantLanguageModelCapableRules(JLanguageTool.getMessageBundle(), null, null,
             null, Collections.emptyList()));
     for (Rule rule : rules) {

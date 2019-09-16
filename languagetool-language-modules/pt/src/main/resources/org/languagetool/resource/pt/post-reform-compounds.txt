@@ -1028,8 +1028,8 @@ caça-moscas*
 Caça-moscas*
 cachorro-quente*
 Cachorro-quente*
-caldo-verde*
-Caldo-verde*
+# caldo-verde*
+# Caldo-verde*
 câmara-ardente*
 Câmara-ardente*
 cana-de-açúcar*
@@ -1121,6 +1121,10 @@ chave-inglesa*
 Chave-inglesa*
 check-in*
 Check-in*
+cheque-dentista*
+Cheque-dentista*
+cheques-dentista*
+Cheques-dentista*
 chi-coração*
 Chi-coração*
 chupa-chupa*
@@ -37154,6 +37158,10 @@ vespa-marinha*
 Vespa-marinha*
 vespa-tatu*
 Vespa-tatu*
+vespa-volutina*
+Vespa-volutina*
+vespas-volutina*
+Vespas-volutina*
 vespão-dos-cacauais*
 Vespão-dos-cacauais*
 vespas-caboclas*
@@ -37415,7 +37423,9 @@ guarda-napo+
 Guarda-napo+
 guarda-napos+
 Guarda-napos+
+language-tool+
 language-Tool+
+Language-tool+
 Language-Tool+
 madre-pérola+
 Madre-pérola+

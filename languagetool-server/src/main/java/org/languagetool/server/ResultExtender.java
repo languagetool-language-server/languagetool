@@ -19,9 +19,10 @@
 package org.languagetool.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.languagetool.*;
+import org.languagetool.AnalyzedSentence;
+import org.languagetool.AnalyzedTokenReadings;
+import org.languagetool.Experimental;
 import org.languagetool.rules.ITSIssueType;
 import org.languagetool.rules.Rule;
 import org.languagetool.rules.RuleMatch;
@@ -37,10 +38,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -96,17 +94,24 @@ class ResultExtender {
     HttpURLConnection.setFollowRedirects(false);
     huc.setConnectTimeout(connectTimeoutMillis);
     huc.setReadTimeout(connectTimeoutMillis*2);
+    // longer texts take longer to check, so increase the timeout:
+    float factor = plainText.length() / 1000.0f;
+    if (factor > 1) {
+      int increasedTimeout = (int)(connectTimeoutMillis * 2 * Math.min(factor, 5));
+      huc.setReadTimeout(increasedTimeout);
+    }
     huc.setRequestMethod("POST");
     huc.setDoOutput(true);
     try {
       huc.connect();
       try (DataOutputStream wr = new DataOutputStream(huc.getOutputStream())) {
         String urlParameters = "";
+        List<String> ignoredParameters = Arrays.asList("enableHiddenRules", "username", "password", "token", "apiKey", "c");
         for (Map.Entry<String, String> entry : params.entrySet()) {
           // We could set 'language' to the language already detected, so the queried server
           // wouldn't need to guess the language again. But then we'd run into cases where
-          // we get an error because e.g. 'noopLanguages' can only be used with 'language=auto' 
-          if (!"enableHiddenRules".equals(entry.getKey())) {
+          // we get an error because e.g. 'noopLanguages' can only be used with 'language=auto'
+          if (!ignoredParameters.contains(entry.getKey())) {
             urlParameters += "&" + encode(entry.getKey()) + "=" + encode(entry.getValue());
           }
         }
@@ -121,7 +126,7 @@ class ResultExtender {
     } catch (Exception e) {
       // These are issue that can be request-specific, like wrong parameters. We don't throw an
       // exception, as the calling code would otherwise assume this is a persistent error:
-      print("Warn: Failed to query hidden matches server at " + url + ": " + e.getClass() + ": " + e.getMessage());
+      print("Warn: Failed to query hidden matches server at " + url + ": " + e.getClass() + ": " + e.getMessage() + ", input was " + plainText.length() + " characters");
       return Collections.emptyList();
     } finally {
       huc.disconnect();

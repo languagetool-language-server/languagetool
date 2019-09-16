@@ -111,6 +111,7 @@ ao acaso	RG
 Ao acaso	RG
 ao cabo de	SP000
 Ao cabo de	SP000
+ao calhas	RG
 ao certo	RG
 Ao certo	RG
 ao contrário de	SP000
@@ -193,6 +194,8 @@ A preceito	RG
 À primeira vista	RG
 a priori	RG
 A priori	RG
+a propósito	RG
+A propósito	RG
 a qualquer momento	RG
 A qualquer momento	RG
 aquando de	SP000
@@ -213,6 +216,8 @@ Aqui e ali	RG
 Às escondidas	RG
 às escuras	RG
 Às escuras	RG
+a seu tempo	RG
+A seu tempo	RG
 a sós	RG
 A sós	RG
 às pressas	RG
@@ -294,6 +299,10 @@ daqui para a frente	RG
 Daqui para a frente	RG
 de algum modo	RG
 De algum modo	RG
+de alguma forma	RG
+De alguma forma	RG
+de alguma maneira	RG
+De alguma maneira	RG
 de alto a baixo	RG
 De alto a baixo	RG
 de acordo	RG
@@ -340,7 +349,6 @@ de forma nenhuma	RN
 De forma nenhuma	RN
 de graça	RG
 De graça	RG
-de de imediato	RG
 de imediato	RG
 De imediato	RG
 de jeito nenhum	RN
@@ -375,6 +383,12 @@ de perto	RG
 De perto	RG
 de propósito	RG
 De propósito	RG
+de qualquer maneira	RG
+De qualquer maneira	RG
+de qualquer forma	RG
+De qualquer forma	RG
+de qualquer modo	RG
+De qualquer modo	RG
 de quando em quando	RG
 De quando em quando	RG
 de repente	RG
@@ -427,16 +441,16 @@ de vez em quando	RG
 De vez em quando	RG
 devido a	SP000
 Devido a	SP000
-devido ao	SP000
-Devido ao	SP000
-devido aos	SP000
-Devido aos	SP000
-devido as	SP000
-Devido as	SP000
-devido à	SP000
-Devido à	SP000
-devido às	SP000
-Devido às	SP000
+# devido ao	SP000
+# Devido ao	SP000
+# devido aos	SP000
+# Devido aos	SP000
+# devido as	SP000
+# Devido as	SP000
+# devido à	SP000
+# Devido à	SP000
+# devido às	SP000
+# Devido às	SP000
 # dezenas de	RG
 # Dezenas de	RG
 dia a dia	RG
@@ -515,6 +529,8 @@ em primeiro lugar	RG
 Em primeiro lugar	RG
 em prol de	SP000
 Em prol de	SP000
+em regra	RG
+Em regra	RG
 em relação a	SP000
 Em relação a	SP000
 em segundo lugar	RG
@@ -645,6 +661,10 @@ nem sequer	RG
 Nem sequer	RG
 nessa altura	RG
 Nessa altura	RG
+nesse sentido	RG
+Nesse sentido	RG
+neste sentido	RG
+Neste sentido	RG
 neste momento	RG
 Neste momento	RG
 no caso de	SP000
@@ -1687,6 +1707,8 @@ Schuyler Colfax	NPMS000_
 Seattle Seahawks	NPMPG00_
 Selman Abraham Waksman	NPMS000_
 Sigmund Freud	NPMS000_
+Sudeste Asiático	NPMS000
+Sudoeste Asiático	NPMS000
 Spiro Agnew	NPMS000_
 Star Wars	NPMS000_
 Stephen Hawking	NPMS000_
@@ -4296,9 +4318,9 @@ Borda do Campo	NPCSG00_
 Bornes de Aguiar	NPCSG00_
 Bouça Cova	NPCSG00_
 Cabana Maior	NPCSG00_
-Cabanas de Tavira	NPCSG00_
-Cabanas de Torres	NPCSG00_
-Cabanas de Viriato	NPCSG00_
+Cabanas de Tavira	NPCPG00_
+Cabanas de Torres	NPCPG00_
+Cabanas de Viriato	NPCPG00_
 Cabeça Boa	NPCSG00_
 Cabeça Gorda	NPCSG00_
 Cabeça Santa	NPCSG00_
@@ -4307,8 +4329,8 @@ Cabeço de Vide	NPCSG00_
 Cabo da Praia	NPCSG00_
 Caia e São Pedro	NPCSG00_
 Caíde de Rei	NPCSG00_
-Caldas da Rainha	NPCSG00_
-Caldas de São Jorge	NPCSG00_
+Caldas da Rainha	NPCPG00_
+Caldas de São Jorge	NPCPG00_
 Calheta de Nesquim	NPCSG00_
 Calvaria de Cima	NPCSG00_
 Câmara de Lobos	NPCSG00_
@@ -4401,8 +4423,8 @@ Cunha Baixa	NPCSG00_
 Curral das Freiras	NPCSG00_
 Dois Portos	NPCSG00_
 Dornelas do Zêzere	NPCSG00_
-Doze Ribeiras	NPCSG00_
-Duas Igrejas	NPCSG00_
+Doze Ribeiras	NPCPG00_
+Duas Igrejas	NPCPG00_
 Eira Vedra	NPCSG00_
 Entre Ambos-os-Rios	NPCSG00_
 Enxara do Bispo	NPCSG00_
@@ -6231,8 +6253,8 @@ Max Planck	NPMS000_
 Max Theiler	NPMS000_
 Max von Laue	NPMS000_
 May-Britt Moser	NPMS000_
-Médicos Internacionais para a Prevenção da Guerra Nuclear	NPMS000_
-Médicos sem Fronteiras	NPMS000_
+Médicos Internacionais para a Prevenção da Guerra Nuclear	NPMP000_
+Médicos sem Fronteiras	NPMP000_
 Melvin Calvin	NPMS000_
 Melvin Schwartz	NPMS000_
 Menachem Begin	NPMS000_
@@ -6605,6 +6627,7 @@ Zhores Alferov	NPMS000_
 ######################################################################################
 corpus mysticum	L_LATIM_
 et cetera	L_LATIM_
+ex aequo	L_LATIM_
 mea culpa	L_LATIM_
 pro bono	L_LATIM_
 reductio ad	L_LATIM_
@@ -10719,6 +10742,8 @@ voluntas pro	L_LATIM_
 pro facto	L_LATIM_
 facto reputatur	L_LATIM_
 # Vox populi, vox Dei est
+vox pop	L_LATIM_
+Vox pop	L_LATIM_
 Vox populi	L_LATIM_
 vox populi	L_LATIM_
 vox Dei	L_LATIM_
@@ -10784,6 +10809,7 @@ ipsis verbis	RG_
 ipso facto	RG_
 ipso jure	RG_
 mutatis mutandis	RG_
+numerus clausus	NCMS000
 nota bene	NCCN000
 peccata minuta	NCCN000
 tutti quanti	RG_
@@ -10910,8 +10936,8 @@ Trompe-l'œil	NCMS000
 Trompe-l’œil	NCMS000
 veni, vidi, vici	NCMS000
 Veni, vidi, vici	NCMS000
-via crucis	NCMS000
-Via crucis	NCMS000
+via crucis	NCFS000
+Via crucis	NCFS000
 casus belli	NCMS000
 Casus belli	NCMS000
 
@@ -10951,19 +10977,21 @@ Crystal Palace	NPMS000_
 ####################################################
 
 a capella	RG_
-acampamento base	NCMS000
-Acampamento base	NCMS000
-acampamentos base	NCMP000
-Acampamentos base	NCMP000
+abertura f	NCFS000
+aberturas f	NCFP000
 agente da autoridade	NCCS000_
 Agente da autoridade	NCCS000_
 agentes da autoridade	NCCS000_
 Agentes da autoridade	NCCS000_
 al dente	AQ0CN0_
 Al dente	AQ0CN0_
+Al Jazeera	NPFS000_
 Alcaria Ruiva	NPFS000_
 Alexis Tsipras	NPMS000_
+Alice in Chains	NPMP000_
 Amancio Ortega	NPMS000_
+ampola capilar	NPFS000
+ampolas capilares	NPFP000
 amêijoas à Bulhão Pato	NCFP000
 Amêijoas à Bulhão Pato	NCFP000
 América Central	NPFSG00_
@@ -10976,6 +11004,7 @@ ano aplicação	NCMS000
 Ano aplicação	NCMS000
 anos aplicação	NCMP000
 Anos aplicação	NCMP000
+Arouca Geopark	NPMS000_
 arroz basmati	NCMS000
 arroz cateto	NCMS000
 Arroz cateto	NCMS000
@@ -10986,12 +11015,14 @@ Aston Martin	NPMS000_
 Augusto Guerra	NPMSO00_
 azeite de dendê	NCMS000
 Azeite de dendê	NCMS000
-bacalhau à Brás	NCMS000
-Bacalhau à Brás	NCMS000
-bacalhau à Gomes Sá	NCMS000
-Bacalhau à Gomes Sá	NCMS000
-bacalhau à Zé	NCMS000
-Bacalhau à Zé	NCMS000
+bacalhau à Brás	NPMS000
+Bacalhau à Brás	NPMS000
+bacalhau à Gomes Sá	NPMS000
+Bacalhau à Gomes Sá	NPMS000
+à Gomes de Sá	NPMS000
+bacalhau à Zé	NPMS000
+Bacalhau à Zé	NPMS000
+Backstreet Boys	NPMP000_
 batata rosti	NCFS000_
 Batata rosti	NCFS000_
 # bel prazer is "bel-prazer" but this allows the hiphenator to kick in
@@ -11011,6 +11042,11 @@ Bouquet garni	NCMS000
 Braga Jazz	NPMSO00_
 Braga Park	NPMSG00_
 Braga Parque	NPMSG00_
+business as usual	NPMS000_
+cabeça de cartaz	NCCS000_
+Cabeça de cartaz	NCCS000_
+cabeças de cartaz	NCCP000_
+Cabeças de cartaz	NCCP000_
 cabeça de casal	NCCS000_
 Cabeça de casal	NCCS000_
 cabeças de casal	NCCP000_
@@ -11027,6 +11063,10 @@ Cais do Sodré	NPMS000_
 caixas multibanco	NCFP000
 caixas Multibanco	NCFP000
 Caixas Multibanco	NCFP000
+call center	NCMS000_
+call centers	NCMP000_
+calote polar	NCFS000
+calotes polares	NCFP000
 Calouste Gulbenkian	NPFS000_
 camião cisterna	NCMS000
 camiões cisterna	NCMP000
@@ -11036,18 +11076,29 @@ Carles Puigdemont	NPMS000_
 Carlos Slim	NPMS000_
 carne charque	NCFS000_
 Carne charque	NCFS000_
+cartão matriz	NCMS000
+cartões matriz	NCMP000
+casal sensação	NCMS000
+casais sensação	NCMP000
 Castel Volturno	NPCS000_
 Castilla-La Mancha	CPMSG00_
-cenário base	NCMS000_
-cenários base	NCMP000_
 célula de Schwann	NCFS000_
 células de Schwann	NCFP000_
 células T	NCFP000_
 Champions League	NCFS000_
 Che Guevara	NPMS000_
+cheques careca	NCMP000
 Chris Columbus	NPMS000_
 Christopher Nolan	NPMS000_
 Cyber Monday	NPFS000_
+cidade dormitório	NCFS000
+Cidade dormitório	NCFS000
+cidades dormitório	NCFP000
+Cidades dormitório	NCFP000
+cintura de asteróides	NCFS000
+Cintura de asteróides	NCFS000
+cinturas de asteróides	NCFP000
+Cinturas de asteróides	NCFP000
 circulação automóvel	NCFS000_
 Clint Eastwood	NPMS000_
 coelho à caçador	NCMS000
@@ -11057,6 +11108,9 @@ coelho à Caçador	NCMS000_
 Coelho à caçador	NCMS000_
 Coelho à Caçador	NCMS000_
 Colosso de Rodes	NPMS000_
+Comic Con	NPFS000_
+conexão Bluetooth	NCFS000_
+conexões Bluetooth	NCFP000_
 contratos emprego-inserção	NCMP000
 contratos emprego	NCMP000
 cortar à Brunoise	VMN0000_
@@ -11076,8 +11130,11 @@ cosa nostra	NPFS000_
 Cosa nostra	NPFS000_
 cream cheese	NCMS000_
 Cream cheese	NCMS000_
+crédito habitação	NCMS000
+créditos habitação	NCMS000
 cuscuz paulista	NCFS000
 Cuscuz paulista	NCFS000
+Deutsche Bank	NPMS000_
 Dilma Rousseff	NPFS000_
 distribuição Linux	NCFS000_
 distribuições Linux	NCFP000_
@@ -11093,16 +11150,16 @@ dolce vita	NCFS000_
 Dolce vita	NCFS000_
 Domingos Rebelo	NPMS000_
 Doutrina Monroe	NPFSO00_
-efeito base	NCMS000
-efeitos base	NCMP000
+efeito cascata	NCMS000
+efeitos cascata	NCMP000
 Eleftherios Venizelos	NPMS000_
 El Salvador	NPMS000_
-elemento chave	NCMS000
-Elemento chave	NCMS000
-elementos chave	NCMS000
-Elementos chave	NCMS000
 emissões zero	NCFP000
 endereços IP	NCMP000
+escape game	NCMS000_
+Escape game	NCMS000_
+escape games	NCMP000_
+Escape games	NCMP000_
 esquerda caviar	NCFS000
 Esquerda caviar	NCFS000
 Enrique Peña	NPMS000_
@@ -11110,6 +11167,8 @@ Estado da União	NCMS000
 Estados Unidos	NPMP000
 estudantes Erasmus	NCCP000_
 Evo Morales	NPMS000_
+Expo 98	NPFS000_
+Face Oculta	NPMS000
 faixa BUS	NCFS000
 faixas BUS	NCFP000
 fake news	NCFP000_
@@ -11133,27 +11192,37 @@ Frota automóvel	NCFS000
 frotas automóveis	NCFS000
 Frotas automóveis	NCFS000
 Fundo Revita	NPMS000_
+Garcia de Orta	NPCS000_
+gás pimenta	NCMS000
 geração X	NPFS000_
 Geração X	NPFS000_
 geração Y	NPFS000_
 Geração Y	NPFS000_
 geração Z	NPFS000_
 Geração Z	NPFS000_
+Grandes Lagos	NPMP000_
+graus Celsius	NCMP000_
+graus Fahrenheit	NCMP000_
 Greta Thunberg	NPFS000_
+Green Day	NPMP000_
 gomi goreng	NCMP000
 hora h	NCFS000_
 Hora h	NCFS000_
 hora H	NCFS000_
 Hora H	NCFS000_
-ideias chave	NCFP000_
-Ideias chave	NCFP000_
 I Guerra Mundial	NPFS000_
 II Guerra Mundial	NPFS000_
 III Guerra Mundial	NPFS000_
 ilhas Cook	NPFP000_
+impressoras laser	NCFP000
+Impressoras laser	NCFP000
 indústria automóvel	NCFS000
+Infraestruturas de Portugal	NPFS000_
+Iniciativa Liberal	NPMS000_
 irmãos Lumière	NPMP000_
 Isaac Asimov	NPMS000_
+Iuri Gagarine	NPMS000_
+Jimmy Hendrix	NPMS000_
 Joana Schenker	NPFS000_
 João Maria	NPMSO00_
 jogo do empurra	NCMS000
@@ -11163,15 +11232,21 @@ Julio Borges	NPMS000_
 Kazuo Ishiguro	NPMS000_
 know how	NCMS000_
 Kofi Annan	NPMS000_
+Kung Fu	NPMS000_
+Kurt Cobain	NPMS000_
 La Salette	NPFS000_
 Le Pen	NPFS000_
 Lehman Brothers	NPMS000_
 Leonardo diCaprio	NPMS000_
 Lex Luthor	NPMS000_
+linfócitos B	NCMP000_
 linfócitos T	NCMP000_
 lingua franca	NCFS000_
 linha SOS	NCFS000_
 linhas SOS	NCFP000_
+localização GPS	NCFS000
+localizações GPS	NCFS000
+Loch Ness	NPMS000_
 Lucky Luke	NPMS000_
 Luís Maria	NPMSO00_
 Luís Santos	NPMSO00_
@@ -11204,11 +11279,8 @@ Mario Draghi	NPMS000_
 Matos Bravo	NPMSO00_
 melhorias incrementais	NCFP000
 Melhorias incrementais	NCFP000
-mercado chave	NCMS000
-Mercado chave	NCMS000
-mercados chave	NCMP000
-Mercados chave	NCMP000
 Michael Bay	NPMS000_
+mísseis antitanque	NCMP000
 mie goreng	NCMS000
 ministro da Economia	NPMS000_
 mise em place	RM_
@@ -11225,22 +11297,29 @@ Nicolás Maduro	NPMS000_
 Nikola Tesla	NPMS000_
 Nils Muiznieks	NPMS000_
 níveis recorde	NCMP000
+no deal	NPMS000_
+No deal	NPMS000_
+No Deal	NPMS000_
 Novo México	NPMS000_
 obesidade juvenil	NCFS000
 Oliveira Neves	NPCS000_
+onze inicial	NCMS000
 operação STOP	NCFS000
 operações STOP	NCFS000
 panna cotta	NCFS000
 Panna cotta	NCFS000
 Paolo Duterte	NPMS000_
 Papua Nova Guiné	NPFS000_
+Papua Ocidental	NPFS000_
 Passos Coelho	NPMS000
+Pearl Jam	NPMP000_
 Penã Nieto	NPMS000_
 Peneda Gerês	NPFS000_
 petit fours	NCMS000
 Petit fours	NCMS000
-plano base	NCMS000
-planos base	NCMP000
+plano A	NCMS000_
+plano B	NCMS000_
+plano C	NCMS000_
 Plaza Mayor	NPMS000_
 # BUG: Replace rule is not triggered (AO90replace.txt) if 'Pólo' are disambiguated
 # Pólo Norte	NPMSO00
@@ -11251,11 +11330,17 @@ Polvo à lagareiro	NCMS000
 ponta de lança	NCCS000_
 pontas de lança	NCCP000_
 pontos base	NCMP000_
+pôr do Sol	NCMS000
+Pôr do Sol	NCMS000
+pores do Sol	NCMS000
+Pores do Sol	NCMS000
+porta USB	NCFS000
+Porta USB	NCFS000
+portas USB	NCFP000
+Portas USB	NCFP000
 Porto Rico	NPMSG00_
 Portugal Telecom	NPFS000_
 Praceta Teixeira	NPFSO00_
-preço base	NCMS000
-preços base	NCMP000
 presidente da República	NCCS000_
 presidentes da República	NCCP000_
 Presidente da República	NCCS000_
@@ -11266,13 +11351,6 @@ primeira volta	NCFS000_
 Primeira volta	NCFS000_
 primeiras voltas	NCFP000_
 Primeiras voltas	NCFP000_
-princípio base	NCMS000
-Princípio base	NCMS000
-princípios base	NCMP000
-Princípios base	NCMP000
-programas base	NCMP000
-Programas base	NCMP000
-públicos alvo	NCMP000
 Raios Gama	NCMP000
 raios Gama	NCMP000
 raios gama	NCMP000
@@ -11280,13 +11358,18 @@ Raspberry Pi	NPMS000_
 Raúl Castro	NPMS000_
 reality show	NCMS000_
 reality shows	NCMP000_
-rede social Facebook	NPMF000_
+Red Hot Chili Peppers	NPMP000_
+rede social Facebook	NPFS000_
+rede social Twitter	NPFS000_
 Reino Unido	NPMS000
 Reggio Calabria	NPMS000_
 René Descartes	NPMS000_
 República Centro-Africana	NPFS000_
 República da Irlanda	NPFS000_
 retenções na fonte	NCFP000
+retransmissores GPS	NCMP000
+reunião relâmpago	NCFS000
+reuniões relâmpago	NCFP000
 revista Nature	NCFS000
 Richard Dawkins	NPMS000_
 Rio de Janeiro	NPMSG00_
@@ -11294,11 +11377,8 @@ Rio Grande do Sul	NPMSG00_
 Robert Zemeckis	NPMS000_
 Roland Garros	NPMS000_
 Ron Howard	NPMS000_
+Rudolf Steiner	NPMS000_
 Saadeddine El Othmani	NPMS000_
-salário base	NCMS000
-Salário base	NCMS000
-salários base	NCMP000
-Salários base	NCMP000
 Salvador Dalí	NPMS000_
 samos suados	NCMS000_
 Samos suados	NCMS000_
@@ -11320,8 +11400,14 @@ síndrome de Down	NCMS000
 Síndrome de Down	NCMS000
 sítio web	NCMS000
 Sítio web	NCMS000
+sítio Web	NCMS000
+Sítio Web	NCMS000
 sítios web	NCMP000
-Sítios web	NCMP000
+sítio web	NCMS000
+Sítio web	NCMS000
+sítios Web	NCMP000
+Sítios Web	NCMP000
+software as a service	NPMS000_
 social justice warrior	NCCS000_
 Social justice warrior	NCCS000_
 social justice warriors	NCCP000_
@@ -11331,14 +11417,21 @@ sopa à Lavrador	NCMS000
 Sopa à lavrador	NCMS000
 Sopa à Lavrador	NCMS000
 sotto voce	AQCS00_
+Spice Girls	NPFP000_
 Sri Lanka	NPMS000_
 Steve Wozniak	NPMS000_
+Stone Temple Pilots	NPMP000_
 Tai Chi Chuan	NPMS000_
+TED Talk	NPFS000_
 TED talk	NPFS000_
+TED Talks	NPFP000_
+TED talks	NPFP000_
 Tel Aviv	NPFS000_
-tempos padrão	NCMP000_
 terceira volta	NCFS000_
 Terceira volta	NCFS000_
+The Beatles	NPMP000_
+The Doors	NPMP000_
+The Who	NPMP000_
 Tim Burton	NPMS000_
 Tony Stark	NPMS000_
 Torres Vedras	NPCS000_
@@ -11346,16 +11439,22 @@ trompa de Falópio	NCFS000
 Trompa de Falópio	NCFS000
 trompas de Falópio	NCFP000
 Trompas de Falópio	NCFP000
+transmissores GPS	NCMP000
 tutti-frutti	NCMS000
 Tutti-frutti	NCMS000
 Umaro Sissoco Embaló	NPMS000_
 Ultimate Fighting Championship	NPMS000_
 União de Nações Sul-Americanas	NPMSO00_
 Universidade Complutense	NPMS000_
-valor base	NCMS000
-Valor base	NCMS000
-valores base	NCMP000
-Valores base	NCMP000
+Vale do Côa	NPMS000_
+velocidade cruzeiro	NCMS000
+Velocidade cruzeiro	NCMS000
+velocidades cruzeiro	NCMP000
+Velocidades cruzeiro	NCMP000
+velocidade ISO	NCFS000
+Velocidade ISO	NCFS000
+velocidades ISO	NCFP000
+Velocidades ISO	NCFP000
 vertentes este	NCFP000
 vertentes Este	NCFP000
 vertentes norte	NCFP000
@@ -11364,6 +11463,8 @@ vertentes oeste	NCFP000
 vertentes Oeste	NCFP000
 vertentes sul	NCFP000
 vertentes Sul	NCFP000
+viola beiroa	NCFS000_
+violas beiroas	NCFP000_
 Viktor Orbán	NPMS000_
 Vilas Leitão	NPMSO00_
 vinha d’alhos	NCFS000
@@ -11376,42 +11477,51 @@ ZX Spectrum	NPMS000_
 ###                    Interjeições                     ###
 ### https://pt.wikipedia.org/wiki/Interjei%C3%A7%C3%A3o ###
 ###########################################################
-Vai-te embora	I
-Xô pra lá	I
-Cai fora	I
-Que bom	I
-Alto lá	I
-Volta aqui	I
-Que coisa	I
+Ah, sério	I
+Ai de mim	I
 Ainda bem	I
-Nossa senhora	I
+Alto lá	I
+Até amanhã	I
+Até logo	I
+bai bai	I
+Bai Bai	I
+bye bye	I
+Bye Bye	I
+Cai fora	I
+com a breca	I
+Com a breca	I
+Com mil demónios	I
+Com mil demônios	I
+Crê em Deus pai	I
+cruz credo	I
+Cruz credo	I
+E ai beleza	I
+Jesus Maria e José	I
+macacos me mordam	I
+Macacos me mordam	I
+Meu Deus	I
 Muito bem	I
 Muito obrigada	I
-Valeu a pena	I
-Vai nessa	I
-Queira Deus	I
-Quem me dera	I
-Até logo	I
-Bye Bye	I
-Bai Bai	I
-Até amanhã	I
-Ai de mim	I
-Ô olá	I
-Meu Deus	I
-Senhor Jesus	I
-Crê em Deus pai	I
 Mundo, vasto mundo	I
-Ora viva	I
-E ai beleza	I
-Pense bem	I
-Macacos me mordam	I
-Pelas barbas do profeta	I
-Que medo	I
-Jesus Maria e José	I
-Ah, sério	I
-Com mil demônios	I
-Com mil demónios	I
-Por quê	I
+Nossa senhora	I
+Ô olá	I
 O que inferno	I
-Com a breca	I
+Ora viva	I
+Pelas barbas do profeta	I
+Pense bem	I
+Por quê	I
+Que bom	I
+Que coisa	I
+Queira Deus	I
+Que medo	I
+Quem me dera	I
+Senhor Jesus	I
+Vai nessa	I
+Vai-te embora	I
+Valeu a pena	I
+Volta aqui	I
+xau xau	I
+Xau Xau	I
+xô pra lá	I
+Xô pra lá	I
 

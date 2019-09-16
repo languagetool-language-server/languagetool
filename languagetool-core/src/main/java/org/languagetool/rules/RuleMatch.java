@@ -110,7 +110,7 @@ public class RuleMatch implements Comparable<RuleMatch> {
       boolean startWithUppercase, String suggestionsOutMsg) {
     this.rule = Objects.requireNonNull(rule);
     if (toPos <= fromPos) {
-      throw new RuntimeException("fromPos (" + fromPos + ") must be less than toPos (" + toPos + ")");
+      throw new IllegalArgumentException("fromPos (" + fromPos + ") must be less than toPos (" + toPos + ")");
     }
     this.offsetPosition = new OffsetPosition(fromPos, toPos);
     this.message = Objects.requireNonNull(message);
@@ -135,6 +135,20 @@ public class RuleMatch implements Comparable<RuleMatch> {
   public RuleMatch(RuleMatch clone) {
     this(clone.getRule(), clone.getSentence(), clone.getFromPos(), clone.getToPos(), clone.getMessage(), clone.getShortMessage());
     this.setSuggestedReplacementObjects(clone.getSuggestedReplacementObjects());
+    this.setAutoCorrect(clone.isAutoCorrect());
+    this.setFeatures(clone.getFeatures());
+    this.setUrl(clone.getUrl());
+    this.setType(clone.getType());
+    this.setLine(clone.getLine());
+    this.setEndLine(clone.getEndLine());
+    this.setColumn(clone.getColumn());
+    this.setEndColumn(clone.getEndColumn());
+  }
+  
+  //clone with new replacements
+  public RuleMatch(RuleMatch clone, List<String> replacements) {
+    this(clone.getRule(), clone.getSentence(), clone.getFromPos(), clone.getToPos(), clone.getMessage(), clone.getShortMessage());
+    this.setSuggestedReplacements(replacements);
     this.setAutoCorrect(clone.isAutoCorrect());
     this.setFeatures(clone.getFeatures());
     this.setUrl(clone.getUrl());
@@ -281,6 +295,16 @@ public class RuleMatch implements Comparable<RuleMatch> {
     replacements.add(replacement);
     setSuggestedReplacements(replacements);
   }
+  
+  public void addSuggestedReplacement(String replacement) {
+    Objects.requireNonNull(replacement, "replacement may be empty but not null");
+    List<String> l = new ArrayList<>();
+    for (SuggestedReplacement repl : suggestedReplacements) {
+      l.add(repl.getReplacement());
+    }
+    l.add(replacement);
+    setSuggestedReplacements(l);
+  }
 
   /**
    * The text fragments which might be an appropriate fix for the problem. One
@@ -359,8 +383,12 @@ public class RuleMatch implements Comparable<RuleMatch> {
   @Override
   public String toString() {
     if (rule instanceof PatternRule) {
+      //String covered = getSentence().getText().substring(getFromPos(), getToPos());
+      //return ((PatternRule) rule).getFullId() + ":" + offsetPosition + ":" + message + ":" + covered + " -> " + getSuggestedReplacements();
       return ((PatternRule) rule).getFullId() + ":" + offsetPosition + ":" + message;
     } else {
+      //String covered = getSentence().getText().substring(getFromPos(), getToPos());
+      //return rule.getId() + ":" + offsetPosition + ":" + message + ":" + covered + " -> " + getSuggestedReplacements();
       return rule.getId() + ":" + offsetPosition + ":" + message;
     }
   }

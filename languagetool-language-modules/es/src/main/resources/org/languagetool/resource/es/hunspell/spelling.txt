@@ -1,183 +1,357 @@
 # Words that extend the spell checker. See ignore.txt for words that should be
 # completely ignored (i.e. not used to create suggestions).
+# Center
+# City
+# derrepente
+# desabasto
+# Hey
+# New
+# religionista
+# religionistas
+# River
+Aarón
 abuelita
 abuelitas
 Adam
+ADN
 Adriana
 Adrien
+AFIP
+afirmaciones
 Airbnb
+Alan
+Aldo
 Alessa
 Alex
+Alexa
 Alexander
 Alexey
 Alexis
 Alibaba
-Álvarez
-# AM
+am
+AM
+Amadeo
+Amanda
 Amazon
+American Express
 AMLO
-Alan
+Analytics
+Andon
 Andreas
 Android
+Angelo
+Angie
 Anthony
+aplicaciones
 app
 Apple
+Aquino
+Ariel
 Aristóteles
+Ariza
+ASIN
+ASINs
+asociaciones
+Atlassian
+ATM
+Audi
 Auguste
+Avengers
+Banamex
+Bancolombia
+Bancomer
+Banelco
+banner
 BBVA
+BCP
+Benjamin
+Bianca
 Bing
 Bluetooth
+BMP
+Bob
+bolsillos
 Boston
 Brian
+bug
 cajita
 cajitas
+calificaciones
+Camacho
 Camila
+cancelaciones
 Cancún
+cardiovascular
+Carlo
 carrito
+casilla
+casillas
 casita
 casitas
+Center
+CEO
+CCTV
 CDMX
 Cecilia
-# Center
+certificaciones
+CFDI
+checar
+check
+Chedraui
+Chicago
 Christian
 Chrome
-# City
+Cindy
 Claudio
+click
+CLP
 cojones
+cookies
 College
+Colombia
+combinaciones
+complicaciones
 concientizar
+contáctanos
+COP
+Copán
 Craigslist
+CUIT
+Daewoo
 Daniela
 Darwin
-# derrepente
-# desabasto
+desactivación
 DHL
-Díaz
 Disney
 disponible
 disponibles
+DNI
+DNS
+DOP
+DPI
+Díaz
 Edgar
 Edwin
 EEUU
 Einstein
 Eladio
+Eliana
 Elizabeth
+Elvia
+e-mail
 email
 Emily
 Emma
 Emmanuel
 empatía
+Epic Games
+equipajes
 Eric
+Erick
+Erika
 estimulación
 EU
+Evelyn
 Excel
+Fabian
 Facebook
-FB
+Falabella
 faltante
 faltantes
+FB
+feedback
 feminicidio
 Fernanda
 Fernández
+FIFA
 Ford
 Fortnite
+Frank
 Frankenstein
+Freddy
 Gaby
 García
+Gastón
+GB
 George
+GIF
+Gina
+Giovanni
+Gisela
+Giselle
 Gmail
-Gómez
 Gonzalez
 Gonzalo
 Google
+Google Drive
+Google Play
+Google Street View
+Google Earth
+Google Ads
+Google AdSense
+Google Mail
+Google Docs
 GPS
+Guaidó
 Gutierrez
+Gómez
+hablarlo
+hardware
+Harold
 Harry
+HBO
 Hector
 Hernandez
-# Hey
 Hitler
+Hondutel
+Houston
+HP
+HSBC
 HTML
 Huawei
+Inc
+Ingrid
 Instagram
 iOS
 IP
 iPad
+iPad Air
+iPad Mini
 iPhone
 iPod
 Isabella
 Isaías
+ISO
 IVA
 Ivan
 Jack
+Jackson
 Jacob
+Jacqueline
 Jennifer
 Jenny
 Jessica
+Jimena
 Jimmy
+Joceline
+Joel
+Johanna
 Johnny
 Jones
+Joomla
 Joseph
+Josué
 jovencita
 jovencitas
 jovencito
 jovencitos
-Juárez
 Judith
 Julian
 Julieta
+Juárez
 Júlio
 Karen
 Karina
 Karla
+Katherine
 Kevin
 kg
+LAN
 Lanzarote
+laptop
 Layla
+Lenovo
 Leonor
+Liliana
 link
+links
 LinkedIn
 Lisboa
+LG
+logo
 Lola
 Londres
 Lopez
+Luciano
 Lucy
 Luke
+Lupita
+Mac
+MacBook
+MacBook Air
 mail
-# mami
+mami
+marcación
 Marcelo
+Mari
 Marisol
-Martí
 Martin
 Martinez
+Martí
+Marvel
+Marx
 Mary
 Massachusetts
+Mastercard
+Matias
 Max
+Maximiliano
+MB
+Melisa
+Melissa
+Messenger
 Miami
 Michael
+Michelle
+Microsoft
 Minecraft
+minimalista
 Miriam
+montos
 Motorola
+Movistar
+MP
 MXN
+Nadia
+Nancy
+Nelly
 Nelson
 Netflix
-# New
+New York
+New Jersey
+New Hampshire
+New Mexico
 Nick
+Nico
 Nintendo
+Nora
+Nuñez
 Obama
+Ocotepeque
 ok
 Omar
 online
-Paola
-# papi
+Osorio
+Osvaldo
+Outlook
 Paco
+papi
+Paola
 Paris
 Parker
+Pasajes
+pastillas
 Patrick
+patrullaje
+Paul
+Paypal
 PC
+PD
 PDF
 pedacito
 pedacitos
 Perez
+permíteme
 personita
 personitas
 Peter
@@ -185,59 +359,111 @@ Photoshop
 Picasso
 plazo
 plazos
-# PM
+pm
+PM
+Polanco
+pospago
 post
+preferencial
+procesadora
+PSN
 PVC
+QR
+RAM
 Ramirez
+recomendable
+recomendables
+recordarle
+reembolsos
 regalito
 regalitos
-# religionista
-# religionistas
+renovables
+RFC
 Richard
-# River
 Robert
+rodillas
 Rodolfo
 Rodríguez
 Ronaldo
+Roxana
+Ruth
+Ryan
+Sabrina
+Salesforce
+saludables
+salvajes
+Sam
 Samsung
+Samsung Galaxy
 Sanchez
+Santibañez
+Sarah
+Saúl
+Seagate
+Shopify
 Skype
+Smart
+smartphone
+smartphones
 Smith
 Snapchat
 sobreático
 Sofía
+software
+Sony
+spam
+Spiderman
 Spotify
+Stephanie
+Steve
+tablet
+tablets
+Tania
 Taylor
+TB
+team
+Tegucigalpa
 Telcel
 Thomas
+ticket
+tickets
 Tokio
 Tom
+Tony
+Trump
+TV
 Twitch
 Twitter
 Uber
 UNESCO
+UPC
 UPS
 URL
+USD
+user
+users
 Valdez
 Valeria
 Vanessa
+vehicular
 Veracruz
 Viviana
+VPN
+Walter
 Washington
 WC
+WebEx
 WhatsApp
+Wilson
 Windows
+Wix
 Word
 Xbox
 Xiaomi
+Xiomara
+yoga
 YouTube
-IVA
-DNI
-recomendable
-recomendables
-logo
-casilla
-casillas
+Álvarez
 #####         List of Companies from OpenData500 #####
 #####        http://www.opendata500.com/us/list/ #####
 ##### Creative Commons Attribution-ShareAlike 4.0  ###
@@ -360,6 +586,7 @@ CoreLogic
 CostQuest
 Credit Karma
 Credit Sesame
+CRM
 CrowdANALYTIX
 Dabo Health
 DataLogix
@@ -432,6 +659,7 @@ Geofeedia
 Geolytics
 Geoscape
 GetRaised
+Gilberto
 GitHub
 Glassy Media
 Golden Helix
@@ -490,6 +718,7 @@ iTriage
 IVES Group
 IW Financial
 JJ Keller
+JPG
 Junar
 Junyo
 Jurispect
@@ -602,6 +831,7 @@ Personal
 Personalis
 Peterson's
 PEV4me
+Pinterest
 PIXIA Corp
 PlaceILive
 PlanetEcosystems
@@ -642,6 +872,7 @@ Reed Elsevier
 REI Systems
 Relationship Science
 Remi
+Renato
 Retroficiency
 Revaluate
 Revelstone
@@ -735,6 +966,7 @@ Vital Axiom | Niinja
 VitalChek
 Vitals
 Vizzuality
+Volkswagen
 Votizen
 Walk Score
 WaterSmart Software
@@ -748,6 +980,7 @@ Webitects
 WebMD
 Weight Watchers
 WeMakeItSafer
+Wendy
 Wheaton World Wide Moving
 Whitby Group
 Wolfram Research
@@ -761,6 +994,7 @@ Yahoo
 Zebu Compliance Solutions
 Yelp
 YourMapper
+zapaterías
 Zillow
 ZocDoc
 Zonability
@@ -768,3 +1002,75 @@ Zoner
 Zurich Insurance
 ######################################
 Facebook
+Piñera
+######################################
+# avoid 1 letter spelling errors
+# see https://github.com/languagetool-org/languagetool/issues/1721
+A
+a
+B
+b
+C
+c
+D
+d
+E
+e
+F
+f
+G
+g
+H
+h
+I
+i
+J
+j
+K
+k
+L
+l
+M
+m
+N
+n
+O
+o
+P
+p
+Q
+q
+R
+r
+S
+s
+T
+t
+U
+u
+V
+v
+W
+w
+X
+x
+Y
+y
+Z
+z
+á
+Á
+é
+É
+í
+Í
+ó
+Ó
+ú
+Ú
+ü
+Ü
+ñ
+Ñ
+máquina
+máquinas

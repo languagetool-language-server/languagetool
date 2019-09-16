@@ -1,10 +1,71 @@
 # LanguageTool Change Log
 
+## 4.7 (release planned for 2019-09-26)
+
+#### Dutch
+  * added and improved rules
+
+#### English
+  * added and improved rules
+  * updated en_GB spellchecker dictionary from https://github.com/marcoagpinto/aoo-mozilla-en-dict (Version 2.76 - 2019-09-01)
+  
+#### French
+  * improved rules
+
+#### German
+  * added and improved rules
+
+#### Portuguese
+  * added rules and significantly improved accuracy
+  * disambiguation improvements
+  * POS and spelling improvements
+
+#### Russian
+  * improved rules
+
+#### Ukrainian
+  * added and improved rules
+
+#### General
+  * Spell suggestion improvements: for many cases of a misplaced space,
+    the suggestions are now better. For example, "thef eedback" can now
+    be corrected to "the feedback" in one step. (#1729)
+  * The synthesizer now considers entries in `added.txt` and `removed.txt`
+    (except for Catalan and Polish; for German removing compounds
+    in `removed.txt` might not work) (#884)
+  
+  
+
 ## 4.6 (2019-06-26)
+
+#### Catalan
+  * added and improved rules
+  * updated dictionary (catalan-pos-dict-2.4) with more health terminology 
+
+#### Dutch
+  * added and improved rules
+
+#### English
+  * added and improved rules
+  * introduced new part-of-speech tag `PCT` for punctuation marks (`.,;:…!?`) 
+  * updated en_GB spellchecker dictionary from https://github.com/marcoagpinto/aoo-mozilla-en-dict (Version 2.73 - 2019-06-01)
+
+#### Esperanto
+  * added and improved rules
+
+#### French
+  * added and improved rules
+  * Rule `FRENCH_WHITESPACE` has been split into `FRENCH_WHITESPACE` (on
+    by default) and `FRENCH_WHITESPACE_STRICT` (off by default).
+    `FRENCH_WHITESPACE` only complains if there's no space at all before
+    `?`, `!`, `;`, `:`, or `»`. `FRENCH_WHITESPACE_STRICT` complains
+    if there's no space or a common space instead of a non-breaking space
+    before these characters.
+  * added some popular names to dictionary
 
 #### Galician
   * added verbal agreement rules
-
+ 
 #### German
   * added and improved rules
   * The false friend rule has been modified to use ngrams: Now false friends
@@ -13,12 +74,30 @@
     their precision isn't good enough. See `confusion_sets_l2_de.txt` for active DE/EN pairs.
     Use `My handy is broken.` to test the rule. As before, this will only create
     an error if `motherTongue` is set to a German language code.
+  * `prohibit.txt`: lines starting with `.*` will prohibit all words ending with
+    the subsequent string (e.g., `.*artigel` will prohibit `Versandartigel`)
+
+#### Greek
+  * added rules
+
+#### Italian
+  * added popular names to dictionary
 
 #### Portuguese
   * POS and spelling improvements
 
+#### Russian
+  * added and improved rules
+  * added new words to spell dictionary
+  
 #### Spanish
-  * Updated spell dictionary from 2.1 to 2.4
+  * updated spell dictionary from 2.1 to 2.4
+
+#### Ukrainian
+  * support for new spelling rules from 2019
+  * thousands of new words in the dictionary
+  * many rule improvements
+  * tokenization and tagging improvements
 
 #### HTTP API / LT server
   * `altLanguages` will only be considered for words with >= 3 characters

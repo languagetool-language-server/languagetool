@@ -12,23 +12,46 @@
 # "$" at the end of the line will allow the hyphenated and non-
 # hyphenated variants, but will suggest a lower-cased non-hyphenated
 # variant
+along-side+
 an-other+
+any-where+
+back-fire+
+back-fired+
+back-fires+
+back-firing+
+be-cause+
 bed-room+
 bee-keeper+
 bee-keepers+
 bee-keeping+
+before-hand+
 bell-hop+
 bell-hops+
+be-ware+
 bottle-neck+
 bottle-necks+
 breech-loader+
 cork-screw+
 cork-screws+
+crowd-sourcing+
 die-hards+
+down-side+
+down-sides+
 drop-head+
 ego-centric+
+eye-brow+
+eye-brows+
+eye-lash+
+eye-lashes+
+eye-lid+
+eye-lids+
 eye-liner+
 eye-liners+
+eye-sight+
+eye-sore+
+eye-sores+
+figure-head+
+figure-heads+
 film-strip+
 film-strips+
 fire-bomb+
@@ -55,6 +78,8 @@ fish-plate+
 fish-plates+
 fish-pond+
 fish-ponds+
+flag-ship+
+flag-ships+
 flame-proof+
 flame-proofed+
 flame-proofing+
@@ -63,6 +88,11 @@ fore-ground+
 fountain-head+
 fountain-heads+
 free-born+
+free-lance+
+free-lancer+
+free-lancers+
+free-lances+
+free-lancing+
 free-standing+
 free-wheeled+
 free-wheeling+
@@ -85,6 +115,14 @@ half-backs+
 half-beak+
 half-tone+
 half-tones+
+head-gear+
+head-quarters+
+head-scarf+
+head-scarves+
+head-stone+
+head-stones+
+head-wear+
+heavy-weight+
 high-falutin+
 hitch-hike+
 hitch-hiked+
@@ -105,15 +143,25 @@ house-parent+
 house-parents+
 house-plant+
 house-plants+
+how-ever+
 hub-cap+
 hub-caps+
 hypo-allergenic+
+in-tact+
+it-self+
 ju-jitsu+
+key-note+
+key-words+
 knock-downs+
+laughing-stock+
+life-time+
+light-weight+
 loud-mouthed+
 loud-mouths+
 love-bird+
 lunch-time+
+mean-while+
+meta-data+
 micro-organism+
 micro-organisms+
 micro-wave+
@@ -123,7 +171,11 @@ mid-airs+
 mid-life+
 multi-national+
 multi-purpose+
+nation-wide+
+near-by+
 never-the-less+
+new-comer+
+new-comers+
 news-paper+
 news-papers+
 news-stand+
@@ -137,9 +189,24 @@ non-verbal+
 non-verbally+
 note-book+
 note-books+
+note-worthy+
+now-a-days+
+no-where+
+on-going+
+out-come+
+out-comes+
+out-grow+
+out-grown+
+out-grows+
+out-side+
+over-looked+
+over-looking+
+over-rated+
+over-seas+
 over-whelmed+
 paper-boy+
 paper-boys+
+past-time+
 pay-offs+
 peep-hole+
 peep-holes+
@@ -164,19 +231,28 @@ re-fund+
 roll-backs+
 rot-gut+
 shatter-proof+
+short-coming+
+short-cut+
 show-piece+
 side-band+
 side-bands+
+side-kick+
 side-splitting+
 side-swipe+
 side-swiped+
 side-swipes+
 side-swiping+
+sky-diving+
 snow-flake+
 snow-flakes+
+some-how+
+some-what+
+some-where+
 stable-mate+
 stage-hand+
 stage-hands+
+stale-mate+
+stand-alone+
 step-parent+
 step-parents+
 story-teller+
@@ -193,10 +269,13 @@ tear-drop+
 tear-drops+
 tear-jerker+
 teen-age+
+them-selves+
 there-after+
 there-fore+
+through-out+
 toll-gate+
 toll-gates+
+tool-bar+
 under-go+
 under-goes+
 under-going+
@@ -207,7 +286,20 @@ under-stood+
 under-take+
 under-went+
 water-proof+
-
+way-side+
+web-site+
+Web-site+
+Web-Site+
+web-sites+
+Web-sites+
+Web-Sites+
+where-as+
+where-by+
+where-upon+
+with-in+
+with-out+
+world-wide+
+worth-while+
 
 # "*" at end of line = only offer hyphen suggestion:
 
@@ -258,7 +350,7 @@ award-winning*
 Award-winning*
 awe-inspiring*
 awe-inspiringly*
-back-to-back*
+# back-to-back* The two houses stand back to back. www.lexico.com/en/definition/back-to-back
 back-ups*
 bad-tempered*
 bandy-legged*
@@ -692,7 +784,7 @@ half-way*
 half-yearly*
 halter-neck*
 hand-me-downs*
-hand-to-mouth*
+# hand-to-mouth* The refugees in that camp have been living from hand to mouth for a month. www.lexico.com/en/definition/(from)_hand_to_mouth
 hanky-panky*
 happy-go-lucky*
 hard-boiled*
@@ -1069,7 +1161,7 @@ off-putting*
 off-road*
 off-roading*
 off-screen*
-off-season*
+# off-season* Hotels are cheaper in the off season. www.lexico.com/en/definition/off_season
 off-street*
 off-white*
 old-fashioned*
@@ -1367,6 +1459,7 @@ self-determination*
 self-determined*
 self-discipline*
 self-doubt*
+self-efficacy*
 self-effacing*
 self-employed*
 self-esteem*
@@ -1776,14 +1869,14 @@ well-earned*
 well-educated*
 well-endowed*
 well-equipped*
-well-established*
+# well-established* ...the La Tène culture was well established in the region... www.lexico.com/en/definition/well_established
 well-fed*
 well-formed*
 well-founded*
 well-informed*
 well-intentioned*
 well-kept*
-well-known*
+# well-known* That writer is well known all over the world.
 well-loved*
 well-made*
 well-mannered*
@@ -1794,7 +1887,7 @@ well-meant*
 well-nigh*
 well-ordered*
 well-organised*
-well-paid*
+# well-paid* ...not very interesting, but on the other hand it was well paid.
 well-placed*
 well-prepared*
 well-preserved*

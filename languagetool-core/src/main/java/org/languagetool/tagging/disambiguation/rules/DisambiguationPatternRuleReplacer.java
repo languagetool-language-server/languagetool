@@ -185,9 +185,9 @@ class DisambiguationPatternRuleReplacer extends AbstractPatternRulePerformer {
       for (int tokenPosition : tokenPositions) {
         tokensPos.add(tokenPosition);
       }
-      Map<String, String> resolvedArguments = ruleFilterEval.getResolvedArguments(rule.getFilterArguments(), tokens, tokensPos);
+      Map<String, String> resolvedArguments = ruleFilterEval.getResolvedArguments(rule.getFilterArguments(), tokens, firstMatchToken, tokensPos);
       AnalyzedTokenReadings[] relevantTokens = Arrays.copyOfRange(tokens, firstMatchToken, lastMatchToken + 1);
-      return filter.matches(resolvedArguments, relevantTokens);
+      return filter.matches(resolvedArguments, relevantTokens, firstMatchToken);
     }
     return true;
   }
@@ -274,23 +274,22 @@ class DisambiguationPatternRuleReplacer extends AbstractPatternRulePerformer {
 
     switch (disAction) {
     case UNIFY:
-      if (unifiedTokens != null) {
+      if (unifiedTokens != null &&
+          unifiedTokens.length == matchingTokensWithCorrection - startPositionCorrection + endPositionCorrection) {
         //TODO: unifiedTokens.length is larger > matchingTokensWithCorrection in cases where there are no markers...
-        if (unifiedTokens.length == matchingTokensWithCorrection - startPositionCorrection + endPositionCorrection) {
-          if (whTokens[sentence.getOriginalPosition(firstMatchToken
-              + correctedStPos + unifiedTokens.length - 1)].isSentenceEnd()) {
-            unifiedTokens[unifiedTokens.length - 1].setSentEnd();
-          }
-          for (int i = 0; i < unifiedTokens.length; i++) {
-            int position = sentence.getOriginalPosition(firstMatchToken + correctedStPos + i);
-            unifiedTokens[i].setStartPos(whTokens[position].getStartPos());
-            String prevValue = whTokens[position].toString();
-            String prevAnot = whTokens[position].getHistoricalAnnotations();
-            List<ChunkTag> chTags = whTokens[position].getChunkTags();
-            whTokens[position] = unifiedTokens[i];
-            whTokens[position].setChunkTags(chTags);
-            annotateChange(whTokens[position], prevValue, prevAnot);
-          }
+        if (whTokens[sentence.getOriginalPosition(firstMatchToken
+            + correctedStPos + unifiedTokens.length - 1)].isSentenceEnd()) {
+          unifiedTokens[unifiedTokens.length - 1].setSentEnd();
+        }
+        for (int i = 0; i < unifiedTokens.length; i++) {
+          int position = sentence.getOriginalPosition(firstMatchToken + correctedStPos + i);
+          unifiedTokens[i].setStartPos(whTokens[position].getStartPos());
+          String prevValue = whTokens[position].toString();
+          String prevAnot = whTokens[position].getHistoricalAnnotations();
+          List<ChunkTag> chTags = whTokens[position].getChunkTags();
+          whTokens[position] = unifiedTokens[i];
+          whTokens[position].setChunkTags(chTags);
+          annotateChange(whTokens[position], prevValue, prevAnot);
         }
       }
       break;
