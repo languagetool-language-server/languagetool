@@ -2,6 +2,9 @@
 
 ## 4.7 (release planned for 2019-09-26)
 
+#### Catalan
+  * added and improved rules
+
 #### Dutch
   * added and improved rules
 
@@ -24,6 +27,9 @@
   * improved rules
 
 #### Ukrainian
+  * 2k of new words in the dictionary
+  * improved tokenization
+  * improved dynamic tagging
   * added and improved rules
 
 #### General

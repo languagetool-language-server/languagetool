@@ -25,6 +25,7 @@ builded	build	VBD
 builded	build	VBN
 bundling	bundling	NNS
 bustling	bustling	NNS
+buttons	buttons	NN
 cabling	cabling	NNS
 cancelling	cancelling	NNS
 cars	cars	NN
@@ -118,6 +119,7 @@ overly	overly	NN
 owner	own	JJR
 parenthesises	parenthesis	NNS
 personnels	personnel	NNS
+pies	pi	NNS
 pooling	pooling	NNS
 pressurisation	pressurization	NNS
 prickly	prickly	RB

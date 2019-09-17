@@ -2261,8 +2261,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                     <marker>
                         <token>mit</token>
                     </marker>
-                    <token postag="PRO:IND:NOM:SIN:ALG:STV"/>
-                    <token postag="VER:.*" postag_regexp="yes"/>
+                    <token postag="PRO:IND:AKK:SIN:ALG:STV"/>
+                    <token postag="VER:.+" postag_regexp="yes"/>
                 </pattern>
                 <message>Meinten Sie <suggestion>mir</suggestion>?</message>
                 <short>Möglicher Tippfehler</short>
@@ -2276,7 +2276,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                     <marker>
                         <token>mit</token>
                     </marker>
-                    <token postag="ADJ:.*" postag_regexp="yes" min="0"/>
+                    <token postag="ADJ:.+" postag_regexp="yes" min="0"/>
                     <token postag="SENT_END"/>
                 </pattern>
                 <message>Meinten Sie <suggestion>mir</suggestion>?</message>
@@ -17346,7 +17346,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
             <pattern>
                 <token regexp="yes">ans|fürs|übers|unters|hinters|durchs|ins|vors</token>
                 <marker>
-                    <token case_sensitive="yes" postag="VER:INF:NON|ADJ:NOM:.*" postag_regexp="yes" regexp="yes">[a-zöäü].*<exception>andere</exception></token>
+                    <token case_sensitive="yes" postag="VER:INF:NON|ADJ:AKK:.*" postag_regexp="yes" regexp="yes">[a-zöäü].*<exception>andere</exception></token>
                 </marker>
                 <token><exception postag="SUB:NOM:SIN:NEU" /><exception>,</exception></token>
             </pattern>
@@ -18546,6 +18546,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
                 <example correction="Bedarf">Kein <marker>bedarf</marker>, danke.</example>
                 <example correction="Bedarf">Wir haben keinen <marker>bedarf</marker>, danke.</example>
                 <example correction="Bedarf">Anwendung: je nach <marker>bedarf</marker>.</example>
+            </rule>
+            <rule>
+                <pattern case_sensitive="yes">
+                    <token postag="(SUB|PRO:PER).+NOM.+" postag_regexp="yes"><exception postag="ART.+" postag_regexp="yes"/></token>
+                    <marker>
+                        <token>Bedarf</token>
+                    </marker>
+                </pattern>
+                <message>Schreiben Sie <suggestion><match no="2" case_conversion="startlower"/></suggestion>, falls es sich dabei um ein Verb handelt.</message>
+                <url>https://de.wiktionary.org/wiki/Bedarf</url>
+                <short>&prgk;.</short>
+                <example correction="bedarf">Der Text <marker>Bedarf</marker> noch einer Kürzung</example>
+                <example>Der Bedarf ist sehr hoch.</example>
             </rule>
         </rulegroup>
         <rulegroup id="AUSREDE_SUBST" name="'faule ausrede (Ausrede)'">
@@ -30630,12 +30643,12 @@ Andere Projekte</example>
             <url>https://www.duden.de/rechtschreibung/Mal_Zeitpunkt</url>
             <rule>
                 <antipattern>
-                    <token postag="ZAL.*" postag_regexp="yes" />
+                    <token postag="ZAL"/>
                     <token case_sensitive="yes">mal</token>
-                    <token postag="ZAL.*" postag_regexp="yes" />
+                    <token postag="ZAL"/>
                 </antipattern>
                 <pattern>
-                    <token postag="PRO:.*:SIN:NEU:.*|ADJ:NOM:...:NEU:.*|ADJ:AKK:SIN:NEU:.*|ZAL.*" postag_regexp="yes"><exception regexp="yes">gerade|ungerade|jedem</exception></token>
+                    <token postag="PRO:.*:SIN:NEU:.*|ADJ:AKK:...:NEU:.*|ZAL" postag_regexp="yes"><exception regexp="yes">gerade|ungerade|jedem</exception></token>
                     <marker>
                     <token case_sensitive="yes">mal</token>
                     </marker>
@@ -30790,9 +30803,9 @@ Andere Projekte</example>
             <example>Das alles sind Indizien, dass du der Täter warst.</example>
         </rule>
         <rulegroup id="EIN_UND_ALLES" name="Großschreibung 'Ein und Alles'">
+            <url>https://www.korrekturen.de/wortliste/ein_und_alles.shtml</url>
             <rule>
                 <pattern>
-                    <token regexp="yes">das|[dms]ein|unser|ihr|euer</token>
                     <marker>
                     <token case_sensitive="yes">ein</token>
                     </marker>
@@ -30819,7 +30832,7 @@ Andere Projekte</example>
         <rule id="DAS_ETWAS" name="das gewisse etwas (Etwas)">
             <pattern>
                 <token regexp="yes">das|ein</token>
-                <token postag="ADJ:AKK:SIN:.*" postag_regexp="yes"/>
+                <token postag="ADJ:AKK:SIN:.+" postag_regexp="yes"/>
                 <marker><token case_sensitive="yes">etwas</token></marker>
             </pattern>
             <message>&subanfang;<suggestion>Etwas</suggestion>&subende;</message>
